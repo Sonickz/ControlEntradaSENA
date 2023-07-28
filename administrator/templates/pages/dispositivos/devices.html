@@ -1,0 +1,54 @@
+{% extends 'layouts/layout_admin.html' %}
+
+
+{% block title %} Lista de Dispositivos {% endblock %}
+
+{% block content %} 
+
+<div class="card">
+    <div class="card-header">
+       <a name="" id="" class="btn btn-success" href="" role="button">Registrar Nuevo Dispositivo</a>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Dispositivos</h4>
+        <div class="table-responsive">
+            <table class="table table-secondary">
+                <thead>
+                    <tr>
+                        
+                     
+                        <th scope="col">Tipo</th>
+                        <th scope="col">SN</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Acciones</th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispositivo in dispositivos %}
+                    <tr class="">
+                        <td>{{ Dispositivos.tipo }}</td>
+                        <td>{{ Dispositivos.sn }}</td>
+                        <td>{{ Dispositivos.marca.nombre }}</td>   
+                        <td>{{ Dispositivos.usuario.nombres }}</td>     
+                
+                       
+                        <td>
+                            <a name="" id="" class="btn btn-info" hrpef="" role="button">Editar</a>
+                            | 
+                            <a name="" id="" class="btn btn-danger" href="" role="button">Borrar</a>
+                        </td>
+                    </tr>
+                     {% endfor %} 
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <div class="card-footer text-muted">
+       
+    </div>
+</div>
+
+{% endblock %}

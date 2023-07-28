@@ -1,0 +1,20 @@
+{% extends 'layouts/layout_admin.html' %}
+
+{% block title %} Editar vehiculo {% endblock title %}
+
+{% block content %}
+<div class="d-flex mx-auto" style="width: 500px;">
+    <div class="card shadow w-100">
+        <div class="card-header bg-warning">
+            Editar vehiculo
+        </div>
+        <div class="card-body">
+            {% include "pages/vehiculos/form_vehiculos.html" %}
+        </div>
+        <div class="card-footer text-muted">
+            Control Entrada/Salida SENA 2023
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
