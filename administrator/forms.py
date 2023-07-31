@@ -55,6 +55,7 @@ class RegisterDevices(ModelForm):
     tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo dispositivo", label="")
     sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del dispositivo")
+    documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Documento")
     
 
 

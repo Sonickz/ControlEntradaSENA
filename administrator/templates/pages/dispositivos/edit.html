@@ -8,7 +8,7 @@
   <section class="card">
       <header class="card-header">
           <h1 class="card-title">
-              Editar usuario
+              Editar dispositivo
           </h1>
           <a class="back-button" href="#" role="button" onclick="goBack()">
               <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -32,74 +32,28 @@
               <div class="form-group row">
                   <div class="col">
                       <div class="input-box">
-                          {{form.nombres}}
-                          <label>{{form.nombres.label}}</label>
+                          {{form.sn}}
+                          <label>{{form.sn.label}}</label>
                       </div>
                   </div>
                   <div class="col">
-                      <div class="input-box">
-                          {{form.apellidos}}
-                          <label>{{form.apellidos.label}}</label>
-                      </div>
+                    {{form.tipo}}
                   </div>
               </div>
+
               <div class="form-group row">
                   <div class="col">
-                      {{form.tipodocumento}}
+                      {{form.marca}}
                   </div>
-                  <div class="col">
-                      <div class="input-box">
-                          {{form.documento}}
-                          <label>{{form.documento.label}}</label>
-                      </div>
-                  </div>
-              </div>
-              <div class="form-group row">
-                  <div class="col">
-                      <div class="input-box">
-                          {{form.telefono}}
-                          <label>{{form.telefono.label}}</label>
-                      </div>
-                  </div>
-                  {% comment %} Aprendiz/Instructor/Administrativo{% endcomment %}
-                  {% if form.rol.value == 2 or form.rol.value == 1 or form.rol.value == 4 %}
-                  <div class="col">
-                      {{form.centro}}
-                  </div>   
-                  {% comment %} Visitante {% endcomment %}   
-                  {% elif form.rol.value == 3 %} 
-                  <div class="col">
-                      <label>{{form.rol.label}}</label>
-                      {{form.rol}}
-                  </div> 
-                  {% endif %}         
-              </div>
-              {% comment %} Aprendiz {% endcomment %}
-              {% if form.rol.value == 2%}
-              <div class="form-group row">                    
-                  <div class="col">
-                      <label>{{form.rol.label}}</label>
-                      {{form.rol}}
-                  </div> 
-                  <div class="col">
-                      <label></label>
-                      {{form.ficha}}
-                  </div> 
-              </div>
-              {% comment %} Instructor/Administrativo {% endcomment %}
-              {% elif form.rol.value == 1 or form.rol.value == 4 %}
-              <div class="form-group row">
-                  <div class="col">
-                      <label>{{form.rol.label}}</label>
-                      {{form.rol}}
-                  </div>
-              </div> 
-              {% endif %}
-              <div class="form-group row">
                   <div class="col">
                       <label>{{form.imagen.label}}</label>
-                      <input class="form-control" type="text" name="imagen_user" value="{{form.imagen.value}}" readonly>
-                      {{form.imagen}}
+                        {{form.imagen}}
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="col">
+                      <label>{{form.documento.label}}</label>
+                      {{form.documento}}
                   </div> 
               </div>
               

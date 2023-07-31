@@ -1048,17 +1048,22 @@ tr:last-child td:last-child {
 #container-admin.users #select{
     position: absolute;
     transition: none;
-    transform: translateX(120%);
+    transform: translateX(300%);
 }
 
 #container-admin.users.select #select{
     transition: .5s ease;
     transform: translateX(0);
+    width: 100%;
 }
 
 #container-admin.users.select .card{
     min-height: 10px;
     place-content: center;
+}
+
+#container-admin.users.select .card .card-body{
+    justify-content: center;
 }
 
 /* Vista formulario */

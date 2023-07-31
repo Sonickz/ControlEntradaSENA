@@ -128,12 +128,35 @@ def dispositivo(request):
     })
 
 #Registrar dispositivo
+def register_dispositivo(request):
+    form = RegisterDevices(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Se ha registrado correctamente")
+            return redirect('dispositivo')
+
+    return render(request, 'pages/dispositivos/register.html', {
+        'title': 'Registrar dispositivo',
+        'form': form
+    })
 
 #Editar dispositivo
 def edit_dispositivo(request, id):
+    instance = Dispositivos.objects.get(iddispositivo=id)
+
+    form = RegisterDevices(request.POST or None, request.FILES or None, instance=instance)
+
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Se ha editado correctamente")
+            return redirect('dispositivo')
+    
     return render(request, 'pages/dispositivos/edit.html', {
         'title': 'Editar dispositivo',
-        
+        'form': form
     })
 
 ###
