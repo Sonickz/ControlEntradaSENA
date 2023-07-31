@@ -63,7 +63,7 @@
 
             <!-- Lista de dispositivos -->
             <div class="item">
-                <a role="button" href="{%url 'devices'%}">
+                <a role="button" href="{% url 'devices' %}">
                     <div class="icon"><img src="{% static 'assets/icons/dispositivo white.png' %}" alt=""></div>
                     <div class="title"><span>Lista de dispositivos</span></div>
                 </a>
@@ -71,7 +71,7 @@
 
             <!-- Lista de vehiculos -->
             <div class="item">
-                <a role="button" href="{%url 'vehicles'%}">
+                <a role="button" href="{% url 'vehiculos' %}">
                     <div class="icon"><img src="{% static 'assets/icons/trafico white.png' %}" alt=""></div>
                     <div class="title"><span>Lista de vehiculos</span></div>
                 </a>
@@ -79,7 +79,7 @@
 
             <!-- Multas / Sanciones -->
             <div class="item">
-                <a role="button" href="">
+                <a role="button" href="{% url 'penaltys' %}">
                     <div class="icon"><img src="{% static 'assets/icons/multa white.png' %}" alt=""></div>
                     <div class="title"><span>Multas / Sanciones</span></div>
                 </a>
@@ -87,7 +87,7 @@
 
             <!-- Acerca de -->
             <div class="item">
-                <a role="button" href="">
+                <a role="button" href="{% url 'about' %}">
                     <div class="icon"><img src="{% static 'assets/icons/acerca-de white.png' %}" alt=""></div>
                     <div class="title"><span>Acerca de</span></div>
                 </a>

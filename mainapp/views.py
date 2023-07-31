@@ -84,6 +84,8 @@ def access(request, code):
     #Fecha y hora actuales
     date = datetime.now().strftime("%Y-%m-%d")
     hour = datetime.now().strftime("%H:%M:%S")
+
+    
     
     #Vehiculo elegido
     idvehiculo = request.GET.get('vehicle')
@@ -99,6 +101,7 @@ def access(request, code):
     dispositivo3 = Dispositivos.objects.get(iddispositivo=iddispositivo[2]) if len(iddispositivo) > 2 and iddispositivo[2] else None
       
     users = get_object_or_404(Usuarios, documento=code)
+    
     
 
     ingreso = Ingresos.objects.filter(usuario=users.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None

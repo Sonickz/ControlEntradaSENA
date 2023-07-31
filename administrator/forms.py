@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 from django import forms
-from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas
+from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas, DispositivosMarca, DispositivosTipo
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -41,28 +41,21 @@ class RegisterUser(ModelForm):
         return imagen
     
 
-class VehiculoForm(forms.ModelForm):
-    class Meta:
-        model = Vehiculos
-        fields = ['placa', 'tipo', 'marca', 'modelo', 'imagen']
-        widgets = {
-            'tipo': forms.Select(attrs={'class': 'form-select custom-focus'}),
-            'modelo': forms.TextInput(attrs={'class': 'form-control custom-focus'}),
-            'marca': forms.Select(attrs={'class': 'form-select custom-focus'}),
-            'imagen': forms.FileInput(attrs={'class': 'form-control custom-focus'}),
-            'placa': forms.TextInput(attrs={'class': 'form-control custom-focus'}),
-        }
 
 
-class DispositivosForm(forms.ModelForm):
+    #Formulario para registro de dispositivo
+class RegisterDevices(ModelForm):
     class Meta:
         model = Dispositivos
-        fields = ['iddispositivo', 'marca', 'tipo', 'sn', 'imagen', 'documento']
-        widgets = {
-            'iddispositivo': forms.Select(attrs={'class': 'form-select custom-focus'}),
-            'sn': forms.FileInput(attrs={'class': 'form-control custom-focus'}),
-            'tipo': forms.FileInput(attrs={'class': 'form-control custom-focus'}),
-            'marca': forms.Select(attrs={'class': 'form-select custom-focus'}),
-            'imagen': forms.TextInput(attrs={'class': 'form-control custom-focus'}),
-            'documento': forms.TextInput(attrs={'class': 'form-control custom-focus'}),
-        }
+        fields = "__all__"
+
+    #Campos
+    iddispositivo  = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
+    marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Marca dispositivo", label="")
+    tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo dispositivo", label="")
+    sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
+    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del dispositivo")
+    
+
+
+

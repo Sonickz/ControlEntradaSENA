@@ -5,8 +5,6 @@ from django.contrib import messages
 from .models import *
 from django.db import connection
 from .forms import *
-from django.urls import reverse
-
 
 #Login admin
 @user_passes_test(lambda u: not u.is_authenticated, login_url='adminpanel') #Si el usuario ya esta logeado no va a poder acceder a la pagina de login 
@@ -114,74 +112,67 @@ def edit_user(request, id):
         'form': form,
     })
 
-
-
-
-# VIEWS TABLA DE VEHICULO
-@login_required(login_url="login")
-def vehicles(request):
-    vehiculos = Vehiculos.objects.all()
-    return render(request, 'pages/vehiculos/vehicles.html', {'vehiculos': vehiculos})
-
-
-
-# VIEWS TABLA DE dispo
-@login_required(login_url="login")
-def dispositivos(request):
-    dispositivos = Dispositivos.objects.all()
-    return render(request, 'pages/dispositivos/devices.html', {'dispositivos': dispositivos})
-
-
-# VIEWS regitar en el usuario un vehiculo
-@login_required(login_url="login")
-def register(request, id_user):
-    user = Usuarios.objects.get(idusuario=id_user)
-    if request.method == 'POST':
-        formvehicle = VehiculoForm(request.POST or None, request.FILES or None)
-        if formvehicle.is_valid():
-            vehiculo = formvehicle.save(commit=False)
-            vehiculo.Usuario = user
-            vehiculo.save()
-            messages.success(request, 'Registro exitoso')    
-            return redirect('vehicles')
-    else:
-        formvehicle = VehiculoForm()
-    return render(request, 'pages/vehiculos/register_vehicle.html',{
-        'formvehicle': formvehicle,
-        'user': user,
-        'title': 'registro vehículo'
+#saciones
+@login_required(login_url="admin")
+def sanciones(request):
+    sanciones = Sanciones.objects.all()
+    
+    return render(request, 'pages/sanciones/sanciones.html', {
+        'title': 'Sanciones',
+        'penaltys': sanciones
     })
+
+#Dispositivos
+@login_required(login_url="admin")
+def dispositivo(request):
+    devices = Dispositivos.objects.all()
     
+    return render(request, 'pages/dispositivos/devices.html', {
+        'title': 'Dispositivos',
+        'dispositivos': devices
+    })
 
-# Vista de vehiculos registrados de cada usuario y hacer el crud
-@login_required(login_url="login")
-def user_vehicles(request, id_usuario):
-    vehiculos = Vehiculos.objects.filter(Usuario__idusuario=id_usuario)
-    return render(request, 'pages/vehiculos/user_vehicles.html', {'vehiculos': vehiculos})
 
-# Vista para editar vehiculo
-@login_required(login_url="login")
-def edit_vehicle(request, vehicle_id):
-    vehiculo = Vehiculos.objects.get(idvehiculo=vehicle_id)
-    formulario = VehiculoForm(request.POST or None, request.FILES or None, instance=vehiculo)
-    if formulario.is_valid() and request.method == 'POST':
-        formulario.save()
-        messages.success(request, 'Se ha editado correctamente el vehículo') 
-        # Pasa el ID del usuario como argumento en la URL inversa
-        
-        return redirect('vehicles')
+#Editar dispositivo
+def edit_dispositivo(request, id):
+    instance = Dispositivos.objects.get(iddispositivo=id)
+    form = RegisterDevices(request.POST or None, instance=instance,)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Se ha editado correctamente")
+            return redirect('dispositivo')
+
+    return render(request, 'pages/dispositivos/edit.html', {
+        'title': 'Editar Dispositivo',
+        'form': form,
+    })
+
+
+
+
+
+
+#Vehicles
+@login_required(login_url="admin")
+def vehiculos(request):
+    vehicles = Vehiculos.objects.all()
     
-    return render(request, 'pages/vehiculos/edit.html', {'formulario': formulario})
+    return render(request, 'pages/vehiculos/vehicles.html', {
+        'title': 'Dispositivos',
+        'vehiculos': vehicles
+    })
 
 
+#acerd de
+@login_required(login_url="admin")
+def about(request):
+    
+    return render(request, 'pages/acerca/about.html', {
+        'title': 'Dispositivos'
+    })
 
-# Vista para eliminar vehiculo
-@login_required(login_url="login")
-def delete_vehicle(request,id):
-    vehiculo = Vehiculos.objects.get(idvehiculo=id)
-    vehiculo.delete()
-    messages.success(request, 'Se ha eliminado correctamente el vehículo')
-    return redirect('vehicles')
 
 
 

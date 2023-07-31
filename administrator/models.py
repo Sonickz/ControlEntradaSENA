@@ -224,11 +224,6 @@ class Vehiculos(models.Model):
 
     def __str__(self):
         return f"{self.tipo} {self.marca}: {self.placa}"
-    
-    # Borrar Vehiculo e imagen
-    def delete_vehiculo(self, using=None, keep_parents=False):
-        self.Foto.storage.delete(self.Foto.name)
-        super().delete()
 
 
 class VehiculosMarca(models.Model):
@@ -254,6 +249,3 @@ class VehiculosTipo(models.Model):
 
     def __str__(self):
         return self.nombre
-    
-
-
