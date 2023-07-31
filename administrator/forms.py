@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 from django import forms
-from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas, DispositivosMarca, DispositivosTipo
+from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas, DispositivosMarca, DispositivosTipo, VehiculosMarca, VehiculosTipo
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -57,6 +57,3 @@ class RegisterDevices(ModelForm):
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del dispositivo")
     documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Documento")
     
-
-
-

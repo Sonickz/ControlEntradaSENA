@@ -14,7 +14,6 @@ urlpatterns = [
     path("admin/users/edituser/<int:id>", views.edit_user, name="edituser"),
     path("admin/sanciones", views.sanciones, name="penaltys"),
     path("admin/dispositivo", views.dispositivo, name="devices"),
-    path("admin/dispositivo/registerdispositivo", views.register_dispositivo, name="registerdispositivo"),
     path("admin/dispositivo/editdispositivo/<int:id>", views.edit_dispositivo, name="editdispositivo"),
     path("admin/vehiculos", views.vehiculos, name="vehiculos"),
     path("admin/about", views.about, name="about"),
