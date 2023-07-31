@@ -121,25 +121,23 @@ def edit_user(request, id):
 @login_required(login_url="admin")
 def dispositivo(request):
     devices = Dispositivos.objects.all()
+
+    form = RegisterDevices(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Se ha registrado correctamente")
+            return redirect('dispositivo')
     
     return render(request, 'pages/dispositivos/devices.html', {
         'title': 'Dispositivos',
-        'dispositivos': devices
+        'dispositivos': devices,
+        'form': form
     })
-
-#Registrar dispositivo
 
 #Editar dispositivo
 def edit_dispositivo(request, id):
-    instance=Dispositivos.objects.get(iddispositivo=id)
-
-    form=  RegisterDevices(request.POST or None, request.FILES or None, instance= instance)
-    if request .method == "POST" :
-        if form.is_valid():
-            form.save()
-            messages.success(request, "se ha editado correctamente")
-            return redirect('dispositivo')
-            
     return render(request, 'pages/dispositivos/edit.html', {
         'title': 'Editar dispositivo',
         'form': form

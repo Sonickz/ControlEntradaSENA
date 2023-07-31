@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 from django import forms
-from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas, DispositivosMarca, DispositivosTipo, VehiculosTipo, VehiculosMarca
+from .models import Usuarios, Dispositivos, Vehiculos, Sanciones, DocumentoTipo, Centros, Roles, Fichas, DispositivosMarca, DispositivosTipo, VehiculosMarca, VehiculosTipo
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -55,57 +55,5 @@ class RegisterDevices(ModelForm):
     tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo dispositivo", label="")
     sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del dispositivo")
+    documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Documento")
     
-
-
-
-
-    #Formulario para registro de vehiculos
-class RegisterVehiculos(ModelForm):
-    class Meta:
-        model = Vehiculos
-        fields = "__all__"
-
-
-    idvehiculo = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
-    tipo =forms.ModelChoiceField(queryset =VehiculosTipo.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo Vehiculos", label="")
-    placa = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
-    marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label=" Marca Vehiculos", label="")
-    modelo =forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
-    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del vehiculos")
-    
-
-
-    #Formulario para registro de sanciones
-class RegisterSanciones(ModelForm):
-    class Meta:
-        model = Sanciones
-        fields = "__all__"
-
-    idsancion= forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
-    vehiculo = forms.ModelChoiceField(queryset =Vehiculos.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Vehiculos", label="")
-    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control'}))  
-    fecha_fin = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control' }), label="Fecha") 
-    estado = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
-    descripcion =forms.CharField(widget=forms.TextInput(attrs={'maxlength': '20',}))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
