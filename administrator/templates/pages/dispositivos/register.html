@@ -8,7 +8,15 @@
   <section class="card">
       <header class="card-header">
           <h1 class="card-title">
-              Editar usuario
+              {% if rol == 1 %}
+                  Registrar Instructor
+              {% elif rol == 2 %}
+                  Registrar Aprendiz
+              {% elif rol == 3 %}
+                  Registrar Visitante
+              {% elif rol == 4 %}
+                  Registrar Administrativo
+              {% endif %}
           </h1>
           <a class="back-button" href="#" role="button" onclick="goBack()">
               <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -29,6 +37,7 @@
           {% endif %}
           <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
+              <input type="hidden" name="rol" value="{{rol}}">
               <div class="form-group row">
                   <div class="col">
                       <div class="input-box">
@@ -62,12 +71,12 @@
                       </div>
                   </div>
                   {% comment %} Aprendiz/Instructor/Administrativo{% endcomment %}
-                  {% if form.rol.value == 2 or form.rol.value == 1 or form.rol.value == 4 %}
+                  {% if rol == 2 or rol == 1 or rol == 4 %}
                   <div class="col">
                       {{form.centro}}
                   </div>   
                   {% comment %} Visitante {% endcomment %}   
-                  {% elif form.rol.value == 3 %} 
+                  {% elif rol == 3 %} 
                   <div class="col">
                       <label>{{form.rol.label}}</label>
                       {{form.rol}}
@@ -75,7 +84,7 @@
                   {% endif %}         
               </div>
               {% comment %} Aprendiz {% endcomment %}
-              {% if form.rol.value == 2%}
+              {% if rol == 2%}
               <div class="form-group row">                    
                   <div class="col">
                       <label>{{form.rol.label}}</label>
@@ -87,7 +96,7 @@
                   </div> 
               </div>
               {% comment %} Instructor/Administrativo {% endcomment %}
-              {% elif form.rol.value == 1 or form.rol.value == 4 %}
+              {% elif rol == 1 or rol == 4 %}
               <div class="form-group row">
                   <div class="col">
                       <label>{{form.rol.label}}</label>
@@ -98,7 +107,6 @@
               <div class="form-group row">
                   <div class="col">
                       <label>{{form.imagen.label}}</label>
-                      <input class="form-control" type="text" name="imagen_user" value="{{form.imagen.value}}" readonly>
                       {{form.imagen}}
                   </div> 
               </div>

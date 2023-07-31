@@ -51,6 +51,7 @@ def register_admin(request):
 def adminpanel(request):
     return render(request, 'adminpanel.html')
 
+######
 
 #Lista usuarios
 @login_required(login_url="admin")
@@ -73,6 +74,7 @@ def users(request):
         'users': users
     })
 
+#Registrar usuario
 def register_user(request, rol):
     initial = {'rol': rol}
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial)
@@ -92,6 +94,7 @@ def register_user(request, rol):
         'rol': rol,
     })
 
+#Editar usuario
 def edit_user(request, id):
     instance = Usuarios.objects.get(idusuario=id)
     initial = {'imagen': instance.imagen}
@@ -112,17 +115,9 @@ def edit_user(request, id):
         'form': form,
     })
 
-#saciones
-@login_required(login_url="admin")
-def sanciones(request):
-    sanciones = Sanciones.objects.all()
-    
-    return render(request, 'pages/sanciones/sanciones.html', {
-        'title': 'Sanciones',
-        'penaltys': sanciones
-    })
+###
 
-#Dispositivos
+# Lista de dispositivos
 @login_required(login_url="admin")
 def dispositivo(request):
     devices = Dispositivos.objects.all()
@@ -132,22 +127,27 @@ def dispositivo(request):
         'dispositivos': devices
     })
 
+#Registrar dispositivo
 
 #Editar dispositivo
 def edit_dispositivo(request, id):
-    instance = Dispositivos.objects.get(iddispositivo=id)
-    form = RegisterDevices(request.POST or None, instance=instance,)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha editado correctamente")
-            return redirect('dispositivo')
-
     return render(request, 'pages/dispositivos/edit.html', {
-        'title': 'Editar Dispositivo',
-        'form': form,
+        'title': 'Editar dispositivo',
+        
     })
+
+###
+
+#Sanciones
+@login_required(login_url="admin")
+def sanciones(request):
+    sanciones = Sanciones.objects.all()
+    
+    return render(request, 'pages/sanciones/sanciones.html', {
+        'title': 'Sanciones',
+        'penaltys': sanciones
+    })
+
 
 
 
