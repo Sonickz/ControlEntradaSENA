@@ -177,11 +177,6 @@ def edit_sanciones(request, id):
      })
 
 
-
-
-
-
-
 #Vehicles
 @login_required(login_url="admin")
 def vehicles(request):
