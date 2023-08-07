@@ -56,4 +56,18 @@ class RegisterDevices(ModelForm):
     sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del dispositivo")
     documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Documento")
+  
+# Formulario para el registro de vehículos  
+class RegisterVehicles(ModelForm):
+    class Meta:
+        model = Vehiculos
+        fields = "__all__"
+        
+    #campos
+    usuario = forms.ModelChoiceField(queryset=Usuarios.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Propietario", label="Propietario:", disabled=True)
+    tipo = forms.ModelChoiceField(queryset=VehiculosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo vehiculo", label="Tipo de vehículo:")
+    placa = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7'}), label="Placa", disabled=True)
+    marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Marca vehículo", label="Marca del vehículo:")
+    modelo = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '4'}), label="Modelo:")
+    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del Vehículo:")
     

@@ -11,7 +11,7 @@
           <header class="card-header">
               <h1 class="card-title">Vehiculos</h1>
               <!-- Btn Registrar Usuario -->
-              <button type="button" class="btn btn-green add" id="btn-register-users">Registrar vehiculos</button>         
+              <button type="button" class="btn btn-green add" id="btn-register-users">Registrar Vehiculo</button>         
           </header>
           <!-- Seccion Search -->
           <div class="card-search">
@@ -47,29 +47,24 @@
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th scope="col">Id</th>
-                                    <th scope="col">Usuario</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Placa</th>
-                                    <th scope="col">Marca</th>
-                                    <th scope="col">Modelo</th>
-                                    <th scope="col">Imagen</th>
-                                    <th scope="col">Info</th>
-                          <th></th>
-                          
+                          <th scope="col">Propietario</th>
+                          <th scope="col">Placa</th>
+                          <th scope="col">Tipo</th>
+                          <th scope="col">Marca</th>
+                          <th scope="col">Modelo</th>
+                          <th scope="col">Imagen</th>
+                          <th scope="col">Acciones</th>
                         </tr>
                       </thead>
                       <tbody class="tbody">
-                        {% for vehiculo in vehiculos %}
+                        {% for vehicle in vehicles %}
                         <tr>
-                       
-                          <th scope="row">{{vehiculo.idvehiculo}}</th>
-                          <td>{{vehiculo.usuario }}</td>
-                          <td>{{vehiculo.tipo}}</td>
-                          <td>{{vehiculo.placa}}</td>
-                          <td>{{vehiculo.marca}}</td>
-                          <td>{{vehiculo.modelo}}</td>
-                          <td>{{vehiculo.imagen}}</td>
+                          <td>{{vehicle.usuario}}</td>
+                          <td>{{vehicle.placa}}</td>
+                          <td>{{vehicle.tipo.nombre}}</td>
+                          <td>{{vehicle.marca.nombre}}</td>
+                          <td>{{vehicle.modelo}}</td>
+                          <td>{{vehicle.tipodocumento}}</td>
                           <td class="actions">
                             <div class="dropdown">
                               <button class="btn btn-secondary btn-actions" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -89,7 +84,7 @@
                                   
                                 </li>
                                 <li>
-                                  <a type="button" class="dropdown-item" href="{% url 'editvehiculo' id=vehiculo.idvehiculo %}">
+                                  <a type="button" class="dropdown-item" href="{% url 'editvehiculo' id=vehicle.idvehiculo %}">
                                     <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="icon-dropdown-item bi bi-pencil-square" viewBox="0 0 16 16">
                                       <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                       <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -109,45 +104,7 @@
         </section>
         <!-- Modal -->
         {% include 'pages\usuarios\delete.html' %}  
-        <!-- Seccion Select -->
-        <section id="select">
-          <header class="card-header">
-            <h1 class="card-title">Rol</h1>
-            <!-- Btn atras -->
-            <a class="back-button" href="#" role="button" id="btn-back">
-              <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-              </svg>
-            </a>
-          </header>
-          <div class="card-body">
-            <ul class="col select-rol">
-              <a role="button" href="{% url 'registeruser' rol=1 %}">
-                <img src="{% static "assets/icons/profesor.png" %}" alt="">
-                <span>Instructor</span>
-              </a>
-            </ul>
-            <ul class="col select-rol">
-                <a role="button" href="{% url 'registeruser' rol=2 %}">
-                  <img src="{% static "assets/icons/aprendiz.png" %}" alt="">
-                  <span>Aprendiz</span>
-                </a>
-            </ul>
-            <ul class="col select-rol">
-                <a role="button" href="{% url 'registeruser' rol=3 %}">
-                  <img src="{% static "assets/icons/visitante.png" %}" alt="">
-                  <span>Visitante</span>
-                </a>
-            </ul>
-            <ul class="col select-rol">
-              <a role="button" href="{% url 'registeruser' rol=4 %}">
-                <img src="{% static "assets/icons/administrativo.png" %}" alt="">
-                <span>Administrativo</span>
-              </a>
-            </ul>
-          </div>
-        </section>
-    </section>
+        
 </article>
 {% endblock %}
 
