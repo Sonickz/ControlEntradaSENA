@@ -138,6 +138,15 @@ def dispositivo(request):
 
 #Editar dispositivo
 def edit_dispositivo(request, id):
+    instance = Dispositivos.objects.get(iddispositivo=id)
+
+    form = RegisterDevices(request.POST or None, request.FILES or None, instance= instance)
+    if request .method == "POST" :
+        if form.is_valid():
+            form.save()
+            messages.success(request, "se ha editado correctamente")
+            return redirect('dispositivo')
+        
     return render(request, 'pages/dispositivos/edit.html', {
         'title': 'Editar dispositivo',
         'form': form
@@ -164,7 +173,7 @@ def sanciones(request):
 def edit_sanciones(request, id):
     instance=Sanciones.objects.get(idsancion=id)
 
-    form= RegisterSanciones (request.POST or None, request.FILES or None, instance= instance)
+    form = RegisterSanciones(request.POST or None, request.FILES or None, instance= instance)
     if request .method == "POST" :
         if form.is_valid():
             form.save()
@@ -174,52 +183,44 @@ def edit_sanciones(request, id):
     return render(request, 'pages/sanciones/edit.html', {
         'title': 'Editar Sanciones',
         'form': form
-    })
-
-
-
-
-
+     })
 
 
 #Vehicles
 @login_required(login_url="admin")
-def vehiculos(request):
+def vehicles(request):
     vehicles = Vehiculos.objects.all()
     
     return render(request, 'pages/vehiculos/vehicles.html', {
-        'title': 'Dispositivos',
-        'vehiculos': vehicles
+        'title': 'Vehiculos',
+        'vehicles': vehicles
     })
-
-
-
 
 #Editar vehiculos
 def edit_vehiculo(request, id):
     instance=Vehiculos.objects.get(idvehiculo=id)
 
-    form= RegisterVehiculos (request.POST or None, request.FILES or None, instance= instance)
+    form = RegisterVehicles(request.POST or None, request.FILES or None, instance= instance)
     if request .method == "POST" :
         if form.is_valid():
             form.save()
-            messages.success(request, "se ha editado correctamente")
+            messages.success(request, "Vehículo editado correctamente")
             return redirect('vehiculos')
             
     return render(request, 'pages/vehiculos/edit.html', {
-        'title': 'Editar Vehiculos',
-        'form': form
+         'title': 'Editar Vehiculos',
+         'form': form 
     })
 
 
 
 
-#acerd de
+#acerda de
 @login_required(login_url="admin")
 def about(request):
     
     return render(request, 'pages/acerca/about.html', {
-        'title': 'Dispositivos'
+        'title': 'Acerca de'
     })
 
 
