@@ -21,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-&9+r5#@%(66*yzwfigz#__l*08bg=yws&pc0ojzmk581t1)wu1"
+#SECRET_KEY = "django-insecure-&9+r5#@%(66*yzwfigz#__l*08bg=yws&pc0ojzmk581t1)wu1"
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.alwaysdata.net', '127.0.0.1']
 
 
 # Application definition
@@ -83,10 +84,10 @@ WSGI_APPLICATION = "ControlEntradaSENA.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "control-entrada-sena",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "localhost",
+        "NAME": os.environ.get('DB_NAME'),
+        "USER": os.environ.get('DB_USER'),
+        "PASSWORD": os.environ.get('DB_PASS'),
+        "HOST": "mysql-giovanny.alwaysdata.net",
         "PORT": "3306",
         "OPTIONS": {
             'sql_mode': 'STRICT_TRANS_TABLES'
@@ -131,16 +132,16 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, "mainapp/static"),
+    os.path.join(BASE_DIR, "administrator/static"),
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 #Imagenes
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
