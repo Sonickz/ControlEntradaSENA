@@ -71,3 +71,15 @@ class RegisterVehicles(ModelForm):
     modelo = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '4'}), label="Modelo:")
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), label="Foto del Vehículo:")
     
+# Formulario para el registro de sanciones
+class RegisterSanciones(ModelForm):
+    class Meta:
+        model = Sanciones
+        fields = "__all__"
+
+    idsancion= forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
+    vehiculo = forms.ModelChoiceField(queryset =Vehiculos.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Vehiculos", label="")
+    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control'}))  
+    fecha_fin = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control' }), label="Fecha") 
+    estado = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
+    descripcion =forms.CharField(widget=forms.TextInput(attrs={'maxlength': '20',}))

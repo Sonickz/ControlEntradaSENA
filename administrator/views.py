@@ -138,6 +138,15 @@ def dispositivo(request):
 
 #Editar dispositivo
 def edit_dispositivo(request, id):
+    instance = Dispositivos.objects.get(iddispositivo=id)
+
+    form = RegisterDevices(request.POST or None, request.FILES or None, instance= instance)
+    if request .method == "POST" :
+        if form.is_valid():
+            form.save()
+            messages.success(request, "se ha editado correctamente")
+            return redirect('dispositivo')
+        
     return render(request, 'pages/dispositivos/edit.html', {
         'title': 'Editar dispositivo',
         'form': form
@@ -164,7 +173,7 @@ def sanciones(request):
 def edit_sanciones(request, id):
     instance=Sanciones.objects.get(idsancion=id)
 
-    form= RegisterSanciones(request.POST or None, request.FILES or None, instance= instance)
+    form = RegisterSanciones(request.POST or None, request.FILES or None, instance= instance)
     if request .method == "POST" :
         if form.is_valid():
             form.save()
