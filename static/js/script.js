@@ -139,80 +139,80 @@ function openSelect(btn) {
   btn.classList.toggle("open");
 }
 
+//Form de vehiculo y dispositivos
 const vehicleInput = document.getElementById('vehicle');
 const devicesInput = document.getElementById('devices');
 
-//Seleccionar multiples
-const multipleItems = document.querySelectorAll(".multiple .item");
+//Seleccionar dispositivos
+const deviceItems = document.querySelectorAll(".item-device");
+//Texto select dispositivos
+const btnText = document.querySelector(".device .btn-text");
 
-multipleItems.forEach(item => {
+//Iterar sobre cada dispositivo
+deviceItems.forEach(item => {
+
   item.addEventListener("click", () => {
+    // Cambiar el estado de la clase 'checked' del elemento clicado
     item.classList.toggle("checked");
 
-    let checked = document.querySelectorAll(".multiple .checked"),
-      btnText = document.querySelector(".multiple .btn-text");
+    // Obtener todos los elementos con la clase 'checked'
+    const checkedItems = document.querySelectorAll(".item-device.checked");
+    // Obtener los valores de los elementos con la clase 'checked'
+    const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
 
-    let selectedValues = Array.from(checked).map(item => item.getAttribute("value"));
-    devicesInput.value = selectedValues;
-    console.log(devicesInput.value);
+    // Asignar los valores al campo de entrada oculto
+    devicesInput.value = valuesChecks.join(",");
 
-    console.log(selectedValues);
-    if (checked && checked.length > 0) {
-      btnText.innerText = `${checked.length} Seleccionados`;
+    // Cambiar el texto del select segun la cantidad de dispositivos seleccionados
+    if (checkedItems && checkedItems.length > 1) {
+      btnText.innerText = `${checkedItems.length} Seleccionados`;
+    } else if (checkedItems && checkedItems.length > 0) {
+      btnText.innerText = checkedItems[0].innerText;
     } else {
       btnText.innerText = "Seleccionar Dispositivos";
     }
   });
 })
 
-//Seleccionar uno
+//Seleccionar vehiculos
+const vehicleItems = document.querySelectorAll(".item-vehicle");
+const btnTextVehicle = document.querySelector(".vehicle .btn-text");
 
-//Salida Vehiculo
-document.addEventListener('DOMContentLoaded', function () {
-  const inputItem = document.querySelector('.item-selected').value;
-  console.log(inputItem);
-  vehicleInput.value = inputItem;
-});
-
-//Ingreso Vehiculo
-const items = document.querySelectorAll(".individual .item");
-let selectedValue = null;
-
-items.forEach(item => {
+vehicleItems.forEach(item => {
   item.addEventListener("click", () => {
-    const isSelected = item.classList.contains("checked");
-
-    items.forEach(otherItem => {
-      otherItem.classList.remove("checked");
-    });
-
-    if (!isSelected) {
-      item.classList.add("checked");
-      selectedValue = item.getAttribute("value");
-      vehicleInput.value = selectedValue;
-      console.log(vehicleInput.value);
-    } else {
-      selectedValue = null;
-      vehicleInput.value = "";
+    if (item.classList.contains("checked")) {
+      item.classList.remove("checked");
+    } else{
+    // Remover la clase 'checked' de todos los elementos
+    vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
+    // Agregar la clase 'checked' al elemento clicado
+    item.classList.add("checked");
     }
 
-    let checked = document.querySelector(".individual .checked");
-    let btnText = document.querySelector(".individual .btn-text");
+    // Buscar el elemento clicado con la clase 'checked'
+    const checkedItem = document.querySelector(".item-vehicle.checked");
 
-    if (checked) {
-      btnText.innerText = item.innerText;
+    if (checkedItem) {
+      // Actualizar el valor y el texto basados en el elemento seleccionado
+      const valueCheck = checkedItem.getAttribute("value");
+      vehicleInput.value = valueCheck;
+      btnTextVehicle.innerText = checkedItem.innerText;
     } else {
-      btnText.innerText = "Seleccionar vehiculos";
+      // Si no hay elementos seleccionados, restaurar los valores predeterminados
+      btnTextVehicle.innerText = "Seleccionar Vehiculo";
+      vehicleInput.value = "";
     }
   });
 });
+
+
 
 //ADMIN
 
 //Menu Admin
 const btn = document.querySelector("#menu-btn");
 const menu = document.querySelector("#sidemenu");
-const {body} = document
+const { body } = document
 const list = document.querySelectorAll('.item')
 
 if (btn && menu) {

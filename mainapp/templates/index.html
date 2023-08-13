@@ -176,7 +176,7 @@
             <div class="card-image">
                 <!-- Imagen -->
                 <div class="col">
-                    <img src="{{users.imagen.url}}" alt="">
+                    <img src="{% if users.imagen %}{{users.imagen.url}}{% endif %}" alt="">
                 </div>
                 {% if not salida %}
                 <!-- Tomar foto -->
@@ -282,7 +282,7 @@
                         <label for="names">Vehiculos</label>  
                         {% if salida %}      
                         <!-- Zona select -->                    
-                            <div class="select-form individual">
+                            <div class="select-form vehicle">
                                 <!-- Select -->
                                 <div class="select-btn open">
                                     <span class="btn-text">{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</span>
@@ -292,7 +292,7 @@
                             </div> 
                         {% else %}
                         <!-- Zona select -->  
-                        <div class="select-form individual">
+                        <div class="select-form vehicle">
                             <!-- Select -->
                             <div class="select-btn" onclick="openSelect(this)">
                                 <span class="btn-text">Seleccionar Vehiculo</span>
@@ -302,10 +302,10 @@
                             </div>     
                             <!-- Lista -->                   
                             <ul class="list-items">
-                                {% if vehiculo %}
+                                {% if vehiculos %}
                                     {% for vehiculo in vehiculos %}
                                     <!-- Item -->
-                                    <li class="item" value="{{vehiculo.idvehiculo}}">
+                                    <li class="item item-vehicle" value="{{vehiculo.idvehiculo}}">
                                         <span class="checkbox">
                                             <i class="fa-solid fa-check check-icon"></i>
                                         </span>
@@ -323,7 +323,7 @@
                     <div class="col">
                         <label for="names">Dispositivos</label>  
                         <!-- Zona select -->                           
-                        <div class="select-form multiple">
+                        <div class="select-form device">
                             <!-- Select -->
                             <div class="select-btn" onclick="openSelect(this)">
                                 <span class="btn-text">Seleccionar Dispositivos</span>
@@ -336,7 +336,7 @@
                                 {% if dispositivos %}
                                     {% for dispositivo in dispositivos %}
                                     <!-- Item -->
-                                    <li class="multiple-item item" value="{{dispositivo.iddispositivo}}">
+                                    <li class="item item-device" value="{{dispositivo.iddispositivo}}">
                                         <span class="checkbox">
                                             <i class="fa-solid fa-check check-icon"></i>
                                         </span>
@@ -353,12 +353,13 @@
             </div>            
         </div>
         <footer class="card-footer">
-            <a href="{% url 'index' %}" class="btn cancel">Cancelar</a>  
+            <a href="{% url 'index' %}" class="btn cancel">Cancelar</a> 
+            <!-- Boton ingresar y form para enviar el vehiculo y los dispositivos --> 
             <form id="form-access" method="get" action="{% url 'access' code=users.documento %}">
                 {% csrf_token %}
                 <input id="vehicle" type="hidden" name="vehicle" value="">
                 <input id="devices" type="hidden" name="devices" value="">      
-                <button type="submit" class="btn accept">{% if not ingreso %}Ingresar{% else %}Salir{% endif %}</button>
+                <button type="submit" class="btn accept">{% if salida %}Salir{% else %}Ingresar{% endif %}</button>
             </form>                            
         </footer>
     </section>

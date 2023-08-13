@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.db.models import Subquery
 from administrator.models import Usuarios, Dispositivos, Vehiculos, Ingresos, Salidas
-from .forms import RegisterUser, RegisterDevice, RegisterVehicle
+from administrator.forms import RegisterUser, RegisterDevice, RegisterVehicle
 from datetime import datetime #Fecha y hora
 
 #Inicio
@@ -33,27 +33,11 @@ def index(request):
             jornada = ficha.jornada if ficha else None
             
             #Si el usuario toma su foto: Guardarla
-            if request.method == 'POST':
-                form = RegisterUser(request.POST, request.FILES)
-                form.fields['nombres'].required = False
-                form.fields['apellidos'].required = False
-                form.fields['tipodocumento'].required = False
-                form.fields['documento'].required = False
-                form.fields['telefono'].required = False
-                form.fields['correo'].required = False
-                form.fields['centro'].required = False
-                form.fields['rol'].required = False
-                form.fields['ficha'].required = False
-
-                if form.is_valid():
-                        user.imagen.delete()
-                        imagen = form.cleaned_data['imagen']
-                        extension = imagen.name.split('.')[-1].lower()
-                        filename = f"{code}.{extension}"
-                        imagen.name = filename                        
-                        user.imagen = imagen
-                        user.save()
-                        return redirect('/?code=' + code)
+            form = RegisterUser(request.POST, request.FILES, instance=user)
+            if request.method == 'POST' and form.is_valid():                        
+                user.imagen.delete()
+                form.save()
+                return redirect('/?code=' + code)
                                 
             #Si el usuario tiene un ingreso activo, hacer salida
             salida = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
