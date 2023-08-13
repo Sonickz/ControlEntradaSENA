@@ -34,7 +34,7 @@ class Dispositivos(models.Model):
         db_table = 'dispositivos'
 
     def __str__(self):
-        return f"{self.tipo} {self.marca}: {self.sn}"
+        return f"{self.tipo} {self.marca}: #{self.sn[:5]}"
 
 
 class DispositivosMarca(models.Model):

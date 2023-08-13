@@ -1,31 +1,40 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import logout
 from django.http import Http404
-from django.contrib import messages
 from django.db.models import Subquery
-from administrator.models import Usuarios, Dispositivos, Vehiculos, Sanciones, Ingresos, Fichas, Salidas
+from administrator.models import Usuarios, Dispositivos, Vehiculos, Ingresos, Salidas
 from .forms import RegisterUser, RegisterDevice, RegisterVehicle
-#Fecha y hora
-from datetime import datetime
+from datetime import datetime #Fecha y hora
 
-#Inicio / Ingreso
+#Inicio
 def index(request):
-    ingresos = Ingresos.objects.exclude(idingreso__in=Subquery(Salidas.objects.values('ingreso'))) or None 
+    # sourcery skip: extract-method, use-fstring-for-concatenation
 
+    #Traer los ingresos que no estan relacionados con una salida
+    ingresos = Ingresos.objects.exclude(idingreso__in=Subquery(Salidas.objects.values('ingreso'))) or None 
+    #Traer salidas
     salidas = Salidas.objects.all
-    #Si se escanea el codigo de barras
+    #Recibir codigo por GET
     if 'code' in request.GET:
         code = request.GET.get('code')
-        #Si el usuario existe
-        try:
-            user = get_object_or_404(Usuarios, documento=code)   
-            #Si el usuario tiene un ingreso activo 
-            ingreso = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
-            dispositivo_salida = Dispositivos.objects.filter(usuario=user.idusuario, documento__isnull=False).first()
 
+        #Si el usuario esta registrado
+        try:
+            #Buscar usuario por su documento
+            user = get_object_or_404(Usuarios, documento=code)  
+
+            #Traer todos los datos del usuario
+            vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
+            dispositivos = Dispositivos.objects.filter(usuario=user.idusuario)
+            rol = user.rol
+            DocType = user.tipodocumento 
+            centro = user.centro or None
+            ficha = user.ficha or None
+            FichaName = ficha.nombre if ficha else None
+            jornada = ficha.jornada if ficha else None
+            
+            #Si el usuario toma su foto: Guardarla
             if request.method == 'POST':
                 form = RegisterUser(request.POST, request.FILES)
-
                 form.fields['nombres'].required = False
                 form.fields['apellidos'].required = False
                 form.fields['tipodocumento'].required = False
@@ -45,21 +54,15 @@ def index(request):
                         user.imagen = imagen
                         user.save()
                         return redirect('/?code=' + code)
-                        
-            vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
-            dispositivos = Dispositivos.objects.filter(usuario=user.idusuario)
-            rol = user.rol
-            DocType = user.tipodocumento 
-            centro = user.centro or None
-            ficha = user.ficha or None
-            FichaName = ficha.nombre if ficha else None
-            jornada = ficha.jornada if ficha else None
+                                
+            #Si el usuario tiene un ingreso activo, hacer salida
+            salida = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
+            dispositivo_salida = Dispositivos.objects.filter(usuario=user.idusuario, documento__isnull=False).first()
 
             return render(request, 'index.html',{
-                'title': user.nombres,
-                'ingreso': ingreso,
-                'users': user,
-                'dispositivo_salida': dispositivo_salida,
+                #Para ingreso
+                'title': user,                
+                'users': user,                
                 'DocType': DocType,
                 'centro': centro,
                 'rol': rol,
@@ -68,6 +71,9 @@ def index(request):
                 'jornada': jornada,
                 'vehiculos': vehiculos,
                 'dispositivos': dispositivos,
+                #Para salida
+                'salida': salida,
+                'dispositivo_salida': dispositivo_salida,
                 })
         #Si el usuario no existe
         except Http404:
@@ -126,19 +132,18 @@ def access(request, code):
 
 #Registrar usuario
 def registeruser(request, code):
-    rol = request.GET.get('rol')    
+    rol = request.GET.get('rol')
     #Dato predeterminado del rol y documento
     initial_data = {'rol': rol, 'documento': code}
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial_data)
 
     #Requerir o no campos de formulario segun el rol
-    form.fields['centro'].required = False if rol == "3" else True
-    form.fields['ficha'].required = False if rol != "2" else True
+    form.fields['centro'].required = rol != "3"
+    form.fields['ficha'].required = rol == "2"
 
-    if request.method == 'POST':        
-        if form.is_valid():
-            form.save()
-            return redirect('index')
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('index')
 
     return render(request, 'registeruser.html', {
         'title': 'Registrar usuario',
@@ -156,20 +161,19 @@ def registervehicle(request, code):
     #Si el usuario no es instructor o administrativo no puede registrar carros
     if vehicle == "1" and users.rol.idrol in [2, 3]:
         raise Http404("No estas autorizado a registrar un Vehiculo(Carro).")
-    
+
     #Tipo vehiculo y usuario predeterminados
     initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
 
     form = RegisterVehicle(request.POST or None, request.FILES or None, initial=initial_data)
 
-    form.fields['placa'].required = False if vehicle == "3" else True
-    form.fields['modelo'].required = False if vehicle == "3" else True
-    
-    if request.method == 'POST':        
-        if form.is_valid():
-            form.save()
-            return redirect(f'/?code={code}')
-        
+    form.fields['placa'].required = vehicle != "3"
+    form.fields['modelo'].required = vehicle != "3"
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(f'/?code={code}')
+
     return render(request, 'registervehicle.html',{
         'title': 'Registrar Vehiculo',
         'vehicle': vehicle,
@@ -186,16 +190,12 @@ def registerdevice(request, code):
     initial_data = {'usuario': users.idusuario}
 
     form = RegisterDevice(request.POST or None, request.FILES or None, initial=initial_data)
-    if doc:
-        form.fields['documento'].required = True
-    else:
-        form.fields['documento'].required = False
+    form.fields['documento'].required = bool(doc)
     
-    if request.method == 'POST':        
-        if form.is_valid():
-            form.save()
-            return redirect(f'/?code={code}')
-        
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect(f'/?code={code}')
+
     return render(request, 'registerdevice.html',{
         'title': 'Registrar Dispositivo',
         'form': form,
