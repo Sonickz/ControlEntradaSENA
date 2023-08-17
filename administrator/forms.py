@@ -19,15 +19,18 @@ class RegisterUser(ModelForm):
     tipodocumento = forms.ModelChoiceField(queryset=DocumentoTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo de documento", label="")
     documento = forms.CharField(widget=forms.TextInput(attrs={'onkeypress': 'return valideNumber(event)', 'readonly': True}))
     telefono = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
-    correo = forms.EmailField(widget=forms.EmailInput(attrs={'maxlength': '50'}))
+    correo = forms.EmailField(widget=forms.TextInput(attrs={'maxlength': '50'}))
     centro = forms.ModelChoiceField(queryset=Centros.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Centro", label="")
     rol = forms.ModelChoiceField(queryset=Roles.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'disabled': True}), empty_label="Rol", label="Rol")
     ficha = forms.ModelChoiceField(queryset=Fichas.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Ficha", label="")
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control', 'id': 'user-file'}), label="Foto de perfil")
 
     #Validacion de imagen   
-    def clean_imagen(self):
-        imagen = self.cleaned_data.get('imagen', False)
+    def clean_imagen(self):  # sourcery skip: extract-method
+        imagen_form = self.cleaned_data.get('imagen', False)
+        imagen_instance = self.instance.imagen
+        imagen = imagen_form or imagen_instance
+
         documento_instance = self.instance.documento
         documento_form = self.cleaned_data.get('documento')
 
@@ -35,19 +38,25 @@ class RegisterUser(ModelForm):
             # Verifica que la extensión del archivo sea .jpg, .png o jpeg
             extension = imagen.name.split('.')[-1].lower()
             if extension not in ['jpg', 'png', 'jpeg']:
-                raise ValidationError("El archivo debe estar en formato JPG o PNG.")
-            
+                raise ValidationError("El archivo debe estar en formato JPG o PNG.")    
             # Elimina la imagen anterior del usuario
-            self.instance.imagen.delete()
-            
+            self.instance.imagen.delete()            
             # Usa el valor del campo 'documento' del formulario si está presente, de lo contrario, usa el del instance
-            documento = documento_form if documento_form else documento_instance
-            
+            documento = documento_form or documento_instance            
             # Genera el nombre del archivo de imagen y actualiza el atributo 'name' de la imagen
             filename = f"{documento}.{extension}"
             imagen.name = filename
 
         return imagen
+    
+    #Validar nombre
+    def clean_nombres(self):
+        nombre = self.cleaned_data.get('nombres')
+        return nombre.title()
+    
+    def clean_apellidos(self):
+        apellido = self.cleaned_data.get('apellidos')
+        return apellido.title()
         
 
 
@@ -80,14 +89,13 @@ class RegisterDevice(ModelForm):
         return imagen
     
     def clean_doc(self):
-        doc = self.cleaned_data.get('documento', False)
-        tipo = self.cleaned_data['tipo']
-        sn = self.cleaned_data['sn']
-        marca = self.cleaned_data['marca']
-        if doc:
+        if doc := self.cleaned_data.get('documento', False):
             extension = doc.name.split('.')[-1].lower()
             if extension not in ['pdf']:
                 raise ValidationError("El archivo debe estar en formato PDF.")
+            tipo = self.cleaned_data['tipo']
+            sn = self.cleaned_data['sn']
+            marca = self.cleaned_data['marca']
             filename = f"{tipo}-{marca}-{sn}-{doc.name.split('.')[-1]}"
             doc.name = filename
     

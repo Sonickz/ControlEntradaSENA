@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.http import Http404
 from django.db.models import Subquery
 from administrator.models import Usuarios, Dispositivos, Vehiculos, Ingresos, Salidas
@@ -20,7 +21,7 @@ def index(request):
         #Si el usuario esta registrado
         try:
             #Buscar usuario por su documento
-            user = get_object_or_404(Usuarios, documento=code)  
+            user = get_object_or_404(Usuarios, documento=code) 
 
             #Traer todos los datos del usuario
             vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
@@ -33,11 +34,15 @@ def index(request):
             jornada = ficha.jornada if ficha else None
             
             #Si el usuario toma su foto: Guardarla
-            form = RegisterUser(request.POST, request.FILES, instance=user)
-            if request.method == 'POST' and form.is_valid():                        
+            if request.method == 'POST':   
                 user.imagen.delete()
-                form.save()
-                return redirect('/?code=' + code)
+                imagen = request.FILES['imagen']
+                extension = imagen.name.split('.')[-1].lower()
+                filename = f"{code}.{extension}"
+                imagen.name = filename                        
+                user.imagen = imagen
+                user.save()
+                return redirect(f"/?code={code}")
                                 
             #Si el usuario tiene un ingreso activo, hacer salida
             salida = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
@@ -45,7 +50,7 @@ def index(request):
 
             return render(request, 'index.html',{
                 #Para ingreso
-                'title': user,                
+                'title': user,          
                 'users': user,                
                 'DocType': DocType,
                 'centro': centro,
@@ -116,9 +121,8 @@ def access(request, code):
 
 #Registrar usuario
 def registeruser(request, code):
-    rol = request.GET.get('rol')
-    #Dato predeterminado del rol y documento
-    initial_data = {'rol': rol, 'documento': code}
+    rol = request.GET.get('rol') #Obtener rol a registrar por GET
+    initial_data = {'rol': rol, 'documento': code} #Dato predeterminado del rol y documento
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial_data)
 
     #Requerir o no campos de formulario segun el rol
@@ -127,9 +131,10 @@ def registeruser(request, code):
 
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.info(request, "success-user")
         return redirect('index')
 
-    return render(request, 'registeruser.html', {
+    return render(request, 'register/registeruser.html', {
         'title': 'Registrar usuario',
         'rol': rol,
         'form': form
@@ -141,10 +146,6 @@ def registervehicle(request, code):
     users = Usuarios.objects.get(documento=code)
     #Tipo vehiculo
     vehicle = request.GET.get('vehicle')
-
-    #Si el usuario no es instructor o administrativo no puede registrar carros
-    if vehicle == "1" and users.rol.idrol in [2, 3]:
-        raise Http404("No estas autorizado a registrar un Vehiculo(Carro).")
 
     #Tipo vehiculo y usuario predeterminados
     initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
@@ -158,7 +159,7 @@ def registervehicle(request, code):
         form.save()
         return redirect(f'/?code={code}')
 
-    return render(request, 'registervehicle.html',{
+    return render(request, 'register/registervehicle.html',{
         'title': 'Registrar Vehiculo',
         'vehicle': vehicle,
         'form': form,
@@ -178,9 +179,10 @@ def registerdevice(request, code):
     
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.info(request, "success-device")
         return redirect(f'/?code={code}')
 
-    return render(request, 'registerdevice.html',{
+    return render(request, 'register/registerdevice.html',{
         'title': 'Registrar Dispositivo',
         'form': form,
         'doc': doc
