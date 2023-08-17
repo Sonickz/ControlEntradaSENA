@@ -4,15 +4,19 @@
 
 {% block content %}
 
-<!--ESPERANDO CODIGO-->
-{% if not users %}
+<!-- VISTA: ESCANEA TU CARNET-->
+{% if not users %} <!-- Si aun no se escanea -->
 <article id="ingreso" class="scan">
+
+    <!-- Alerta despues de registro -->
+    <div class="registerAlert" data-status="{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}"></div>
+
     <section class="btn-zone">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn-access btn btn-success" data-bs-toggle="modal" data-bs-target="#AccessModal">
+        <!-- Boton modal ingresos -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AccessModal">
             Ingresos
         </button>        
-        <!-- Modal -->
+        <!-- Modal ingresos -->
         <div class="modal fade" id="AccessModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -38,13 +42,13 @@
                     {% for ingreso in ingresos %}
                       <tr>
                         <th scope="row">{{ingreso.idingreso}}</th>
-                        <th scope="row">{{ingreso.fecha}}</th>
-                        <th scope="row">{{ingreso.usuario}}</th>
-                        <th scope="row">{{ingreso.dispositivo}}</th>
-                        <th scope="row">{{ingreso.dispositivo2}}</th>
-                        <th scope="row">{{ingreso.dispositivo3}}</th>
-                        <th scope="row">{{ingreso.vehiculo}}</th>
-                        <th scope="row">{{ingreso.horaingreso}}</th>
+                        <th>{{ingreso.fecha}}</th>
+                        <th>{{ingreso.usuario}}</th>
+                        <th>{% if ingreso.dispositivo %}{{ingreso.dispositivo}}{% else %}Ninguno{% endif %}</th>
+                        <th>{% if ingreso.dispositivo2 %}{{ingreso.dispositivo2}}{% else %}Ninguno{% endif %}</th>
+                        <th>{% if ingreso.dispositivo3 %}{{ingreso.dispositivo3}}{% else %}Ninguno{% endif %}</th>
+                        <th>{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</th>
+                        <th>{{ingreso.horaingreso}}</th>
                       </tr>
                     {% endfor %}
                     </tbody>
@@ -57,15 +61,16 @@
           </div>
         </div>
 
-        <button type="button" class="btn-access btn btn-danger" data-bs-toggle="modal" data-bs-target="#ExitModal">
+        <!-- Boton modal salidas-->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ExitModal">
             Salidas
         </button>        
-        <!-- Modal -->
+        <!-- Modal salidas-->
         <div class="modal fade" id="ExitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresos</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Salidas</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body" style="overflow:scroll">
@@ -74,7 +79,8 @@
                       <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Fecha</th>
-                        <th scope="col">Ingreso</th>                        
+                        <th scope="col">Ingreso</th> 
+                        <th scope="col">Usuario</th>
                         <th scope="col">Dispositivo 1</th>
                         <th scope="col">Dispositivo 2</th>
                         <th scope="col">Dispositivo 3</th>
@@ -89,6 +95,7 @@
                         <th scope="row">{{salida.idsalida}}</th>
                         <td>{{salida.fecha}}</td>
                         <td>{{salida.ingreso.idingreso}}</td>
+                        <td>{{salida.ingreso.usuario}}</td>
                         <td>{% if salida.dispositivo %}{{salida.dispositivo}}{% else %}Ninguno{% endif %}</td>
                         <td>{% if salida.dispositivo %}{{salida.dispositivo2}}{% else %}Ninguno{% endif %}</td>
                         <td>{% if salida.dispositivo %}{{salida.dispositivo3}}{% else %}Ninguno{% endif %}</td>
@@ -98,7 +105,7 @@
                       </tr>
                     {% endfor %}
                     </tbody>
-                  </table>
+                </table>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -106,21 +113,36 @@
             </div>
           </div>
         </div>
-
     </section>
+
+    <!-- Card escaneo -->
     <section class="card">
         <header class="card-header">
             <h1 class="card-title">Escanea tu carnet</h1>
         </header>
         <div class="card-body">
-            <div class="barra"></div>
-            <div class="code">
-                <img src="{% static 'assets/icons/carnet1.png' %}" alt="Codigo">
-                <form method="get">
-                    <input Id="barcode-input" type="text" name="code" onkeypress="return valideNumber(event)" maxlength="10" minlength="6" autocomplete="off" autofocus>
-                    <input type="submit">
-                </form>
+            <div class="card-barra"></div>
+            <div class="card-code">
+                <img src="{% static 'assets/icons/carnet1.png' %}" alt="Codigo">                
             </div>                
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <form method="get" id="code-form">
+                        <input id="code-input" class="form-control autofocus onlynumbers" type="text" name="code" onkeypress="return valideNumber(event)" maxlength="10" minlength="6" autocomplete="off" autofocus>
+                    </form>
+                </div>
+                    <!-- Boton modal escaner barcode-->
+                    <button class="btn btn-green smallCamera" type="button" id="scan-barcode" data-bs-toggle="modal" data-bs-target="#BarcodeModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                        </svg>
+                    </button>
+                    <!-- Modal -->
+                    {% include 'includes/modalBarcode.html'%}
+            </div>
         </div>
     </section>
 </article>
@@ -128,29 +150,38 @@
 <!--USUARIO DETECTADO-->
 {% elif users %}
 <article id="ingreso" class="consulta">
+    
+    <!-- Alerta despues de registro -->
+    <div class="registerAlert" data-status="{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}"></div>
+
     <header>
+        <!-- Titulo -->
         <h1 class="header-title">
-            {% if not ingreso %}
+            {% if not salida %}
                 Ingreso
-            {% elif ingreso %}
+            {% elif salida %}
                 Salida
             {% endif %}
         </h1>
     </header>
+
     <section class="card">
         <header class="card-header">
-            {% if ingreso %}
+            {% if salida %}
+                <!-- Hora ingreso -->
                 <h4 class="card-hour">Ingreso: {{ingreso.horaingreso}}</h4>
             {% endif %}
             <h1 class="card-title">{{users.nombres}} {{users.apellidos}}</h1>
             <div class="card-header-element">
-                <a class="btn btn-primary" href="{% url 'registerdevice' code=users.documento %}{% if ingreso %}?doc=True{% endif %}" role="button">
+                <!-- Boton registro dispositivo -->
+                <a class="btn btn-primary" title="Registrar dispositivo" href="{% url 'registerdevice' code=users.documento %}{% if ingreso %}?doc=True{% endif %}" role="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" fill="currentColor" class="bi bi-laptop" viewBox="0 0 16 16">
                         <path d="M13.5 3a.5.5 0 0 1 .5.5V11H2V3.5a.5.5 0 0 1 .5-.5h11zm-11-1A1.5 1.5 0 0 0 1 3.5V12h14V3.5A1.5 1.5 0 0 0 13.5 2h-11zM0 12.5h16a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5z"/>
                       </svg>
                 </a>
-                {% if not ingreso %}
-                <a class="btn btn-primary" href="{% url 'registervehicle' code=users.documento %}" role="button">
+                {% if not salida %}
+                <!-- Boton registro vehiculo-->
+                <a class="btn btn-primary" title="Registrar vehiculo" href="{% url 'registervehicle' code=users.documento %}" role="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="40" fill="currentColor" class="bi bi-car-front" viewBox="0 0 16 16">
                         <path d="M4 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM6 8a1 1 0 0 0 0 2h4a1 1 0 1 0 0-2H6ZM4.862 4.276 3.906 6.19a.51.51 0 0 0 .497.731c.91-.073 2.35-.17 3.597-.17 1.247 0 2.688.097 3.597.17a.51.51 0 0 0 .497-.731l-.956-1.913A.5.5 0 0 0 10.691 4H5.309a.5.5 0 0 0-.447.276Z"/>
                         <path d="M2.52 3.515A2.5 2.5 0 0 1 4.82 2h6.362c1 0 1.904.596 2.298 1.515l.792 1.848c.075.175.21.319.38.404.5.25.855.715.965 1.262l.335 1.679c.033.161.049.325.049.49v.413c0 .814-.39 1.543-1 1.997V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.338c-1.292.048-2.745.088-4 .088s-2.708-.04-4-.088V13.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1.892c-.61-.454-1-1.183-1-1.997v-.413a2.5 2.5 0 0 1 .049-.49l.335-1.68c.11-.546.465-1.012.964-1.261a.807.807 0 0 0 .381-.404l.792-1.848ZM4.82 3a1.5 1.5 0 0 0-1.379.91l-.792 1.847a1.8 1.8 0 0 1-.853.904.807.807 0 0 0-.43.564L1.03 8.904a1.5 1.5 0 0 0-.03.294v.413c0 .796.62 1.448 1.408 1.484 1.555.07 3.786.155 5.592.155 1.806 0 4.037-.084 5.592-.155A1.479 1.479 0 0 0 15 9.611v-.413c0-.099-.01-.197-.03-.294l-.335-1.68a.807.807 0 0 0-.43-.563 1.807 1.807 0 0 1-.853-.904l-.792-1.848A1.5 1.5 0 0 0 11.18 3H4.82Z"/>
@@ -159,14 +190,19 @@
                 {% endif %} 
             </div>
         </header>
-        <div class="card-body">        
+
+        <div class="card-body"> 
+            <!-- Seccion imagen usuario-->       
             <div class="card-image">
+                <!-- Imagen -->
                 <div class="col">
-                    <img src="{{users.imagen.url}}" alt="">
+                    <img src="{% if users.imagen %}{{users.imagen.url}}{% endif %}" alt="">
                 </div>
-                {% if not ingreso %}
+                {% if not salida %}
+                <!-- Tomar foto -->
                 <div class="col mt-4 text-center">
-                    <button class="btn btn-green" type="button" id="user-picture-btn" data-bs-toggle="modal" data-bs-target="#camaraModal">
+                    <!-- Boton camara -->
+                    <button class="btn btn-green" title="Tomar foto" type="button" id="user-picture-btn" data-bs-toggle="modal" data-bs-target="#camaraModal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
                             <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                             <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
@@ -174,140 +210,118 @@
                     </button>
                 </div>
                 <!-- Modal Camara -->
-                <div class="modal fade" id="camaraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">Tomar Foto</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <video id="user-cam"></video>
-                            <canvas id="user-picture"></canvas>
-                            <div>
-                                <button type="button" class="btn btn-green btn-picture" id="user-takepicture-btn" onclick="captureImage()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
-                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                      </svg>
-                                </button>
-                                <form id="form-access" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="file" name="imagen" id="user-file" style="display: none">                           
-                                    <button type="submit" class="btn btn-green btn-picture" id="user-savepicture-btn" onclick="saveImage()" data-bs-dismiss="modal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                                          </svg>
-                                    </button>
-                                </form>
-                                <button type="button" class="btn btn-green btn-picture" id="user-repeatpicture-btn" onclick="repeatImage()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                                        <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
-                                        <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
-                                    </svg>
-                                </button>
-                            </div>                                
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                      </div>
-                    </div>
-                </div>
+                {% include 'includes/modalCamara.html'%}
                 {% endif %}
             </div>
+            <!-- Datos usuario -->
             <div class="card-info">            
                 <div class="row">
                     <div class="col">
-                        <label>Nombres</label>
-                        <p>{{users.nombres}}</p>
-                    </div>
-                    <div class="col">
-                        <label for="names">Apellidos</label>
-                        <p>{{users.apellidos}}</p>
+                        <label>Nombres y apellidos</label>
+                        <p class="form-control">{{users.nombres}} {{users.apellidos}}</p>
                     </div>
                     <div class="col">
                         <label for="names">Documento</label>                                
-                        <p>{{DocType.nombre}} {{users.documento}}</p>                                
+                        <p class="form-control">{{DocType.nombre}} {{users.documento}}</p>                                
                     </div>
                 </div>
                 <div class="row">
+                    <!-- Si el rol es diferente de: Visitante -->
                     {% if rol.idrol != 3 %}
                     <div class="col">
                         <label for="names">Centro</label>
-                        <p>{{centro.nombre}}</p>
+                        <p class="form-control">{{centro.nombre}}</p>
                     </div>
                     {% endif %}                    
                     <div class="col{% if rol.idrol == 3 %}-8{% endif %}">
                         <label for="names">Rol</label>                                
-                        <p>{{rol.nombre}}</p>                                
+                        <p class="form-control">{{rol.nombre}}</p>                                
                     </div>
                 </div>  
+                <!-- Si el rol es: Aprendiz -->
                 {% if rol.idrol == 2 %}      
                 <div class="row">
-                    <div class="col-4">
-                        <label>Ficha</label>
-                        <p>{{FichaName.nombre}}</p>
-                    </div>
                     <div class="col">
-                        <label for="names">Numero ficha</label>
-                        <p>{{ficha.numero}}</p>
+                        <label>Ficha</label>
+                        <p class="form-control">N°{{ficha.numero}}: {{FichaName.nombre}} </p>
                     </div>
                     <div class="col">
                         <label for="names">Jornada</label>                                
-                        <p>{{jornada.nombre}}</p>                                
+                        <p class="form-control">{{jornada.nombre}}</p>                                
                     </div>
                 </div>  
                 {% endif %}  
+                <!-- Seleccionar vehiculos y dispositivos -->
                 <div class="row">
+                    <!-- Vehiculos -->
                     <div class="col">
                         <label for="names">Vehiculos</label>  
-                        {% if ingreso %}                          
-                            <div class="select-form individual">
+                        {% if salida %}      
+                        <!-- Zona select -->                    
+                            <div class="select-form vehicle">
+                                <!-- Select -->
                                 <div class="select-btn open">
                                     <span class="btn-text">{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</span>
-                                </div>                        
+                                </div>      
+                                <!-- Item -->                  
                                 <input type="hidden" class="item-selected" value="{{ingreso.vehiculo.idvehiculo}}">
                             </div> 
                         {% else %}
-                        <div class="select-form individual">
+                        <!-- Zona select -->  
+                        <div class="select-form vehicle">
+                            <!-- Select -->
                             <div class="select-btn" onclick="openSelect(this)">
                                 <span class="btn-text">Seleccionar Vehiculo</span>
                                 <span class="arrow-dwn">
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </span>
-                            </div>                        
+                            </div>     
+                            <!-- Lista -->                   
                             <ul class="list-items">
-                                {% for vehiculo in vehiculos %}
-                                <li class="multiple-item item" value="{{vehiculo.idvehiculo}}">
-                                    <span class="checkbox">
-                                        <i class="fa-solid fa-check check-icon"></i>
-                                    </span>
-                                    <span class="item-text">{{vehiculo}}</span>
-                                </li>
-                                {% endfor %}                                                            
+                                {% if vehiculos %}
+                                    {% for vehiculo in vehiculos %}
+                                    <!-- Item -->
+                                    <li class="item item-vehicle" value="{{vehiculo.idvehiculo}}">
+                                        <span class="checkbox">
+                                            <i class="fa-solid fa-check check-icon"></i>
+                                        </span>
+                                        <span class="item-text">{{vehiculo}}</span>
+                                    </li>
+                                    {% endfor %} 
+                                {% else %} 
+                                    <span class="item-text">Ningun vehiculo registrado</span>
+                                {% endif %}                                                          
                             </ul>
                         </div>
                         {% endif %}                                                       
                     </div>
+                    <!-- Dispositivos -->
                     <div class="col">
-                        <label for="names">Dispositivos</label>                             
-                        <div class="select-form multiple">
+                        <label for="names">Dispositivos</label>  
+                        <!-- Zona select -->                           
+                        <div class="select-form device">
+                            <!-- Select -->
                             <div class="select-btn" onclick="openSelect(this)">
                                 <span class="btn-text">Seleccionar Dispositivos</span>
                                 <span class="arrow-dwn">
                                     <i class="fa-solid fa-chevron-down"></i>
                                 </span>
-                            </div>                        
+                            </div>      
+                            <!-- Lista -->                  
                             <ul class="list-items">
-                                {% for dispositivo in dispositivos %}
-                                <li class="multiple-item item" value="{{dispositivo.iddispositivo}}">
-                                    <span class="checkbox">
-                                        <i class="fa-solid fa-check check-icon"></i>
-                                    </span>
-                                    <span class="item-text">{{dispositivo}}</span>
-                                </li>
-                                {% endfor %}                                       
+                                {% if dispositivos %}
+                                    {% for dispositivo in dispositivos %}
+                                    <!-- Item -->
+                                    <li class="item item-device" value="{{dispositivo.iddispositivo}}">
+                                        <span class="checkbox">
+                                            <i class="fa-solid fa-check check-icon"></i>
+                                        </span>
+                                        <span class="item-text">{{dispositivo}}</span>
+                                    </li>
+                                    {% endfor %}
+                                {% else %} 
+                                    <span class="item-text">Ningun dispositivo registrado</span>
+                                {% endif %}                                       
                             </ul>
                         </div>                                             
                     </div>
@@ -315,13 +329,19 @@
             </div>            
         </div>
         <footer class="card-footer">
-            <a href="{% url 'index' %}" class="btn cancel">Cancelar</a>  
-            <form id="form-access" method="get" action="{% url 'access' code=users.documento %}">
-                {% csrf_token %}
-                <input id="vehicle" type="hidden" name="vehicle" value="">
-                <input id="devices" type="hidden" name="devices" value="">      
-                <button type="submit" class="btn accept">{% if not ingreso %}Ingresar{% else %}Salir{% endif %}</button>
-            </form>                            
+            <div class="row w-100 text-center">
+                <div class="col">
+                    <a href="{% url 'index' %}" class="btn cancel">Cancelar</a> 
+                </div>
+            <!-- Boton ingresar y form para enviar el vehiculo y los dispositivos --> 
+            <div class="col">
+                <form id="form-access" method="get" action="{% url 'access' code=users.documento %}">
+                    {% csrf_token %}
+                    <input id="vehicle" type="hidden" name="vehicle" value="">
+                    <input id="devices" type="hidden" name="devices" value="">      
+                    <button type="submit" class="btn accept">{% if salida %}Salir{% else %}Ingresar{% endif %}</button>
+                </form> 
+            </div>                          
         </footer>
     </section>
 </article>
