@@ -88,7 +88,7 @@ let pageWidth = window.innerWidth;
 let pageHeight = window.innerHeight;
 
 //Si se tiene la resolucion del totem
-if (pageWidth >= 10000 && pageHeight >= 1500) {
+if (pageWidth >= 1080 && pageHeight >= 1800) {
   const keyboard = document.querySelector('.keyboard'); //Keyboard
   let keys = document.querySelectorAll('.keys'); //Teclas
   let letters = Array.from(keys).filter(key => !key.classList.contains("special_key") && !key.classList.contains("disabled")); //Letras

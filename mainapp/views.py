@@ -157,6 +157,7 @@ def registervehicle(request, code):
 
     if request.method == 'POST' and form.is_valid():
         form.save()
+        messages.info(request, "success-vehicle")
         return redirect(f'/?code={code}')
 
     return render(request, 'register/registervehicle.html',{
