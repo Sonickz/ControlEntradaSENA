@@ -216,7 +216,7 @@
             <!-- Datos usuario -->
             <div class="card-info">            
                 <div class="row">
-                    <div class="col">
+                    <div class="col-lg col-md col-sm-12 col-xs-12">
                         <label>Nombres y apellidos</label>
                         <p class="form-control">{{users.nombres}} {{users.apellidos}}</p>
                     </div>
@@ -241,7 +241,7 @@
                 <!-- Si el rol es: Aprendiz -->
                 {% if rol.idrol == 2 %}      
                 <div class="row">
-                    <div class="col">
+                    <div class="col-lg col-md col-sm-12">
                         <label>Ficha</label>
                         <p class="form-control">N°{{ficha.numero}}: {{FichaName.nombre}} </p>
                     </div>
@@ -254,7 +254,7 @@
                 <!-- Seleccionar vehiculos y dispositivos -->
                 <div class="row">
                     <!-- Vehiculos -->
-                    <div class="col">
+                    <div class="col mb-4">
                         <label for="names">Vehiculos</label>  
                         {% if salida %}      
                         <!-- Zona select -->                    
@@ -330,11 +330,11 @@
         </div>
         <footer class="card-footer">
             <div class="row w-100 text-center">
-                <div class="col">
+                <div class="col-lg col-md col-sm col-xs-12 ">
                     <a href="{% url 'index' %}" class="btn cancel">Cancelar</a> 
                 </div>
             <!-- Boton ingresar y form para enviar el vehiculo y los dispositivos --> 
-            <div class="col">
+            <div class="col-lg col-md col-sm col-xs-12 ">
                 <form id="form-access" method="get" action="{% url 'access' code=users.documento %}">
                     {% csrf_token %}
                     <input id="vehicle" type="hidden" name="vehicle" value="">
