@@ -1243,40 +1243,40 @@ tr:last-child td:last-child {
 /* Intercambio de vista */
 
 /* Vista tabla */
-#admin.users #main {
+#admin #main {
     width: 100%;
     transition: .5s ease;
 }
 
-#admin.users.select #main {
+#admin .select #main {
     transition: none;
     transform: translateX(-120%);
 }
 
 /* Vista select */
-#admin.users #select {
+#admin #select {
     position: absolute;
     transition: none;
     transform: translateX(300%);
 }
 
-#admin.users.select #select {
+#admin .select #select {
     transition: .5s ease;
     transform: translateX(0);
     width: 100%;
 }
 
-#admin.users.select .card {
+#admin .select .card {
     min-height: 10px;
     place-content: center;
 }
 
-#admin.users.select .card .card-body {
+#admin .select .card .card-body {
     justify-content: center;
 }
 
 /* Vista formulario */
-#admin.users.form form {
+#admin .form form {
     width: 70%;
 }
 

@@ -477,10 +477,9 @@ if (window.location.href.includes('/admin/')) {
 }
 
 //Animacion admin | Cambiar entre tabla select y form
-const btnRegister = document.getElementById('btn-register-users');
+const btnRegister = document.getElementById('btn-register');
 const btnBack = document.getElementById('btn-back');
-const rol = document.querySelector('.select-rol');
-const card = document.querySelector('.users');
+const card = document.querySelector('.card-general');
 
 if (card) {
   btnRegister.addEventListener('click', () => {
@@ -492,61 +491,6 @@ if (card) {
   });
 }
 
-// Eliminar filas con Checks
-document.addEventListener('DOMContentLoaded', function () {
-  const generalDeleteForm = document.getElementById('delete-form');
-  const checks = document.querySelectorAll('.item-check');
-  const actions = document.querySelector('.card-table-buttons');
-
-  if (generalDeleteForm) {
-    checks.forEach(function (checkbox) {
-      checkbox.addEventListener('change', function () {
-        const Selected = Array.from(checks).some(function (cb) {
-          return cb.checked;
-        });
-
-        if (Selected) {
-          actions.classList.add('active');
-        } else {
-          actions.classList.remove('active');
-        }
-      });
-    });
-
-    generalDeleteForm.addEventListener('submit', function (e) {
-      e.preventDefault(); // Evita que el formulario se envíe automáticamente
-
-      const selectedItems = [];
-      for (const i = 0; i < checks.length; i++) {
-        if (checks[i].checked) {
-          selectedItems.push(checks[i].value); // Agrega los valores seleccionados al array
-        }
-      }
-
-      const hiddenInput = document.createElement('input');
-      hiddenInput.setAttribute('type', 'hidden');
-      hiddenInput.setAttribute('name', 'checks-users');
-      hiddenInput.setAttribute('value', selectedItems.join(','));
-
-      generalDeleteForm.appendChild(hiddenInput); // Agrega el campo oculto al formulario
-
-      generalDeleteForm.submit(); // Envía el formulario
-    });
-
-    //Delete individual
-    const individualDeleteForm = document.getElementById('delete-user');
-
-    individualDeleteForm.addEventListener('click', function (e) {
-      idUser = this.getAttribute('data-id');
-      const hiddenInput = document.createElement('input');
-      hiddenInput.setAttribute('type', 'hidden');
-      hiddenInput.setAttribute('name', 'delete-user');
-      hiddenInput.setAttribute('value', idUser);
-
-      generalDeleteForm.appendChild(hiddenInput); // Agrega el campo oculto al formulario
-    });
-  }
-});
 
 //SEARCH EN TIEMPO REAL
 const search = document.getElementById("search");
