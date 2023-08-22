@@ -82,6 +82,7 @@ if (registerAlert) {
   }
 }
 
+//TECLADO TOTEM
 
 //Resolucion del dispositivo
 let pageWidth = window.innerWidth;
@@ -249,11 +250,12 @@ const codeForm = document.getElementById("code-form") //Form codigo
 document.addEventListener("DOMContentLoaded", () => {
 
   Quagga.init({ //Inicializar Quagga
-    inputStream: { constraints: { width: 600, height: 600,}, name: "Live", type: "LiveStream", target: barcodeCam}, // Pasar el elemento del DOM
+    inputStream: { constraints: { width: 600, height: 600, }, name: "Live", type: "LiveStream", target: barcodeCam }, // Pasar el elemento del DOM
     decoder: { readers: ["code_39_reader"] }, // Listado de los tipos de códigos de barras a leer
     locate: true,
     frequency: 100,
-  }, function (err) {if (err) {console.log(err);return}
+  }, function (err) {
+    if (err) { console.log(err); return }
     console.log("Iniciado correctamente");
     Quagga.start(); //Iniciar Quagga
   });
@@ -370,6 +372,7 @@ if (camaraModal) {
   }
 }
 
+
 //SELECT DISPOSITIVOS Y VEHICULOS
 function openSelect(btn) {
   btn.classList.toggle("open");
@@ -442,23 +445,27 @@ vehicleItems.forEach(item => {
 });
 
 
-
 //ADMIN
 
 //Menu Admin
-const btn = document.querySelector("#menu-btn");
-const menu = document.querySelector("#sidemenu");
-const { body } = document
-const list = document.querySelectorAll('.item')
 
-if (btn && menu) {
-  btn.addEventListener('click', () => {
-    menu.classList.toggle("menu-expanded");
-    menu.classList.toggle("menu-collapsed");
+if (window.location.href.includes('/admin/')) {
 
-    body.classList.toggle("body-expanded");
-    body.classList.toggle("body-collapsed")
+  document.addEventListener('DOMContentLoaded', function() {
+    document.body.classList.add("admin", "body-collapsed");
+});
+  
+  const adminMenu = document.getElementById("adminmenu")
+  adminMenu.classList.add("active");
+
+  const menuBtn = document.querySelector(".menu-btn");
+  menuBtn.addEventListener("click", () => {
+    document.body.classList.toggle("body-collapsed");
+    document.body.classList.toggle("body-expanded");
+    adminMenu.classList.toggle("menu-expanded");
+    adminMenu.classList.toggle("menu-collapsed");
   });
+
 }
 
 //Animacion admin | Cambiar entre tabla select y form

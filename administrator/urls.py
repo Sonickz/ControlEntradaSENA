@@ -5,9 +5,8 @@ from django.contrib.staticfiles.urls import static
 
 
 urlpatterns = [
-    path("admin/", views.login_admin, name="login"),
+    path("login/", views.login_admin, name="login"),
     path("admin/logout", views.logout_admin, name="logout"),
-    path("admin/registeradmin/", views.register_admin, name="registeradmin"),
     path("admin/inicio", views.adminpanel, name="adminpanel"),
     path("admin/users", views.users, name="users"),
     path("admin/users/registeruser/<int:rol>", views.register_user, name="registeruser"),

@@ -8,14 +8,14 @@ from .forms import *
 
 #Login admin
 @user_passes_test(lambda u: not u.is_authenticated, login_url='adminpanel') #Si el usuario ya esta logeado no va a poder acceder a la pagina de login 
-def login_admin(request):
+def login_admin(request):  # sourcery skip: use-named-expression
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         admin = authenticate(request, username=username, password=password)
         
-        if admin is not None:
+        if admin:
             login(request, admin)
             return redirect('adminpanel')
         else:
@@ -30,44 +30,17 @@ def logout_admin(request):
     logout(request)
     return redirect('login')
 
-#Registro admin
-def register_admin(request):
-    form = RegisterForm(request.POST)
-
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha registrado correctamente")
-            return redirect('login')
-        
-    return render(request, 'register.html', {
-        'title': 'Añadir administrador',
-        'form': form
-    })
-
+#=============================================================
 
 #AdminPanel
 @login_required(login_url="login")
 def adminpanel(request):
     return render(request, 'adminpanel.html')
 
-######
-
 #Lista usuarios
 @login_required(login_url="admin")
 def users(request):
     users = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
-
-    checks = request.POST.get('checks-users')
-    if checks:
-        checks = checks.split(',')
-        Usuarios.objects.filter(idusuario__in=checks).delete()
-        messages.success(request, "Se han eliminado los usuarios seleccionados")
-
-    delete = request.POST.get('delete-user')
-    if delete:
-        Usuarios.objects.filter(idusuario=delete).delete()
-        messages.success(request, "Se ha eliminado el usuario")
     
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
@@ -79,14 +52,13 @@ def register_user(request, rol):
     initial = {'rol': rol}
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial)
 
-    form.fields['centro'].required = False if rol == 3 else True
-    form.fields['ficha'].required = False if rol != 2 else True
+    form.fields['centro'].required = rol != 3
+    form.fields['ficha'].required = rol == 2
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha registrado correctamente")
-            return redirect('users')
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Se ha registrado correctamente")
+        return redirect('users')
 
     return render(request, 'pages/usuarios/register.html', {
         'title': 'Registrar usuario',
@@ -101,14 +73,13 @@ def edit_user(request, id):
     form = RegisterUser(request.POST or None, request.FILES or None, instance=instance, initial=initial)
 
     form.fields['imagen'].required = False
-    form.fields['centro'].required = False if instance.rol == 3 else True
-    form.fields['ficha'].required = False if instance.rol != 2 else True
+    form.fields['centro'].required = instance.rol != 3
+    form.fields['ficha'].required = instance.rol == 2
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha editado correctamente")
-            return redirect('users')
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Se ha editado correctamente")
+        return redirect('users')
 
     return render(request, 'pages/usuarios/edit.html', {
         'title': 'Editar usuario',
@@ -122,13 +93,12 @@ def edit_user(request, id):
 def dispositivo(request):
     devices = Dispositivos.objects.all()
 
-    form = RegisterDevices(request.POST or None, request.FILES or None)
+    form = RegisterDevice(request.POST or None, request.FILES or None)
 
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Se ha registrado correctamente")
-            return redirect('dispositivo')
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, "Se ha registrado correctamente")
+        return redirect('dispositivo')
     
     return render(request, 'pages/dispositivos/devices.html', {
         'title': 'Dispositivos',
@@ -140,12 +110,11 @@ def dispositivo(request):
 def edit_dispositivo(request, id):
     instance = Dispositivos.objects.get(iddispositivo=id)
 
-    form = RegisterDevices(request.POST or None, request.FILES or None, instance= instance)
-    if request .method == "POST" :
-        if form.is_valid():
-            form.save()
-            messages.success(request, "se ha editado correctamente")
-            return redirect('dispositivo')
+    form = RegisterDevice(request.POST or None, request.FILES or None, instance= instance)
+    if request .method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "se ha editado correctamente")
+        return redirect('dispositivo')
         
     return render(request, 'pages/dispositivos/edit.html', {
         'title': 'Editar dispositivo',
@@ -174,11 +143,11 @@ def edit_sanciones(request, id):
     instance=Sanciones.objects.get(idsancion=id)
 
     form = RegisterSanciones(request.POST or None, request.FILES or None, instance= instance)
-    if request .method == "POST" :
-        if form.is_valid():
-            form.save()
-            messages.success(request, "se ha editado correctamente")
-            return redirect('sanciones')
+
+    if request .method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "se ha editado correctamente")
+        return redirect('sanciones')
             
     return render(request, 'pages/sanciones/edit.html', {
         'title': 'Editar Sanciones',
@@ -200,12 +169,12 @@ def vehicles(request):
 def edit_vehiculo(request, id):
     instance=Vehiculos.objects.get(idvehiculo=id)
 
-    form = RegisterVehicles(request.POST or None, request.FILES or None, instance= instance)
-    if request .method == "POST" :
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Vehículo editado correctamente")
-            return redirect('vehiculos')
+    form = RegisterVehicle(request.POST or None, request.FILES or None, instance= instance)
+    
+    if request .method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Vehículo editado correctamente")
+        return redirect('vehiculos')
             
     return render(request, 'pages/vehiculos/edit.html', {
          'title': 'Editar Vehiculos',

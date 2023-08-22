@@ -1,7 +1,9 @@
 from django import forms
 from django.forms import ModelForm
-from administrator.models import Usuarios, DocumentoTipo, Centros, Roles, Fichas, Dispositivos, DispositivosTipo, Vehiculos, VehiculosTipo, DispositivosMarca, VehiculosMarca
+from administrator.models import *
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 #Fecha y hora
 from datetime import datetime
 date = datetime.now().strftime("%Y-%m-%d")
@@ -130,3 +132,24 @@ class RegisterVehicle(ModelForm):
             filename = f"{usuario.idusuario}.{placa}.{imagen.name.split('.')[-1]}"
             imagen.name = filename
         return imagen
+    
+
+#==============================================================================================
+
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2' ]
+
+#Formulario para registro de sanciones
+class RegisterSanciones(ModelForm):
+    class Meta:
+        model = Sanciones
+        fields = "__all__"
+
+    idsancion= forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
+    vehiculo = forms.ModelChoiceField(queryset =Vehiculos.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Vehiculos", label="")
+    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control'}))  
+    fecha_fin = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control' }), label="Fecha") 
+    estado = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
+    descripcion =forms.CharField(widget=forms.TextInput(attrs={'maxlength': '20',}))
