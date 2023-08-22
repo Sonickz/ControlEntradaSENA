@@ -271,6 +271,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+//BOTON ENVIAR
+const btnSend = document.getElementById('btn-send');
+if (btnSend) {
+  btnSend.addEventListener('click', () => {
+    codeForm.submit();
+  });
+}
+
 //CAMARA
 
 // Obtener referencia al elemento de video y al canvas
@@ -284,13 +292,13 @@ if (camaraModal) {
   let canvas = document.getElementById('user-picture');
   let context = canvas.getContext('2d');
 
-  canvas.width = 640;
+  canvas.width = 800;
   canvas.height = 680;
 
   //Al presionar el boton de la camara
   btncamAccess.addEventListener('click', () => {
     // Obtener acceso a la webcam
-    navigator.mediaDevices.getUserMedia({ video: true, width: 640, height: 680 })
+    navigator.mediaDevices.getUserMedia({ video: true, width: 800, height: 680 })
       .then(function (stream) {
         video.srcObject = stream;
         video.play();
@@ -451,10 +459,10 @@ vehicleItems.forEach(item => {
 
 if (window.location.href.includes('/admin/')) {
 
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add("admin", "body-collapsed");
-});
-  
+  });
+
   const adminMenu = document.getElementById("adminmenu")
   adminMenu.classList.add("active");
 

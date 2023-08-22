@@ -99,8 +99,8 @@ def reportAccess(request):
                                dato.fecha, 
                                f"{dato.ingreso.usuario.nombres} {dato.ingreso.usuario.apellidos}", 
                                f"{dato.vehiculo.tipo.nombre} {dato.vehiculo.marca.nombre}: {dato.vehiculo.placa}" if dato.vehiculo else "Ninguno",
-                               f"{dato.ingreso.dispositivo.tipo.nombre} {dato.ingreso.dispositivo.marca.nombre}" if dato.ingreso.dispositivo else "Ninguno",
-                               f"{dato.dispositivo.tipo.nombre} {dato.dispositivo.marca.nombre}" if dato.dispositivo else "Ninguno",
+                               f"{dato.ingreso.dispositivo.tipo.nombre} {dato.ingreso.dispositivo.marca.nombre}: {dato.ingreso.dispositivo.sn}" if dato.ingreso.dispositivo else "Ninguno",
+                               f"{dato.dispositivo.tipo.nombre} {dato.dispositivo.marca.nombre}: {dato.dispositivo.sn}" if dato.dispositivo else "Ninguno",
                                dato.ingreso.horaingreso,
                                dato.horasalida])
 

@@ -237,6 +237,7 @@ header.layout .header-admin img {
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 
@@ -388,9 +389,6 @@ header.layout .header-admin img {
     font-weight: bolder;
 }
 
-#ingreso .card .card-footer>* {
-    margin: 0 40px;
-}
 
 /* REGISTRO - ELECCION TIPO */
 
@@ -495,8 +493,11 @@ header.layout .header-admin img {
 }
 
 /* Card footer */
-#ingreso.scan .card .card-footer .row {
-    margin: 0;
+
+/* Card escaneo: Form */
+#ingreso.scan .card .card-footer form {
+    width: 100%;
+    margin: 0 15px;
 }
 
 /* Card escaneo: input */
@@ -568,6 +569,7 @@ header.layout .header-admin img {
 #ingreso.consulta .card .card-body .card-image {
     display: flex;
     flex-direction: column;
+    width: 45%;
 }
 
 #ingreso.consulta .card .card-body .card-image img {
@@ -579,11 +581,6 @@ header.layout .header-admin img {
 
 
 /* INGRESO TOMAR FOTO */
-
-/* Boton tomar foto */
-#ingreso.consulta #user-picture-btn {
-    width: 15%;
-}
 
 /* Modal camara */
 .cam-modal .modal-dialog {
@@ -606,7 +603,6 @@ header.layout .header-admin img {
 
 /* Canvas */
 #camaraModal #user-picture {
-    width: 70%;
     border-radius: 100px;
     margin-top: 30px;
     display: none;
@@ -1367,9 +1363,9 @@ tr:last-child td:last-child {
         height: 550px;
     }
 
-    /* Boton tomar foto */
-    #ingreso.consulta #user-picture-btn {
-        width: 10%;
+    /* tamaño card-imagen */
+    #ingreso.consulta .card .card-body .card-image{
+        width: 100%;
     }
 }
 
