@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib import messages
 from django.http import Http404
 from django.db.models import Subquery
-from administrator.models import Usuarios, Dispositivos, Vehiculos, Ingresos, Salidas
-from administrator.forms import RegisterUser, RegisterDevice, RegisterVehicle
+from administrator.models import *
+from administrator.forms import *
 from datetime import datetime #Fecha y hora
+from openpyxl import Workbook #Generar archivos excel
+from io import BytesIO
 
 #Inicio
 def index(request):
@@ -73,6 +76,44 @@ def index(request):
         'ingresos': ingresos,
         'salidas': salidas
     })
+
+#Reporte en excel: Tabla ingresos y salidas
+def reportAccess(request):
+
+    #Tabla
+    datos = Salidas.objects.all()
+
+    #Crear libro
+    wb = Workbook()
+
+    #Crear hoja para tabla "ingresos"
+    ws_ingresos = wb.active
+    ws_ingresos.title = "Ingresos"
+    ws_ingresos.append(["IdIngreso", "IdSalida", "Fecha", "Usuario", "Vehiculo", "Dispositivo_Ingreso", "Dispositivo_Salida", "Hora de ingreso", "Hora de Salida"])
+
+    #Llenar tabla "salidas"
+    for dato in datos:
+        if dato.ingreso:
+            ws_ingresos.append([dato.ingreso.idingreso,
+                                dato.idsalida, 
+                               dato.fecha, 
+                               f"{dato.ingreso.usuario.nombres} {dato.ingreso.usuario.apellidos}", 
+                               f"{dato.vehiculo.tipo.nombre} {dato.vehiculo.marca.nombre}: {dato.vehiculo.placa}" if dato.vehiculo else "Ninguno",
+                               f"{dato.ingreso.dispositivo.tipo.nombre} {dato.ingreso.dispositivo.marca.nombre}" if dato.ingreso.dispositivo else "Ninguno",
+                               f"{dato.dispositivo.tipo.nombre} {dato.dispositivo.marca.nombre}" if dato.dispositivo else "Ninguno",
+                               dato.ingreso.horaingreso,
+                               dato.horasalida])
+
+    # Crear un objeto BytesIO para guardar el archivo en memoria
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    # Configurar la respuesta HTTP para descargar el archivo
+    response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response["Content-Disposition"] = "attachment; filename=Reporte Ingresos - ControlEntradaSENA V1.3.0.xlsx"
+
+    return response
 
 #Ingreso y salida
 def access(request, code):
