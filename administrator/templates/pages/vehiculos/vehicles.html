@@ -1,17 +1,17 @@
-{% extends 'layouts/layout_admin.html' %}
+{% extends 'layouts/layout.html' %}
 {% load static %}
 
 {% block title %} {{title}} {% endblock %}
 
 {%block content %}
-<article id="container-admin" class="users">
-    <section class="card">
+<article id="admin">
+    <section class="card card-general">
         <!-- Vista General -->
         <section id="main">
           <header class="card-header">
               <h1 class="card-title">Vehiculos</h1>
               <!-- Btn Registrar Usuario -->
-              <button type="button" class="btn btn-green add" id="btn-register-users">Registrar Vehiculo</button>         
+              <button type="button" class="btn btn-green add" id="btn-register">Registrar Vehiculo</button>         
           </header>
           <!-- Seccion Search -->
           <div class="card-search">
