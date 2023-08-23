@@ -11,6 +11,8 @@ from administrator.forms import *
 from datetime import datetime #Fecha y hora
 from openpyxl import Workbook #Generar archivos excel
 from io import BytesIO
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+
 
 #Inicio
 def index(request):
@@ -87,20 +89,53 @@ def reportAccess(request):
     datos = Salidas.objects.all()
 
     #Crear libro
-    wb = Workbook()
+    wb = Workbook()    
 
     #Crear hoja para tabla "ingresos"
     ws_ingresos = wb.active
     ws_ingresos.title = "Ingresos"
-    ws_ingresos.append(["IdIngreso", "IdSalida", "Fecha", "Usuario", "Vehiculo", "Dispositivo_Ingreso", "Dispositivo_Salida", "Hora de ingreso", "Hora de Salida"])
+    ws_ingresos.append(["IdIngreso", "Fecha", "Usuario", "Rol", "Centro", "Vehiculo", "Dispositivo_Ingreso", "Dispositivo_Salida", "Hora de ingreso", "Hora de Salida"])
+    header_cells = ws_ingresos["A1:J1"]
+    
+    #Diseño de celdas
+    bold_font = Font(bold=True)
+    center_alignment = Alignment(horizontal="center", vertical="center")
+    header_fill = PatternFill(start_color="C0C0C0", end_color="C0C0C0", fill_type="solid")
+    thin_border = Border(left=Side(style="thin"), 
+                         right=Side(style="thin"), 
+                         top=Side(style="thin"), 
+                         bottom=Side(style="thin"))
+
+    #Establecer diseño de encabezado
+    for row in header_cells:
+        for cell in row:
+            cell.font = bold_font
+            cell.alignment = center_alignment
+            cell.fill = header_fill
+            cell.border = thin_border
+
+    
+    
+    # Establecer alineacion de celdas
+    for row in ws_ingresos.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = center_alignment
+            if cell.value:                
+                cell.border = thin_border
+
+    # Establecer ancho de columnas
+    column_width = 30
+    for column in ws_ingresos.columns:
+        ws_ingresos.column_dimensions[column[0].column_letter].width = column_width
 
     #Llenar tabla "salidas"
     for dato in datos:
         if dato.ingreso:
             ws_ingresos.append([dato.ingreso.idingreso,
-                                dato.idsalida, 
                                dato.fecha, 
                                f"{dato.ingreso.usuario.nombres} {dato.ingreso.usuario.apellidos}", 
+                               dato.ingreso.usuario.rol.nombre,
+                               dato.ingreso.usuario.centro.nombre,
                                f"{dato.vehiculo.tipo.nombre} {dato.vehiculo.marca.nombre}: {dato.vehiculo.placa}" if dato.vehiculo else "Ninguno",
                                f"{dato.ingreso.dispositivo.tipo.nombre} {dato.ingreso.dispositivo.marca.nombre}: {dato.ingreso.dispositivo.sn}" if dato.ingreso.dispositivo else "Ninguno",
                                f"{dato.dispositivo.tipo.nombre} {dato.dispositivo.marca.nombre}: {dato.dispositivo.sn}" if dato.dispositivo else "Ninguno",
