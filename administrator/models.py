@@ -213,7 +213,7 @@ class Vehiculos(models.Model):
     idvehiculo = models.AutoField(db_column='IdVehiculo', primary_key=True)  # Field name made lowercase.
     usuario = models.ForeignKey(Usuarios, models.DO_NOTHING, db_column='IdUsuario')  # Field name made lowercase.
     tipo = models.ForeignKey('VehiculosTipo', models.DO_NOTHING, db_column='IdTipoVehiculo')  # Field name made lowercase.
-    placa= models.CharField(db_column='PlacaVehiculo', unique=True, null=True, blank=True, max_length=7, default="000-000")  # Field name made lowercase.
+    placa= models.CharField(db_column='PlacaVehiculo', unique=True, null=True, blank=True, max_length=7)  # Field name made lowercase.
     marca = models.ForeignKey('VehiculosMarca', models.DO_NOTHING, db_column='IdMarcaVehiculo')  # Field name made lowercase.
     modelo = models.CharField(db_column='ModeloVehiculo', null=True, blank=True, max_length=4, default=None)  # Field name made lowercase. This field type is a guess.
     imagen = models.ImageField(db_column='ImagenVehiculo', upload_to="images/vehicles/", max_length=50, blank=True, null=True)  # Field name made lowercase.

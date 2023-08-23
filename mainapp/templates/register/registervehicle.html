@@ -18,14 +18,14 @@
         <div class="card-body">
             <div class="row">
                 {% if users.rol.idrol == 1 or users.rol.idrol == 4 %}
-                <ul class="col">
+                <ul class="col vehiculo">
                     <a role="button" href="?vehicle=1">
                         <img src="{% static "assets/icons/car.png" %}" alt="">
                         <span>Carro</span>
                     </a>
                 </ul>
                 {% endif %}
-                <ul class="col">
+                <ul class="col vehiculo">
                     <a role="button" href="?vehicle=2">
                         <img src="{% static "assets/icons/motorbike.png" %}" alt="">
                         <span>Moto</span>

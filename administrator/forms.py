@@ -71,8 +71,8 @@ class RegisterDevice(ModelForm):
     #Campos
     usuario = forms.ModelChoiceField(queryset=Usuarios.objects.all(), widget=forms.HiddenInput())
     sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 50, 'autofocus': True, 'onkeyup': 'Upper(this)'}), label="Serial Number")
-    tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'tipo'}), label="", empty_label="Tipo de dispositivo")
-    marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'single-select-field'}), label="", empty_label="Marca")
+    tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select tipo-dispositivo'}), label="", empty_label="Tipo de dispositivo")
+    marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-dispositivo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}))
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)
 
@@ -114,8 +114,8 @@ class RegisterVehicle(ModelForm):
     #Campos
     usuario = forms.ModelChoiceField(queryset=Usuarios.objects.all(), widget=forms.HiddenInput(attrs={'readonly': True}), label="")
     tipo = forms.ModelChoiceField(queryset=VehiculosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), label="", empty_label="Tipo de vehiculo", disabled=True)
-    placa = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 7, 'autofocus': True, 'onkeyup': 'Upper(this)'}))
-    marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'single-select-field'}), label="", empty_label="Marca")
+    placa = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 6, 'autofocus': True, 'onkeyup': 'Upper(this)'}))
+    marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-vehiculo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     modelo = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}), label="", choices=YEAR_CHOICES)
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)
 
