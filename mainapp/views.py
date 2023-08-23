@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.core.serializers import serialize
+import json
 from django.http import HttpResponse
 from django.contrib import messages
 from django.http import Http404
@@ -162,6 +165,7 @@ def access(request, code):
 
 #Registrar usuario
 def registeruser(request, code):
+    roles = Roles.objects.all()
     rol = request.GET.get('rol') #Obtener rol a registrar por GET
     initial_data = {'rol': rol, 'documento': code} #Dato predeterminado del rol y documento
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial_data)
@@ -178,6 +182,7 @@ def registeruser(request, code):
     return render(request, 'register/registeruser.html', {
         'title': 'Registrar usuario',
         'rol': rol,
+        'roles': roles,
         'form': form
     })
 
@@ -187,6 +192,11 @@ def registervehicle(request, code):
     users = Usuarios.objects.get(documento=code)
     #Tipo vehiculo
     vehicle = request.GET.get('vehicle')
+
+    # if vehicle:
+    #     options = VehiculosMarca.objects.filter(tipo=vehicle)
+    #     options_list = [{'id': option.idmarcavehiculo, 'marca': option.nombre} for option in options]
+    #     return JsonResponse({'options': options_list})
 
     #Tipo vehiculo y usuario predeterminados
     initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
@@ -211,11 +221,16 @@ def registervehicle(request, code):
 #Registrar dispositivo
 def registerdevice(request, code):
     doc = request.GET.get('doc')
-
     users = Usuarios.objects.get(documento=code)
-    #Usuario predeterminado
+    
+    selectedType = request.GET.get("selectedType")
+    if selectedType:
+        options = DispositivosMarca.objects.filter(tipo=selectedType)   
+        option_list = [{'id': option.idmarcadispositivo, 'marca': option.nombre} for option in options]
+        return JsonResponse({'options': option_list})
+    
+    
     initial_data = {'usuario': users.idusuario}
-
     form = RegisterDevice(request.POST or None, request.FILES or None, initial=initial_data)
     form.fields['documento'].required = bool(doc)
     

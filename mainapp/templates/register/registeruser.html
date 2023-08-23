@@ -23,26 +23,20 @@
             <ul>
                 <li class="col">
                     <a role="button" href="?rol=1">
-                        <img src="{% static "assets/icons/profesor.png" %}" alt="">
+                        <img src="{% static "assets/icons/roles/instructor.png" %}" alt="">
                         <span>Instructor</span>
                     </a>
                 </li>
                 <li class="col">
                     <a role="button" href="?rol=2">
-                        <img src="{% static "assets/icons/aprendiz.png" %}" alt="">
+                        <img src="{% static "assets/icons/roles/aprendiz.png" %}" alt="">
                         <span>Aprendiz</span>
                     </a>
                 </li>
                 <li class="col">
                     <a role="button" href="?rol=3">
-                        <img src="{% static "assets/icons/visitante.png" %}" alt="">
+                        <img src="{% static "assets/icons/roles/visitante.png" %}" alt="">
                         <span>Visitante</span>
-                    </a>
-                </li>
-                <li class="col">
-                    <a role="button" href="?rol=4">
-                        <img src="{% static "assets/icons/administrativo.png" %}" alt="">
-                        <span>Administrativo</span>
                     </a>
                 </li>
             </ul>
@@ -62,8 +56,6 @@
                     Registrar Aprendiz
                 {% elif rol == "3" %}
                     Registrar Visitante
-                {% elif rol == "4" %}
-                    Registrar Administrativo
                 {% endif %}
             </h1>
             <a class="back-button" href="#" role="button" onclick="goBack()">

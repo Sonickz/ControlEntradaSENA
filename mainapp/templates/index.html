@@ -42,13 +42,13 @@
                     {% for ingreso in ingresos %}
                       <tr>
                         <th scope="row">{{ingreso.idingreso}}</th>
-                        <th>{{ingreso.fecha}}</th>
-                        <th>{{ingreso.usuario}}</th>
-                        <th>{% if ingreso.dispositivo %}{{ingreso.dispositivo}}{% else %}Ninguno{% endif %}</th>
-                        <th>{% if ingreso.dispositivo2 %}{{ingreso.dispositivo2}}{% else %}Ninguno{% endif %}</th>
-                        <th>{% if ingreso.dispositivo3 %}{{ingreso.dispositivo3}}{% else %}Ninguno{% endif %}</th>
-                        <th>{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</th>
-                        <th>{{ingreso.horaingreso}}</th>
+                        <td>{{ingreso.fecha}}</td>
+                        <td>{{ingreso.usuario}}</td>
+                        <td>{% if ingreso.dispositivo %}{{ingreso.dispositivo}}{% else %}Ninguno{% endif %}</td>
+                        <td>{% if ingreso.dispositivo2 %}{{ingreso.dispositivo2}}{% else %}Ninguno{% endif %}</td>
+                        <td>{% if ingreso.dispositivo3 %}{{ingreso.dispositivo3}}{% else %}Ninguno{% endif %}</td>
+                        <td>{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</td>
+                        <td>{{ingreso.horaingreso}}</td>
                       </tr>
                     {% endfor %}
                     </tbody>
@@ -171,7 +171,7 @@
         <header class="card-header">
             {% if salida %}
                 <!-- Hora ingreso -->
-                <h4 class="card-hour">Ingreso: {{ingreso.horaingreso}}</h4>
+                <h4 class="card-hour">Ingreso: {{salida.horaingreso}}</h4>
             {% endif %}
             <h1 class="card-title">{{users.nombres}} {{users.apellidos}}</h1>
             <div class="card-header-element">
@@ -263,10 +263,10 @@
                             <div class="select-form vehicle">
                                 <!-- Select -->
                                 <div class="select-btn open">
-                                    <span class="btn-text">{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</span>
+                                    <span class="btn-text">{% if salida.vehiculo %}{{salida.vehiculo}}{% else %}Ninguno{% endif %}</span>
                                 </div>      
-                                <!-- Item -->                  
-                                <input type="hidden" class="item-selected" value="{{ingreso.vehiculo.idvehiculo}}">
+                                <!-- Item -->                
+                                <input type="hidden" class="item-selected" value="{{salida.vehiculo.idvehiculo}}">
                             </div> 
                         {% else %}
                         <!-- Zona select -->  
@@ -339,7 +339,7 @@
             <div class="col-lg col-md col-sm col-xs-12 ">
                 <form id="form-access" method="get" action="{% url 'access' code=users.documento %}">
                     {% csrf_token %}
-                    <input id="vehicle" type="hidden" name="vehicle" value="">
+                    <input id="vehicle" type="hidden" name="vehicle" value="{% if salida %}{{salida.vehiculo.idvehiculo}}{% endif %}">
                     <input id="devices" type="hidden" name="devices" value="">      
                     <button type="submit" class="btn accept">{% if salida %}Salir{% else %}Ingresar{% endif %}</button>
                 </form> 
