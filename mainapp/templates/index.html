@@ -13,7 +13,7 @@
 
     <section class="btn-zone">
         <!-- Boton modal ingresos -->
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#AccessModal">
+        <button type="button" class="btn btn-success d-none" data-bs-toggle="modal" data-bs-target="#AccessModal">
             Ingresos
         </button>        
         <!-- Modal ingresos -->
@@ -62,7 +62,7 @@
         </div>
 
         <!-- Boton modal salidas-->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ExitModal">
+        <button type="button" class="btn btn-danger d-none" data-bs-toggle="modal" data-bs-target="#ExitModal">
             Salidas
         </button>        
         <!-- Modal salidas-->
@@ -115,7 +115,7 @@
         </div>
 
         <!-- Boton Reporte-->
-        <a role="button" href="{% url 'report' %}" class="btn btn-success" id=""> 
+        <a role="button" href="{% url 'report' %}" class="btn btn-success d-none"> 
             <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg" width="25" alt="">
               Descargar Reporte
         </a>
@@ -135,7 +135,7 @@
         </div>
         <div class="card-footer">
             <form method="get" id="code-form">
-                <input id="code-input" class="form-control onlynumbers" type="text" name="code" onkeypress="return valideNumber(event)" maxlength="10" minlength="6" autocomplete="off" autofocus>
+                <input id="code-input" class="form-control onlynumbers" type="text" name="code" onkeypress="return valideNumber(event)" maxlength="10" minlength="6" autocomplete="off" autofocus required>
             </form>
             <!-- Boton enter -->
             <button class="btn btn-green" type="button" id="btn-send">

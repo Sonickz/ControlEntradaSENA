@@ -243,41 +243,43 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 }
 
 //BARCODE CAMARA
-const barcodeCam = document.getElementById('barcode-cam'); //Zona de la camara
-const codeInput = document.getElementById("code-input") //Input codigo
-const codeForm = document.getElementById("code-form") //Form codigo
+// const barcodeCam = document.getElementById('barcode-cam'); //Zona de la camara
+// const codeInput = document.getElementById("code-input") //Input codigo
+// const codeForm = document.getElementById("code-form") //Form codigo
 
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
 
-  Quagga.init({ //Inicializar Quagga
-    inputStream: { constraints: { width: 600, height: 600, }, name: "Live", type: "LiveStream", target: barcodeCam }, // Pasar el elemento del DOM
-    decoder: { readers: ["code_39_reader"] }, // Listado de los tipos de códigos de barras a leer
-    locate: true,
-    frequency: 100,
-  }, function (err) {
-    if (err) { console.log(err); return }
-    console.log("Iniciado correctamente");
-    Quagga.start(); //Iniciar Quagga
-  });
+//   Quagga.init({ //Inicializar Quagga
+//     inputStream: { constraints: { width: 600, height: 600, }, name: "Live", type: "LiveStream", target: barcodeCam }, // Pasar el elemento del DOM
+//     decoder: { readers: ["code_39_reader"] }, // Listado de los tipos de códigos de barras a leer
+//     locate: true,
+//     frequency: 100,
+//   }, function (err) {
+//     if (err) { console.log(err); return }
+//     console.log("Iniciado correctamente");
+//     Quagga.start(); //Iniciar Quagga
+//   });
 
-  Quagga.onDetected((data) => { //Al detectar el codigo
-    codeInput.value = data.codeResult.code; //Poner el codigo en el input
-    // Imprimimos todo el data en consola
-    console.log(data);
-    Quagga.stop(); //Detener Quagga
+//   Quagga.onDetected((data) => { //Al detectar el codigo
+//     codeInput.value = data.codeResult.code; //Poner el codigo en el input
+//     // Imprimimos todo el data en consola
+//     console.log(data);
+//     Quagga.stop(); //Detener Quagga
 
-    codeForm.submit(); //Enviar el formulario
-  });
+//     codeForm.submit(); //Enviar el formulario
+//   });
 
-});
+// });
 
 //BOTON ENVIAR
+const codeInput = document.getElementById("code-input");
 const btnSend = document.getElementById('btn-send');
-if (btnSend) {
-  btnSend.addEventListener('click', () => {
+const codeForm = document.getElementById("code-form")
+btnSend.addEventListener('click', () => {
+if (btnSend &&  codeInput.value.length >= 6) {
     codeForm.submit();
+  }
   });
-}
 
 //CAMARA
 
