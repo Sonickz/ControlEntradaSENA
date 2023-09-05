@@ -393,20 +393,21 @@ header.layout .header-admin img {
 /* REGISTRO - ELECCION TIPO */
 
 
-#ingreso.register-select .card {
+.register-select .card {
     width: 80%;
 }
 
 /* Lista */
-#ingreso.register-select .card .card-body ul {
+.register-select .card-body ul {
     display: flex;
     list-style: none;
     padding: 0;
+    
     margin: 0;
 }
 
 /* Items */
-#ingreso.register-select .card .card-body a {
+.register-select .card-body a {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -415,11 +416,11 @@ header.layout .header-admin img {
     color: var(--text-color);
 }
 
-#ingreso.register-select .card .card-body a img {
+.register-select .card-body a img {
     width: 50%;
 }
 
-#ingreso.register-select .card .card-body a span {
+.register-select .card-body a span {
     font-weight: 500;
     font-size: 1.5rem;
 }
@@ -832,7 +833,7 @@ body.admin {
 
 /*=============================================================================================================*/
 
-body.admin main{
+body.admin main {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -970,6 +971,7 @@ body.admin main{
     color: var(--bgcolor-clare)
 }
 
+
 /*
         MENU EXPANDED
 */
@@ -1022,7 +1024,7 @@ body.admin main{
 */
 
 /* Container */
-#admin{
+#admin {
     width: 100%;
     overflow: hidden;
 }
@@ -1048,6 +1050,7 @@ body.admin main{
 #admin .card-search {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 /* Grupo */
@@ -1145,7 +1148,7 @@ body.admin main{
     overflow-y: auto;
     justify-content: normal;
     align-items: normal;
-    max-height: 95vh;
+    max-height: 55vh;
 }
 
 .table {
@@ -1235,49 +1238,13 @@ tr:last-child td:last-child {
 */
 
 /* Boton registrar */
-#admin .add {
+#admin .btn-register {
     position: absolute;
     right: 30px;
 }
 
-/* Intercambio de vista */
-
-/* Vista tabla */
-#admin #main {
+#admin .card-main{
     width: 100%;
-    transition: .5s ease;
-}
-
-#admin .select #main {
-    transition: none;
-    transform: translateX(-120%);
-}
-
-/* Vista select */
-#admin #select {
-    position: absolute;
-    transition: none;
-    transform: translateX(300%);
-}
-
-#admin .select #select {
-    transition: .5s ease;
-    transform: translateX(0);
-    width: 100%;
-}
-
-#admin .select .card {
-    min-height: 10px;
-    place-content: center;
-}
-
-#admin .select .card .card-body {
-    justify-content: center;
-}
-
-/* Vista formulario */
-#admin .form form {
-    width: 70%;
 }
 
 
@@ -1364,7 +1331,7 @@ tr:last-child td:last-child {
     }
 
     /* tamaño card-imagen */
-    #ingreso.consulta .card .card-body .card-image{
+    #ingreso.consulta .card .card-body .card-image {
         width: 100%;
     }
 }

@@ -275,11 +275,11 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 const codeInput = document.getElementById("code-input");
 const btnSend = document.getElementById('btn-send');
 const codeForm = document.getElementById("code-form")
-btnSend.addEventListener('click', () => {
-if (btnSend &&  codeInput.value.length >= 6) {
+if (btnSend && codeInput.value.length >= 6) {
+  btnSend.addEventListener('click', () => {
     codeForm.submit();
-  }
   });
+}
 
 //CAMARA
 
@@ -481,15 +481,11 @@ if (window.location.href.includes('/admin/')) {
 //Animacion admin | Cambiar entre tabla select y form
 const btnRegister = document.getElementById('btn-register');
 const btnBack = document.getElementById('btn-back');
-const card = document.querySelector('.card-general');
+const adminMain = document.getElementById("admin")
 
-if (card) {
+if (btnRegister) {
   btnRegister.addEventListener('click', () => {
-    card.classList.add('select');
-  });
-
-  btnBack.addEventListener('click', () => {
-    card.classList.remove('select');
+    adminMain.classList.toggle('slide');
   });
 }
 
