@@ -22,7 +22,7 @@
     <ul class="menu-items">
 
         <!-- Lista de usuarios -->
-        <li class="item">
+        <li class="item" data-name="users">
             <a role="button" href="{% url 'users' %}">
                 <div class="item-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
@@ -34,7 +34,7 @@
         </li>
 
         <!-- Lista de dispositivos -->
-        <li class="item">
+        <li class="item" data-name="devices">
             <a role="button" href="{% url 'devices' %}">
                 <div class="item-icon">
                     <img src="{% static 'assets/icons/dispositivo white.png' %}" alt="">
@@ -44,7 +44,7 @@
         </li>
 
         <!-- Lista de vehiculos -->
-        <li class="item">
+        <li class="item" data-name="vehiculos">
             <a role="button" href="{% url 'vehiculos' %}">
                 <div class="item-icon">
                     <img src="{% static 'assets/icons/trafico white.png' %}" alt="">
@@ -54,7 +54,7 @@
         </li>
 
         <!-- Multas / Sanciones -->
-        <li class="item">
+        <li class="item" data-name="sanciones">
             <a role="button" href="{% url 'penaltys' %}">
                 <div class="item-icon">
                     <img src="{% static 'assets/icons/multa white.png' %}" alt="">
@@ -64,7 +64,7 @@
         </li>
 
         <!-- Acerca de -->
-        <li class="item">
+        <li class="item" data-name="about">
             <a role="button" href="{% url 'about' %}">
                 <div class="item-icon">
                     <img src="{% static 'assets/icons/acerca-de white.png' %}" alt="">

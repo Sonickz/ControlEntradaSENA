@@ -478,15 +478,32 @@ if (window.location.href.includes('/admin/')) {
 
 }
 
+const adminMenu = document.getElementById("adminmenu")
+const items = adminMenu.querySelectorAll(".menu-items .item");
+const url = window.location.href;
+
+
+items.forEach((item) => {
+let itemName = item.getAttribute("data-name");
+console.log(itemName)
+  if (url.includes(itemName)){
+    item.classList.add("item-active")
+  }
+});
+
 //Animacion admin | Cambiar entre tabla select y form
 const btnRegister = document.getElementById('btn-register');
-const btnBack = document.getElementById('btn-back');
-const adminMain = document.getElementById("admin")
-
 if (btnRegister) {
+
   btnRegister.addEventListener('click', () => {
-    adminMain.classList.toggle('slide');
+    adminMain.classList.add('slide');
   });
+
+  const adminMain = document.getElementById("admin")
+  const btnBack = document.getElementById('btn-back').addEventListener("click", () => {
+    adminMain.classList.remove("slide")
+  })
+
 }
 
 
@@ -500,12 +517,12 @@ if (search) {
   search.addEventListener("input", function () {
     const filtro = search.value.toLowerCase();
 
-    for (const i = 0; i < filas.length; i++) {
+    for (let i = 0; i < filas.length; i++) {
       const fila = filas[i];
       const celdas = fila.getElementsByTagName("td");
-      const mostrarFila = false;
+      let mostrarFila = false;
 
-      for (const j = 0; j < celdas.length; j++) {
+      for (let j = 0; j < celdas.length; j++) {
         const celda = celdas[j];
         if (celda) {
           const contenido = celda.innerHTML.toLowerCase();

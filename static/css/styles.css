@@ -402,7 +402,7 @@ header.layout .header-admin img {
     display: flex;
     list-style: none;
     padding: 0;
-    
+
     margin: 0;
 }
 
@@ -856,6 +856,7 @@ body.admin main {
     left: 0;
     top: 0;
     transition: width .4s ease-in-out;
+    z-index: 1;
 }
 
 /* Menu activo */
@@ -922,13 +923,13 @@ body.admin main {
 }
 
 #adminmenu .menu-items .item {
-    width: calc(var(--width) + 30px);
+    width: calc(var(--width) - 10px);
     margin-top: 8px;
     transition: .5s;
 }
 
 #adminmenu .menu-items .item:hover {
-    margin-left: 15px;
+    margin-left: 25px;
     border-radius: 50px;
     border: 2px solid white;
 }
@@ -958,16 +959,16 @@ body.admin main {
     color: white;
 }
 
-.active-item {
+#adminmenu .menu-items .item-active {
     margin-left: 15px;
     border-radius: 50px;
-    border: 2px solid white;
+    border: 2px solid var(--bgcolor-clare);
     color: none;
     background-color: white;
 }
 
-.active-item .item-title,
-.active-item .item-icon {
+#adminmenu .menu-items .item-active .item-title,
+#adminmenu .menu-items .item-active .item-icon svg {
     color: var(--bgcolor-clare)
 }
 
@@ -986,6 +987,7 @@ body.admin main {
 
 #adminmenu.menu-collapsed {
     width: var(--width-collapsed);
+    overflow: hidden;
 }
 
 #adminmenu.menu-collapsed .header {
@@ -1027,18 +1029,20 @@ body.admin main {
 #admin {
     width: 100%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Card */
 #admin .card {
     width: 100%;
     margin: 0;
-    transition: .5s ease;
+    transition: height .5s ease;
 }
 
-#admin .card .card-header {
-    text-align: initial;
-    justify-content: center;
+#admin .card .card-main .card-header {
+    justify-content: space-between;
 }
 
 #admin .card .card-body {
@@ -1075,66 +1079,58 @@ body.admin main {
     color: var(--bgcolor-clare);
 }
 
+/* ALERTAS */
 #admin .alert {
     margin: 20px 0 0 0;
 }
 
-/* SECCION BOTONES */
-#admin .card-table-buttons {
-    visibility: hidden;
-    transition: .3s linear;
+/* CAMBIO ENTRE VISTAS DE CARD */
+
+/* Vista principal */
+#admin .card-main {
+    width: 100%;
+    transform: translateX(0);
+    transition: .8s ease;
 }
 
-#admin .card-table-buttons.active {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin: 20px 0;
-    visibility: visible;
-    transition: .3s ease;
+/* Vista registro select */
+#admin .card-register {
+    width: 100%;
+    transform: translateX(160%);
+    position: absolute;
+    transition: .8s ease;
 }
 
-#admin .card-table-buttons>* {
-    margin-right: 15px;
+/* Al presionar registro */
+#admin.slide {
+
+    .card {
+        justify-content: center;
+    }
+
+    .card-main {
+        transform: translateX(-160%);
+    }
+
+    .card-register {
+        transform: translateX(0);
+    }
 }
 
-/* Select */
-#admin #select .card-body {
-    flex-direction: row;
+/* Vista registro form */
+#admin.form {
+    .card {
+        width: 80%;
+    }
+
+    .card form{
+        width: 80%;
+    }
 }
 
-#admin #select .card-body ul {
-    padding: 0;
-}
+/* ESTILOS TABLA */
 
-#admin #select .card-body a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: var(--text-color);
-}
-
-#admin #select .card-body a img {
-    width: 50%;
-}
-
-#admin #select .card-body a span {
-    font-weight: 500;
-    font-size: 1.5rem;
-}
-
-.btn-delete {
-    width: 45px;
-}
-
-
-.btn-actions {
-    width: 25px;
-    padding: 2px;
-}
-
+/* Icono dropdown */
 .icon-dropdown-item {
     width: 15px;
     position: absolute;
@@ -1142,20 +1138,144 @@ body.admin main {
     margin: 4px 0 0 0;
 }
 
-/* ESTILOS TABLA */
 .card-table {
+    margin-top: 10px;
     overflow-x: auto;
     overflow-y: auto;
     justify-content: normal;
     align-items: normal;
     max-height: 55vh;
+    min-height: 55vh;
 }
 
+#admin .card-table{
+    margin-top: 20px;
+}
 .table {
     width: auto;
     white-space: nowrap;
 }
 
+/* SELECT ORDENAR POR */
+
+/* Select general */
+#admin .card .select-form {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+}
+
+/* SELECT CERRADO */
+#admin .card .select-form .select-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 55px;
+    padding: 0 20px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 25%);
+    background-color: #fff;
+}
+
+/* Select texto */
+#admin .card .select-form .select-btn .btn-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Select cerrado: Flecha abajo */
+#admin .card .select-form .select-btn .arrow-dwn {
+    display: flex;
+    height: 21px;
+    width: 21px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 50%;
+    background: var(--bgcolor-clare);
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+/* Select lista */
+#admin .card .select-form .list-items {
+    display: none;
+    position: relative;
+    margin-top: 15px;
+    padding: 16px;
+    border: 1px solid rgba(221, 221, 221, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* SELECT ABIERTO */
+
+/* Select abierto: Flecha arriba*/
+#admin .card .select-form .select-btn.open .arrow-dwn {
+    transform: rotate(-180deg);
+}
+
+/* Select lista abierta */
+#admin .card .select-form .select-btn.open~.list-items {
+    display: block;
+}
+
+/* Items */
+#admin .card .select-form .list-items .item {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 50px;
+    padding: 0 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#admin .card .select-form .list-items .item:hover {
+    background-color: rgba(126, 241, 98, 0.2);
+}
+
+#admin .card .select-form .list-items .item-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Item checkbox */
+#admin .card .select-form .item .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    margin-right: 12px;
+    border: 1.5px solid #c0c0c0;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+#admin .card .select-form .checkbox .check-icon {
+    color: #fff;
+    font-size: 11px;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Cuando tiene check */
+#admin .card .select-form .item.checked .checkbox {
+    background-color: var(--bgcolor);
+    border-color: var(--bgcolor);
+}
+
+#admin .card .select-form .item.checked .check-icon {
+    transform: scale(1);
+}
 /* Bordes tabla */
 tr td,
 th {
@@ -1237,14 +1357,15 @@ tr:last-child td:last-child {
     ADMIN PANEL | USERS 
 */
 
-/* Boton registrar */
-#admin .btn-register {
-    position: absolute;
-    right: 30px;
-}
 
-#admin .card-main{
-    width: 100%;
+/*
+    ADMIN PANEL | DEVICES
+*/
+#admin.slide{
+
+    .card{
+        
+    }
 }
 
 
