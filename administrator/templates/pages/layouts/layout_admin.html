@@ -10,7 +10,7 @@
       <header class="card-header">  
         <!-- Btn Descargar Reporte -->    
         <a role="button" href="{% url 'reportusers' %}" class="btn btn-green"> 
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg" width="25" alt="">
+          <img src="{% static 'assets/icons/excel.png' %}" width="25" alt="">
             Descargar Reporte
         </a>
         <h1 class="card-title">{% block card_title %}{% endblock %}</h1>
@@ -36,44 +36,10 @@
       {% endif %}
       <div class="card-body">
         <!-- Card Tabla-->
-        <div class="card card-table">
-
-          {% comment %} <!-- Select Ordenar Por -->
-            <!-- Zona select -->  
-            <div class="select-form">
-              <!-- Select -->
-              <div class="select-btn" onclick="openSelect(this)">
-                  <span class="btn-text">Ordenar por</span>
-                  <span class="arrow-dwn">
-                      <i class="fa-solid fa-chevron-down"></i>
-                  </span>
-              </div>     
-              <!-- Lista -->                   
-              <ul class="list-items">
-                      <!-- Item -->
-                      <li class="item" value="">
-                          <span class="checkbox">
-                              <i class="fa-solid fa-check check-icon"></i>
-                          </span>
-                          <span class="item-text">Rol</span>
-                      </li>                                                         
-              </ul>
-            </div> {% endcomment %}
-
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    {% block columns %}
-
-                    {% endblock %}
-                  </tr>
-                </thead>
-                <tbody class="tbody">
-                    {% block rows %}
-                  
-                    {% endblock %}
-                </tbody>
-            </table>
+        <div class="card card-table">  
+          {% block card_table %}                       
+            
+          {% endblock %}  
         </div>
       </div> 
     </section>

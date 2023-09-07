@@ -47,10 +47,13 @@ def adminpanel(request):
 @login_required(login_url="admin")
 def users(request):
     users = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
+    roles = Roles.objects.all()
+    
     
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
-        'users': users
+        'users': users,
+        'roles': roles
     })
 
 #Registrar usuario

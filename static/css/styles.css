@@ -336,6 +336,27 @@ header.layout .header-admin img {
     color: white !important;
 }
 
+.btn-rounded {
+    border-radius: 20px;
+    width: 140px;
+}
+
+.btn-green2 {
+    background-color: white;
+    color: var(--bgcolor-clare);
+    border: 1px solid var(--bgcolor-clare);
+    font-weight: bold;
+}
+
+.btn-green2:hover {
+    background-color: var(--bgcolor-clare);
+    color: white;
+}
+
+.btn-green2-active {
+    background-color: var(--bgcolor-clare);
+    color: white;
+}
 
 /* OTROS */
 
@@ -810,6 +831,7 @@ header.layout .header-admin img {
     --width-collapsed: 50px;
     --gradient: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 100%);
     --text-color: #8cdf78;
+    --menu-transition: all .5s ease;
 }
 
 /*=============================================================================================================*/
@@ -818,7 +840,7 @@ body.admin {
     background-color: #fff;
     font-family: 'Nunito', sans-serif;
     font-size: 1.1rem;
-    transition: .4s ease-in-out;
+    transition: var(--menu-transition);
 }
 
 /* Menu expandido */
@@ -855,7 +877,7 @@ body.admin main {
     height: 100vh;
     left: 0;
     top: 0;
-    transition: width .4s ease-in-out;
+    transition: var(--menu-transition);
     z-index: 1;
 }
 
@@ -905,11 +927,18 @@ body.admin main {
 
 #adminmenu .profile {
     padding: var(--padding);
-    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#adminmenu .profile .logo {
+    width: 50%;
+    display: block;
+    transition: all 1s ease;
 }
 
 #adminmenu .profile .logo img {
-    width: 50%;
+    width: 100%;
 }
 
 /*
@@ -998,12 +1027,16 @@ body.admin main {
     display: none;
 }
 
-#adminmenu.menu-collapsed .profile .logo img {
+#adminmenu.menu-collapsed .profile .logo {
     width: 100%;
 }
 
 #adminmenu.menu-collapsed .menu-items {
     padding-left: 0;
+}
+
+#adminmenu.menu-collapsed .menu-items .item-active {
+    margin-left: 5px;
 }
 
 #adminmenu.menu-collapsed .menu-items .item a {
@@ -1038,7 +1071,7 @@ body.admin main {
 #admin .card {
     width: 100%;
     margin: 0;
-    transition: height .5s ease;
+    transition: all .5s ease;
 }
 
 #admin .card .card-main .card-header {
@@ -1079,6 +1112,13 @@ body.admin main {
     color: var(--bgcolor-clare);
 }
 
+/* Ocultar filas */
+.hidden-row {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease;
+}
+
 /* ALERTAS */
 #admin .alert {
     margin: 20px 0 0 0;
@@ -1098,7 +1138,7 @@ body.admin main {
     width: 100%;
     transform: translateX(160%);
     position: absolute;
-    transition: .8s ease;
+    transition: all 1.5s ease;
 }
 
 /* Al presionar registro */
@@ -1106,6 +1146,8 @@ body.admin main {
 
     .card {
         justify-content: center;
+        width: fit-content;
+        height: fit-content;
     }
 
     .card-main {
@@ -1123,7 +1165,7 @@ body.admin main {
         width: 80%;
     }
 
-    .card form{
+    .card form {
         width: 80%;
     }
 }
@@ -1139,22 +1181,29 @@ body.admin main {
 }
 
 .card-table {
-    margin-top: 10px;
-    overflow-x: auto;
-    overflow-y: auto;
+    margin-top: 20px;
     justify-content: normal;
     align-items: normal;
     max-height: 55vh;
     min-height: 55vh;
+    overflow: hidden;
 }
 
-#admin .card-table{
-    margin-top: 20px;
+.table-container{
+    overflow: scroll;
+    transition: all 1s ease;
 }
+
 .table {
     width: auto;
-    white-space: nowrap;
+    white-space: nowrap;  
 }
+
+.table-animation{
+    transform: translateX(200%);
+}
+/* Cambio entre tablas */
+
 
 /* SELECT ORDENAR POR */
 
@@ -1276,6 +1325,7 @@ body.admin main {
 #admin .card .select-form .item.checked .check-icon {
     transform: scale(1);
 }
+
 /* Bordes tabla */
 tr td,
 th {
@@ -1357,17 +1407,17 @@ tr:last-child td:last-child {
     ADMIN PANEL | USERS 
 */
 
+.btn-change-table {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+}
 
 /*
     ADMIN PANEL | DEVICES
 */
-#admin.slide{
-
-    .card{
-        
-    }
-}
-
 
 /*
     ACERCA DE

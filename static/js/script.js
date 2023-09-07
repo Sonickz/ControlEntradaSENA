@@ -458,7 +458,6 @@ vehicleItems.forEach(item => {
 //ADMIN
 
 //Menu Admin
-
 if (window.location.href.includes('/admin/')) {
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -478,15 +477,14 @@ if (window.location.href.includes('/admin/')) {
 
 }
 
+//Item del menu activo
 const adminMenu = document.getElementById("adminmenu")
 const items = adminMenu.querySelectorAll(".menu-items .item");
 const url = window.location.href;
 
-
 items.forEach((item) => {
-let itemName = item.getAttribute("data-name");
-console.log(itemName)
-  if (url.includes(itemName)){
+  let itemName = item.getAttribute("data-name");
+  if (url.includes(itemName)) {
     item.classList.add("item-active")
   }
 });
@@ -534,16 +532,85 @@ if (search) {
       }
 
       if (mostrarFila) {
-        fila.style.display = "";
+        fila.style.display = ""
       } else {
-        fila.style.display = "none";
+        fila.style.display = "none"
       }
     }
   });
 }
 
 
-//Filtrar Select
+//Cambio entre tablas
+const btnTable = document.querySelectorAll(".btn-change-table .btn"); //Botones de roles
+
+if (btnTable) {
+  const tableContainer = document.querySelector(".table-container"); // Contenedor de la tabla
+  const table = document.querySelector(".table-container table"); // Tabla
+  const head = table.querySelectorAll("thead th") // Celdas de la cabecera
+  const rows = table.querySelectorAll("tbody tr") // Filas de la tabla
+
+  btnTable.forEach(btn => { //Para cada boton
+
+    btn.addEventListener("click", () => { //Al hacer click
+      //Remover la clase active de todos los botones
+      btnTable.forEach(btn => {
+        btn.classList.remove("btn-green2-active");
+      });
+      btn.classList.add("btn-green2-active"); //Agregar la clase active al boton clicado
+      let rol = btn.getAttribute("data-rol"); //Obtener el rol del boton clicado      
+
+      tableContainer.classList.add("table-animation") //Agregar la clase de animacion al contenedor de la tabla
+
+      //Esperar 500ms
+      setTimeout(() => {
+        tableContainer.classList.remove("table-animation")
+
+        //Capturar filas de la tabla 
+        rows.forEach(row => {
+          const cells = row.getElementsByTagName("td")
+          let rolCell = null
+
+          Array.from(cells).forEach(cell => {
+
+            if (cell.classList.contains("rol")) { rolCell = cell.getAttribute("data-rol") }// Si la celda tiene la clase rol, capturar el rol
+
+            //Ocultar celdas segun el rol
+            switch (rol) {
+              case "1":
+              case "4":
+                head.forEach(th => { if (th.textContent == "Ficha") { th.style.display = "none" } })
+                if (cell.classList.contains("ficha")) { cell.style.display = "none" }
+                break;
+
+              case "3":
+                head.forEach(th => { if (th.textContent == "Ficha" || th.textContent == "Centro") { th.style.display = "none" } })
+                if (cell.classList.contains("ficha") || cell.classList.contains("centro")) { cell.style.display = "none" }
+                break;
+
+              default:
+                head.forEach(th => { th.style.display = "" }) //Mostrar todas las celdas de la cabecera
+                cell.style.display = "" //Mostrar todas las celdas de la fila
+                break;
+            }
+          });
+
+          if (rolCell != rol) {
+            row.style.display = "none"
+          } else {
+            row.style.display = ""
+          }
+
+        })
+      }, 500)
+
+    })
+  });
+}
+
+
+
+
 
 //SELECT DISPOSITIVO
 const selectType = document.querySelector(".tipo-dispositivo") //Select tipo
