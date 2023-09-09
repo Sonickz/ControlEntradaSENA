@@ -1,4 +1,4 @@
-{% extends '../layouts/layout_admin.html' %}
+{% extends 'layouts/admin_base.html' %}
 {% load static %}
 
 {% block title %} {{title}} {% endblock %}
@@ -9,13 +9,13 @@
 
 {% block card_table %}
 
-<div class="btn-change-table">
+<div class="btn-change-table users">
   {% for rol in roles %}
     <button type="button" class="btn btn-green2 {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-rol="{{rol.idrol}}">{{rol}}</button>
   {% endfor %}
 </div>
 
-<div class="table-container">
+<div class="users table-container">
 
   <table class="table table-striped">
     <thead>
@@ -40,12 +40,12 @@
         <td>{{user.nombres}}</td>
         <td>{{user.apellidos}}</td>
         <td class="rol" data-rol="{{user.rol.idrol}}">{{user.rol}}</td>
-        <td class="ficha">{{user.ficha}}</td>
+        <td class="ficha">{{user.ficha|default:""}}</td>
         <td>{{user.tipodocumento}} {{user.documento}}</td>
-        <td class="centro">{{user.centro}}</td>
+        <td class="centro">{{user.centro|default:""}}</td>
         <td>{{user.telefono}}</td>
-        <td>{% if user.dispositivos_set %}{% for dispositivo in user.dispositivos_set.all %}{{dispositivo}}{% endfor %}{% else %}Ninguno{% endif %}</td>
-        <td>{% for vehiculo in user.vehiculos_set.all %}{{ vehiculo }}{% endfor %}</td>
+        <td>{% for dispositivo in user.dispositivos_set.all %}{{dispositivo|default:"Ninguno"}}{% endfor %}</td>
+        <td>{% for vehiculo in user.vehiculos_set.all %}{{vehiculo|default:"Ninguno"}}{% endfor %}</td>
         <td class="actions">
           <!-- Dropdows de acciones-->
           <div class="dropdown">

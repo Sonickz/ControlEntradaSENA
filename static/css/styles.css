@@ -1112,6 +1112,16 @@ body.admin main {
     color: var(--bgcolor-clare);
 }
 
+#admin .input-box.search .cancel{
+    display: none;
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    cursor: pointer;
+    z-index: 1;
+    color: var(--bgcolor-clare);
+}
+
 /* Ocultar filas */
 .hidden-row {
     opacity: 0;

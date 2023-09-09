@@ -504,108 +504,30 @@ if (btnRegister) {
 
 }
 
+import { searchTable, changeTableBtns, changeTableBtnsAccess, Exists } from './functions.js';
 
 //SEARCH EN TIEMPO REAL
 const search = document.getElementById("search");
-if (search) {
-  const tabla = document.querySelector("table");
-  const tbody = tabla.querySelector("tbody");
-  const filas = tbody.getElementsByTagName("tr");
-
-  search.addEventListener("input", function () {
-    const filtro = search.value.toLowerCase();
-
-    for (let i = 0; i < filas.length; i++) {
-      const fila = filas[i];
-      const celdas = fila.getElementsByTagName("td");
-      let mostrarFila = false;
-
-      for (let j = 0; j < celdas.length; j++) {
-        const celda = celdas[j];
-        if (celda) {
-          const contenido = celda.innerHTML.toLowerCase();
-          if (contenido.indexOf(filtro) > -1) {
-            mostrarFila = true;
-            break;
-          }
-        }
-      }
-
-      if (mostrarFila) {
-        fila.style.display = ""
-      } else {
-        fila.style.display = "none"
-      }
-    }
-  });
+if (Exists(search)) {
+  const tabla = document.querySelector("table:not([style*='display:none'])");
+  searchTable(search, tabla)
 }
 
+//CAMBIAR ENTRE TABLAS DE INGRESOS
+const btnsAccess = document.querySelectorAll(".btn-change-table.access .btn")
+if (btnsAccess) {
+  const tableContainer1 = document.querySelector(".access.table-container.table-1"); // Contenedor de la tabla
+  const tableContainer2 = document.querySelector(".access.table-container.table-2"); // Contenedor de la tabla
 
-//Cambio entre tablas
-const btnTable = document.querySelectorAll(".btn-change-table .btn"); //Botones de roles
+  changeTableBtnsAccess(btnsAccess, tableContainer1, tableContainer2)
+}
 
-if (btnTable) {
-  const tableContainer = document.querySelector(".table-container"); // Contenedor de la tabla
-  const table = document.querySelector(".table-container table"); // Tabla
-  const head = table.querySelectorAll("thead th") // Celdas de la cabecera
-  const rows = table.querySelectorAll("tbody tr") // Filas de la tabla
-
-  btnTable.forEach(btn => { //Para cada boton
-
-    btn.addEventListener("click", () => { //Al hacer click
-      //Remover la clase active de todos los botones
-      btnTable.forEach(btn => {
-        btn.classList.remove("btn-green2-active");
-      });
-      btn.classList.add("btn-green2-active"); //Agregar la clase active al boton clicado
-      let rol = btn.getAttribute("data-rol"); //Obtener el rol del boton clicado      
-
-      tableContainer.classList.add("table-animation") //Agregar la clase de animacion al contenedor de la tabla
-
-      //Esperar 500ms
-      setTimeout(() => {
-        tableContainer.classList.remove("table-animation")
-
-        //Capturar filas de la tabla 
-        rows.forEach(row => {
-          const cells = row.getElementsByTagName("td")
-          let rolCell = null
-
-          Array.from(cells).forEach(cell => {
-
-            if (cell.classList.contains("rol")) { rolCell = cell.getAttribute("data-rol") }// Si la celda tiene la clase rol, capturar el rol
-
-            //Ocultar celdas segun el rol
-            switch (rol) {
-              case "1":
-              case "4":
-                head.forEach(th => { if (th.textContent == "Ficha") { th.style.display = "none" } })
-                if (cell.classList.contains("ficha")) { cell.style.display = "none" }
-                break;
-
-              case "3":
-                head.forEach(th => { if (th.textContent == "Ficha" || th.textContent == "Centro") { th.style.display = "none" } })
-                if (cell.classList.contains("ficha") || cell.classList.contains("centro")) { cell.style.display = "none" }
-                break;
-
-              default:
-                head.forEach(th => { th.style.display = "" }) //Mostrar todas las celdas de la cabecera
-                cell.style.display = "" //Mostrar todas las celdas de la fila
-                break;
-            }
-          });
-
-          if (rolCell != rol) {
-            row.style.display = "none"
-          } else {
-            row.style.display = ""
-          }
-
-        })
-      }, 500)
-
-    })
-  });
+//CAMBIAR ENTRE TABLAS DE USUARIOS
+const btnsTable = document.querySelectorAll(".btn-change-table.users .btn"); //Botones de roles
+if (Exists(btnsTable)) {
+  const tableContainer = document.querySelector(".users.table-container"); // Contenedor de la tabla
+  const table = document.querySelector(".users.table-container table"); // Tabla
+  changeTableBtns(btnsTable, tableContainer, table);
 }
 
 

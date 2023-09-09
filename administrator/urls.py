@@ -8,6 +8,7 @@ urlpatterns = [
     path("login/", views.login_admin, name="login"),
     path("admin/logout", views.logout_admin, name="logout"),
     path("admin/inicio", views.adminpanel, name="adminpanel"),
+    path("admin/access", views.access, name="access"),
     path("admin/users", views.users, name="users"),
     path("admin/users/registeruser/<int:rol>", views.register_user, name="registeruser"),
     path("admin/users/edituser/<int:id>", views.edit_user, name="edituser"),

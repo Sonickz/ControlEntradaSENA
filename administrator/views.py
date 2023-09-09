@@ -43,6 +43,19 @@ def adminpanel(request):
 
 #=============================================================
 
+@login_required(login_url="admin")
+def access(request):
+    access = Ingresos.objects.all()
+    exits = Salidas.objects.all()
+
+    return render(request, "pages/ingresos/access.html", {
+        'title': 'Ingresos',
+        'access': access,
+        'exits': exits
+    })
+
+
+#=============================================================
 #Lista usuarios
 @login_required(login_url="admin")
 def users(request):
@@ -148,9 +161,9 @@ def report_users(request):
                             dato.documento,
                             dato.telefono,
                             dato.correo,
-                            dato.centro.nombre,
+                            dato.centro.nombre if dato.centro is not None else "No aplica",
                             dato.rol.nombre,
-                            f"{dato.ficha.numero}: {dato.ficha.nombre.nombre}" if dato.ficha is not None else None,
+                            f"{dato.ficha.numero}: {dato.ficha.nombre.nombre}" if dato.ficha is not None else "No aplica",
                             ])
 
     # Crear un objeto BytesIO para guardar el archivo en memoria
