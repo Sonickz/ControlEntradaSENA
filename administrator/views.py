@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator, Page
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import *
@@ -59,7 +60,11 @@ def access(request):
 #Lista usuarios
 @login_required(login_url="admin")
 def users(request):
-    users = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
+    model = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
+    paginator = Paginator(model, 10)  # Paginator // Mostrar 10 usuarios por pagina
+    page = request.GET.get('page') # Pagina actual
+    users = paginator.get_page(page) # Enviar el paginator y detectar la actual
+
     roles = Roles.objects.all()
     
     

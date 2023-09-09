@@ -46,9 +46,10 @@ function handleBtnsAccess(otherBtns, btn, tableContainer1, tableContainer2) {
 //=====================================================================================================
 //Funcion para cambiar de tablas segun el rol 
 export function changeTableBtns(btns, tableContainer, table) {
+    
     const head = table.querySelectorAll("thead th") // Celdas de la cabecera
     const rows = table.querySelectorAll("tbody tr") // Filas de la tabla
-
+    
     //Para cada boton, escuchar el evento click
     btns.forEach(btn => {
         btn.addEventListener('click', () => {

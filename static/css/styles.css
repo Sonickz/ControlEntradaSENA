@@ -1112,7 +1112,7 @@ body.admin main {
     color: var(--bgcolor-clare);
 }
 
-#admin .input-box.search .cancel{
+#admin .input-box.search .cancel {
     display: none;
     position: absolute;
     right: 15px;
@@ -1199,19 +1199,20 @@ body.admin main {
     overflow: hidden;
 }
 
-.table-container{
+.table-container {
     overflow: scroll;
     transition: all 1s ease;
 }
 
 .table {
     width: auto;
-    white-space: nowrap;  
+    white-space: nowrap;
 }
 
-.table-animation{
+.table-animation {
     transform: translateX(200%);
 }
+
 /* Cambio entre tablas */
 
 
@@ -1425,6 +1426,36 @@ tr:last-child td:last-child {
     gap: 15px;
 }
 
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    vertical-align: middle;
+
+    .current-page {
+        margin: 0 10px;
+        border: 1px solid var(--bgcolor-clare);
+        border-radius: 10px;
+        padding: 0 10px;
+        color: white;
+        background-color: var(--text-color);
+        font-weight: bold;
+    }
+}
+
+.pagination a {
+    vertical-align: middle;
+    font-size: 16px;
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.pagination a:hover {
+    color: var(--bgcolor);
+}
+
 /*
     ADMIN PANEL | DEVICES
 */
@@ -1569,9 +1600,16 @@ tr:last-child td:last-child {
     #ingreso.consulta .card .card-body .card-info>* {
         margin: 10px 0;
     }
-
 }
 
+@media (max-height: 768px){
+    /* ADMIN */
+    /* USUARIOS */
+    .card-table{
+        min-height: 85vh;
+        max-height: 85vh;
+    }
+}
 
 /* Tablet */
 @media (max-width: 768px) {

@@ -527,7 +527,10 @@ const btnsTable = document.querySelectorAll(".btn-change-table.users .btn"); //B
 if (Exists(btnsTable)) {
   const tableContainer = document.querySelector(".users.table-container"); // Contenedor de la tabla
   const table = document.querySelector(".users.table-container table"); // Tabla
-  changeTableBtns(btnsTable, tableContainer, table);
+
+  if (table && tableContainer) {
+    changeTableBtns(btnsTable, tableContainer, table);
+  }
 }
 
 
