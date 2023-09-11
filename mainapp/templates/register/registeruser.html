@@ -6,7 +6,7 @@
 
 <!-- VISTA: Elegir rol -->
 {% if not rol %}
-<article id="ingreso" class="register-select">
+<article id="ingreso" class="card-select">
     <header>
         <h1 class="header-title">Nuevo usuario</h1>
     </header>
@@ -203,6 +203,6 @@
     </section>
 </article>
 <!-- Modal Camara -->
-{% include '../includes/modalCamaraRegister.html' %}
+{% include 'layouts/includes/modalCamaraRegister.html' %}
 {% endif %}
 {% endblock %}

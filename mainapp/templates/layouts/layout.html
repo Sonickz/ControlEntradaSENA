@@ -2,7 +2,7 @@
 <!Doctype html>
 <html lang="es">
 <head>
-    <title>{% block title %} {% endblock %} | Control Entrada Sena V1.3.0</title>
+    <title>{% block title %} {% endblock %} | Control Entrada Sena V1.4.0</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <!-- Mi CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'mainapp/css/mainapp.css' %}">
+    <link rel="stylesheet" href="{% static 'module1/css/module1.css' %}">
+    <link rel="stylesheet" href="{% static 'module2/css/module2.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/admin.css' %}">
     <!-- Alertas - SweetAlert -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.22/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- Select con busqueda -->
@@ -25,11 +29,33 @@
 </head>
 
 <body>
+
+    <div class="animation-container d-none">
+        <div class="start-animation">    
+            <div class="animation-logo">
+                <img src="{% static 'assets/logos/logo-sena white.png'%}">
+            </div>
+            <div class="animation-text">
+                <img class="icon" src="{% static 'assets/icons/log-in white.png'%}">
+                <h1 class="title">Control Entrada Sena</h1>
+                <p class="text">Version 1.4.0</p>
+            </div>
+        </div>
+    </div>
+
     <header class="layout">
         <h1 class="header-title">SENA</h1>
-        <a href="{% url 'login' %}" class="header-admin">
-            <img src="{% static "assets/icons/admin_white.png"%}" alt="Login administrador">
-        </a>
+        <div class="dropdown">
+            <button class="btn btn-green2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Opciones
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'module1' %}">Modulo1</a></li>
+              <li><a class="dropdown-item" href="{% url 'module2' %}">Modulo2</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'login' %}">Admin</a></li>
+            </ul>
+        </div>
     </header>
 
     <!-- Navbar de admin -->
@@ -57,7 +83,11 @@
     <!-- Select con busqueda -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> 
     <!--Mi Script-->
-    <script type="module" src="{% static 'js/script.js'%}"></script>  
+    <script src="{% static 'js/script.js' %}"></script>
+    <script src="{% static 'mainapp/js/mainapp.js' %}"></script>
+    <script src="{% static 'module1/js/module1.js' %}"></script>
+    <script src="{% static 'module2/js/module2.js' %}"></script>
+    <script src="{% static 'admin/js/admin.js' %}"></script>
     <script>
     //Select con busqueda
     $( '#single-select-field' ).select2( {

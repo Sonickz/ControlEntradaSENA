@@ -5,9 +5,5 @@ from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("report/", views.reportAccess, name="report"),
-    path("<str:code>/access/", views.access, name="access"),
-    path("<str:code>/registeruser/", views.registeruser, name="registeruser"),
-    path("<str:code>/registervehicle/", views.registervehicle, name="registervehicle"),
-    path("<str:code>/registerdevice/", views.registerdevice, name="registerdevice"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("registeruser/<str:code>/", views.registeruser, name="registeruser"),
+]

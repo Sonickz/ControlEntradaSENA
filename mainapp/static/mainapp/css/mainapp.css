@@ -1,0 +1,99 @@
+/*===========================================================*/
+
+/* ANIMACION INICIAL */
+
+/* Container */
+.animation-container {
+    z-index: 1;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: var(--bgcolor);
+    position: absolute;
+    transition: all 1s ease;
+}
+
+/* Zona de elementos */
+.start-animation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transform: translateX(-800%);
+    transition: all 2.5s ease;
+
+    /* Imagen */
+    .animation-logo img {
+        width: 200px;
+    }
+
+    /* Zona texto */
+    .animation-text {
+        margin: 35px 0;
+        text-align: center;
+
+        .icon {
+            width: 40px;
+            position: absolute;
+            top: 58%;
+            left: 31%;
+            transform: translateX(-1200%);
+            transition: all 1s ease;
+        }
+
+        .icon-active {
+            transform: translateX(0);
+        }
+
+        .title {
+            color: white;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .text {
+            color: white;
+        }
+    }
+}
+
+/* Animacion activa */
+.animation-active {
+    transform: translateX(0) !important;
+}
+
+/* Animacion deshabilitada */
+.animation-disabled {
+    opacity: 0;
+}
+
+/*===========================================================*/
+
+#modules .card {
+    width: 50%;
+}
+
+/* SELECTOR DE MODULO */
+.module-selection {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+
+    .module-item {
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .item-img {
+            width: 90px;
+        }
+
+        .item-title {
+            color: var(--text-color);
+            margin-top: 15px;
+        }
+
+    }
+}

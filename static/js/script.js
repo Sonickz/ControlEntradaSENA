@@ -1,5 +1,18 @@
 //FUNCIONES
 
+//Funcion para no volver atras
+function blockBack() {
+  const actualUrl = window.location.href
+  if (actualUrl.includes("/module1/") || actualUrl.includes("/module2/")) {
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.go(1);
+    };
+  }
+}
+
+blockBack();
+
 // Funcion solo numeros
 function valideNumber(evt) {
 
@@ -18,19 +31,6 @@ function valideNumber(evt) {
   }
 }
 
-// Auto focus
-function autoFocus() {
-  const input = document.querySelector(".autofocus")
-  if (input) {
-    input.addEventListener("blur", () => {
-      setTimeout(() => {
-        input.focus();
-      }, 0);
-    });
-  }
-}
-autoFocus();
-
 // Auto mayus
 function Upper(input) {
   input.value = input.value.toUpperCase();
@@ -41,43 +41,37 @@ function goBack() {
   window.history.back();
 }
 
-//Alerta usuario
-function userAlert() {
-  Swal.fire({
-    icon: 'success',
-    title: '¡Usuario registrado!',
-    text: 'El usuario se ha registrado correctamente',
-    showConfirmButton: false,
-    timer: 2500
-  })
-};
-
 //Funcion Alerta SweetAlert
-function successAlert(title, text, time) {
+function successAlert(title, text) {
   Swal.fire({
     icon: 'success',
     title: title,
     text: text,
     showConfirmButton: false,
-    timer: time
+    timer: 2000
   })
 }
 
 //Alerta 
-const registerAlert = document.querySelector('.registerAlert');
-if (registerAlert) {
-  registerAlert.style.display = 'none';
-  let typeAlert = registerAlert.getAttribute('data-status');
-  switch (typeAlert) {
+const Alert = document.querySelector('.Alert');
+if (Alert) {
 
+  let typeAlert = Alert.getAttribute('data-status');
+  switch (typeAlert) {
+    case "success-access":
+      successAlert("¡Ingreso aceptado", "Has ingresado correctamente")
+      break;
+    case "success-exit":
+      successAlert("Salida aceptada", "Has salido correctamente")
+      break;
     case "success-user":
-      successAlert("¡Usuario registrado!", "El usuario se ha registrado correctamente", 2500);
+      successAlert("¡Usuario registrado!", "El usuario se ha registrado correctamente");
       break;
     case "success-vehicle":
-      successAlert("Vehiculo registrado!", "El vehiculo se ha registrado correctamente", 2500);
+      successAlert("Vehiculo registrado!", "El vehiculo se ha registrado correctamente");
       break;
     case "success-device":
-      successAlert("Dispositivo registrado!", "El dispositivo se ha registrado correctamente", 2500);
+      successAlert("Dispositivo registrado!", "El dispositivo se ha registrado correctamente");
       break;
   }
 }
@@ -242,44 +236,25 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 
 }
 
-//BARCODE CAMARA
-// const barcodeCam = document.getElementById('barcode-cam'); //Zona de la camara
-// const codeInput = document.getElementById("code-input") //Input codigo
-// const codeForm = document.getElementById("code-form") //Form codigo
-
-// document.addEventListener("DOMContentLoaded", () => {
-
-//   Quagga.init({ //Inicializar Quagga
-//     inputStream: { constraints: { width: 600, height: 600, }, name: "Live", type: "LiveStream", target: barcodeCam }, // Pasar el elemento del DOM
-//     decoder: { readers: ["code_39_reader"] }, // Listado de los tipos de códigos de barras a leer
-//     locate: true,
-//     frequency: 100,
-//   }, function (err) {
-//     if (err) { console.log(err); return }
-//     console.log("Iniciado correctamente");
-//     Quagga.start(); //Iniciar Quagga
-//   });
-
-//   Quagga.onDetected((data) => { //Al detectar el codigo
-//     codeInput.value = data.codeResult.code; //Poner el codigo en el input
-//     // Imprimimos todo el data en consola
-//     console.log(data);
-//     Quagga.stop(); //Detener Quagga
-
-//     codeForm.submit(); //Enviar el formulario
-//   });
-
-// });
-
 //BOTON ENVIAR
+
+
 const codeInput = document.getElementById("code-input");
 const btnSend = document.getElementById('btn-send');
 const codeForm = document.getElementById("code-form")
-if (btnSend && codeInput.value.length >= 6) {
-  btnSend.addEventListener('click', () => {
-    codeForm.submit();
-  });
+
+if (btnSend && codeInput) {
+  codeInput.addEventListener("input", () => {
+    let inputValue = codeInput.value
+    console.log(inputValue)
+    if (inputValue.length >= 6) {
+      btnSend.addEventListener('click', () => {
+        codeForm.submit();
+      });
+    }
+  })
 }
+
 
 //CAMARA
 
@@ -453,144 +428,4 @@ vehicleItems.forEach(item => {
     }
   });
 });
-
-
-//ADMIN
-
-//Menu Admin
-if (window.location.href.includes('/admin/')) {
-
-  document.addEventListener('DOMContentLoaded', function () {
-    document.body.classList.add("admin", "body-collapsed");
-  });
-
-  const adminMenu = document.getElementById("adminmenu")
-  adminMenu.classList.add("active");
-
-  const menuBtn = document.querySelector(".menu-btn");
-  menuBtn.addEventListener("click", () => {
-    document.body.classList.toggle("body-collapsed");
-    document.body.classList.toggle("body-expanded");
-    adminMenu.classList.toggle("menu-expanded");
-    adminMenu.classList.toggle("menu-collapsed");
-  });
-
-}
-
-//Item del menu activo
-const adminMenu = document.getElementById("adminmenu")
-const items = adminMenu.querySelectorAll(".menu-items .item");
-const url = window.location.href;
-
-items.forEach((item) => {
-  let itemName = item.getAttribute("data-name");
-  if (url.includes(itemName)) {
-    item.classList.add("item-active")
-  }
-});
-
-//Animacion admin | Cambiar entre tabla select y form
-const btnRegister = document.getElementById('btn-register');
-if (btnRegister) {
-
-  btnRegister.addEventListener('click', () => {
-    adminMain.classList.add('slide');
-  });
-
-  const adminMain = document.getElementById("admin")
-  const btnBack = document.getElementById('btn-back').addEventListener("click", () => {
-    adminMain.classList.remove("slide")
-  })
-
-}
-
-import { searchTable, changeTableBtns, changeTableBtnsAccess, Exists } from './functions.js';
-
-//SEARCH EN TIEMPO REAL
-const search = document.getElementById("search");
-if (Exists(search)) {
-  const tabla = document.querySelector("table:not([style*='display:none'])");
-  searchTable(search, tabla)
-}
-
-//CAMBIAR ENTRE TABLAS DE INGRESOS
-const btnsAccess = document.querySelectorAll(".btn-change-table.access .btn")
-if (btnsAccess) {
-  const tableContainer1 = document.querySelector(".access.table-container.table-1"); // Contenedor de la tabla
-  const tableContainer2 = document.querySelector(".access.table-container.table-2"); // Contenedor de la tabla
-
-  changeTableBtnsAccess(btnsAccess, tableContainer1, tableContainer2)
-}
-
-//CAMBIAR ENTRE TABLAS DE USUARIOS
-const btnsTable = document.querySelectorAll(".btn-change-table.users .btn"); //Botones de roles
-if (Exists(btnsTable)) {
-  const tableContainer = document.querySelector(".users.table-container"); // Contenedor de la tabla
-  const table = document.querySelector(".users.table-container table"); // Tabla
-
-  if (table && tableContainer) {
-    changeTableBtns(btnsTable, tableContainer, table);
-  }
-}
-
-
-
-
-
-//SELECT DISPOSITIVO
-const selectType = document.querySelector(".tipo-dispositivo") //Select tipo
-
-if (selectType) {
-  document.addEventListener('DOMContentLoaded', function () {
-    const selectMarca = document.querySelector(".marca-dispositivo") //Select marca
-
-    selectType.addEventListener("change", function () {
-      let selectedType = selectType.value
-
-      fetch(`?selectedType=${selectedType}`) //Enviar variable por get
-        .then(response => response.json()) //Esperar y recibir respuesta Json
-        .then(data => { //Manejar data
-          selectMarca.innerHTML = "";
-
-          const options = data.options
-
-          options.forEach(option => {
-            const optionElement = document.createElement("option")
-            optionElement.value = option.id;
-            optionElement.textContent = option.marca;
-            selectMarca.appendChild(optionElement)
-
-          })
-        })
-    })
-  })
-}
-
-//SELECT VEHICULO
-const selectVehicle = document.querySelector(".vehiculo")
-const selectMarca = document.querySelector(".marca-vehiculo")
-
-if (selectVehicle) {
-  document.addEventListener('DOMContentLoaded', function () {
-
-    fetch("")
-      .then(response => response.json())
-      .then(data => {
-        if (selectMarca) {
-          selectMarca.innerHTML = "";
-
-          const options = data.options
-
-          options.forEach(option => {
-            const optionElement = document.createElement("option")
-            optionElement.value = option.id
-            optionElement.textContent = option.marca
-            selectMarca.appendChild(optionElement)
-          })
-        }
-      })
-  })
-}
-
-
 
