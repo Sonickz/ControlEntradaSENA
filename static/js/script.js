@@ -1,61 +1,31 @@
-//FUNCIONES
+import { actualModule, valideNumber, Upper, goBack, Exists, successAlert } from './functions.js'
 
-//Funcion para no volver atras
-function blockBack() {
-  const actualUrl = window.location.href
-  if (actualUrl.includes("/module1/") || actualUrl.includes("/module2/")) {
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-      history.go(1);
-    };
-  }
-}
+//Modulo actual
+actualModule();
 
-blockBack();
-
-// Funcion solo numeros
-function valideNumber(evt) {
-
-  // code is the decimal ASCII representation of the pressed key.
-  let code = (evt.which) ? evt.which : evt.keyCode;
-
-  if (code == 8) { // backspace.
-    return true;
-  }
-  else if (code == 13) { // enter
-    return true;
-  } else if (code >= 48 && code <= 57) { // is a number.
-    return true;
-  } else { // other keys.
-    return false;
-  }
-}
-
-// Auto mayus
-function Upper(input) {
-  input.value = input.value.toUpperCase();
+//Solo numeros
+const onlyNumbers = document.querySelectorAll(".onlynumbers")
+if (Exists(onlyNumbers)) {
+  onlyNumbers.forEach(input => {
+    input.addEventListener("keypress", () => {
+      if (!valideNumber(event)) {
+        event.preventDefault();
+      }
+    })
+  });
 }
 
 //Ir a la pestaña anterior
-function goBack() {
-  window.history.back();
-}
-
-//Funcion Alerta SweetAlert
-function successAlert(title, text) {
-  Swal.fire({
-    icon: 'success',
-    title: title,
-    text: text,
-    showConfirmButton: false,
-    timer: 2000
+const backArrow = document.querySelector(".back-button")
+if (Exists(backArrow)) {
+  backArrow.addEventListener("click", () => {
+    goBack();
   })
 }
 
 //Alerta 
 const Alert = document.querySelector('.Alert');
-if (Alert) {
-
+if (Exists(Alert)) {
   let typeAlert = Alert.getAttribute('data-status');
   switch (typeAlert) {
     case "success-access":
@@ -237,16 +207,13 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 }
 
 //BOTON ENVIAR
-
-
 const codeInput = document.getElementById("code-input");
 const btnSend = document.getElementById('btn-send');
 const codeForm = document.getElementById("code-form")
 
-if (btnSend && codeInput) {
+if (Exists(btnSend) && (codeInput)) {
   codeInput.addEventListener("input", () => {
     let inputValue = codeInput.value
-    console.log(inputValue)
     if (inputValue.length >= 6) {
       btnSend.addEventListener('click', () => {
         codeForm.submit();
@@ -260,7 +227,7 @@ if (btnSend && codeInput) {
 
 // Obtener referencia al elemento de video y al canvas
 const camaraModal = document.getElementById('camaraModal');
-if (camaraModal) {
+if (Exists(camaraModal)) {
   const btncamAccess = document.getElementById('user-picture-btn');
   const btnSave = document.getElementById('user-savepicture-btn');
   const btnRepeat = document.getElementById('user-repeatpicture-btn');

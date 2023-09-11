@@ -1,3 +1,4 @@
+//Funcion para saber la primera visita del dia
 function firstPageView() {
     const actualDate = new Date();
     const saveDate = localStorage.getItem('lastView');
@@ -19,8 +20,6 @@ function firstPageView() {
 }
 
 if (firstPageView()) {
-    console.log("Es la primera visita del dia")
-
     const container = document.querySelector(".animation-container")
     const startAnimation = document.querySelector(".start-animation");
 
@@ -30,11 +29,16 @@ if (firstPageView()) {
         document.addEventListener("DOMContentLoaded", () => {
 
             startAnimation.classList.add("animation-active")
+            //Esperar 3000ms
             setTimeout(() => {
-                icon.classList.add("animation-active")
-
+                icon.classList.add("icon-active")
+                //Esperar 3000ms
                 setTimeout(() => {
                     container.classList.add("animation-disabled")
+                    //Esperar 1500ms
+                    setTimeout(() => {
+                        container.classList.add("d-none")
+                    }, 1500)
                 }, 3000)
             }, 3000)
 

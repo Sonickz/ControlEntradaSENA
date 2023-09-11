@@ -84,9 +84,9 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "control-entrada-sena",
         "USER": "root",
-        "PASSWORD": "",
+        "PASSWORD": "admin",
         "HOST": "localhost",
-        "PORT": "3306",
+        "PORT": "3307",
         "OPTIONS": {
             'sql_mode': 'STRICT_TRANS_TABLES'
             }

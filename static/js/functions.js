@@ -1,11 +1,65 @@
 //=====================================================================================================
+//FUNCIONES GENERALES
 
 //Funcion para validar existencia del elemento
 export function Exists(element) {
     return element !== null && typeof element === 'object';
 }
 
+//Funcion para saber el modulo seleccionado
+export function actualModule() {
+    const url = window.location.href
+    const module1 = "module1"
+    const module2 = "module2"
+    const headerTextModule = document.querySelector(".header-title-module")
+
+    if (url.includes(module1)) {
+        headerTextModule.innerHTML = "Modulo 1>";
+    } else if (url.includes(module2)) {
+        headerTextModule.innerHTML = "Modulo 2>";
+    }
+}
+
+// Funcion solo numeros
+export function valideNumber(evt) {
+    // code is the decimal ASCII representation of the pressed key.
+    let code = (evt.which) ? evt.which : evt.keyCode;
+
+    if (code == 8) { // backspace.
+        return true;
+    }
+    else if (code == 13) { // enter
+        return true;
+    } else if (code >= 48 && code <= 57) { // is a number.
+        return true;
+    } else { // other keys.
+        return false;
+    }
+}
+
+// Auto mayus
+export function Upper(input) {
+    input.value = input.value.toUpperCase();
+}
+
+//Volver atras
+export function goBack() {
+    window.history.back();
+  }
+
+//Funcion Alerta SweetAlert
+export function successAlert(title, text) {
+    Swal.fire({
+      icon: 'success',
+      title: title,
+      text: text,
+      showConfirmButton: false,
+      timer: 2000
+    })
+  }
+
 //=====================================================================================================
+
 //Funcion para cambiar el ingreso
 export function changeTableBtnsAccess(btns, tableContainer1, tableContainer2) {
 
@@ -44,125 +98,4 @@ function handleBtnsAccess(otherBtns, btn, tableContainer1, tableContainer2) {
     }
 }
 //=====================================================================================================
-//Funcion para cambiar de tablas segun el rol 
-export function changeTableBtns(btns, tableContainer, table) {
-    
-    const head = table.querySelectorAll("thead th") // Celdas de la cabecera
-    const rows = table.querySelectorAll("tbody tr") // Filas de la tabla
-    
-    //Para cada boton, escuchar el evento click
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            handleBtns(btns, btn, tableContainer, head, rows) //Funcion para manejar los botones
-        });
-    });
-}
 
-// Funcion botones de intercambio de tablas
-function handleBtns(otherBtns, btn, tableContainer, head, rows) {
-    //Remover clase activa de los demas botones
-    otherBtns.forEach(otherbtn => {
-        otherbtn.classList.remove('btn-green2-active')
-    })
-    btn.classList.add('btn-green2-active') //Agregar clase activa al boton seleccionado
-    let rol = btn.getAttribute('data-rol') //Capturar el rol del boton seleccionado
-
-    tableContainer.classList.add('table-animation') //Agregar clase de animacion a la tabla
-    //Esperar 500ms para ejecutar la funcion de cambio de tablas
-    setTimeout(() => {
-        tableSwitch(rows, head, rol) //Funcion para cambiar de tablas
-        tableContainer.classList.remove('table-animation') //Remover clase de animacion a la tabla
-    }, 500)
-}
-
-//Funcion switch de tablas
-function tableSwitch(rows, head, rol) {
-    //Capturar filas de la tabla 
-    rows.forEach(row => {
-        const cells = row.getElementsByTagName("td") //Capturar celdas de la fila
-        let rolCell = null //Variable para capturar el rol de la celda
-
-        //Para cada celda
-        Array.from(cells).forEach(cell => {
-            if (cell.classList.contains("rol")) { rolCell = cell.getAttribute("data-rol") }// Si la celda tiene la clase rol, capturar el rol
-
-            const Instructor = "1"
-            const Aprendiz = "2"
-            const Visitante = "3"
-            const Administrativo = "4"
-
-            //Ocultar celdas segun el rol
-            switch (rol) {
-                case Instructor:
-                case Administrativo:
-                    head.forEach(th => { if (th.textContent == "Ficha") { th.style.display = "none" } })
-                    if (cell.classList.contains("ficha")) { cell.style.display = "none" }
-                    break;
-
-                case Visitante:
-                    head.forEach(th => { if (th.textContent == "Ficha" || th.textContent == "Centro") { th.style.display = "none" } })
-                    if (cell.classList.contains("ficha") || cell.classList.contains("centro")) { cell.style.display = "none" }
-                    break;
-
-                default:
-                    head.forEach(th => { th.style.display = "" }) //Mostrar todas las celdas de la cabecera
-                    cell.style.display = ""
-                    break;
-            }
-        });
-
-        //Ocultar si el rol es diferente al rol del boton
-        if (rolCell != rol) {
-            row.style.display = "none"
-        } else {
-            row.style.display = ""
-        }
-
-    });
-
-}
-
-//=====================================================================================================
-//Funcion para buscar datos en una tabla
-export function searchTable(input, table) {
-
-    input.addEventListener("input", () => {
-
-        const icon = document.querySelector(".search-delete")
-        if (input.value != "") {
-            icon.style.display = "block";
-            icon.addEventListener("click", () => {
-                input.value = "";
-                rows.forEach(row => {
-                    row.classList.remove("d-none")
-                });
-                icon.style.display = "none";
-            })
-        } else {
-            icon.style.display = "none";
-        }
-
-        const search = input.value.toLowerCase();
-        const rows = table.querySelectorAll("tbody tr:not([style*='display: none'])")
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll("td")
-            let showRow = false
-
-            cells.forEach(cell => {
-                const cellText = cell.textContent.toLowerCase();
-                if (cellText.indexOf(search) > -1) {
-                    showRow = true;
-                }
-            })
-
-            if (showRow != true) {
-                row.classList.add("d-none")
-            } else {
-                row.classList.remove("d-none")
-            }
-
-        })
-
-    })
-}

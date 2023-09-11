@@ -15,15 +15,18 @@
         </header>
         <div class="card-body">
             <ul>
+                <!-- Modulo 1 -->
                 <li class="col">
-                    <a role="button" href="{% url 'module1' %}">
-                        <img src="{% static 'assets/icons/log-in.png'%}">
+                    <a class="module" data-module="module1" role="button" href="{% url 'module1' %}">
+                        <img src="{% static 'assets/icons/log-in-green.png'%}">
                         <span >Principal</span>
                     </a>
                 </li>
+
+                <!-- Modulo 2 -->
                 <li class="col">
-                    <a role="button" href="{% url 'module2' %}">
-                        <img src="{% static 'assets/icons/dispositivo.png'%}">                    
+                    <a class="module" data-module="module2" role="button" href="{% url 'module2' %}">
+                        <img src="{% static 'assets/icons/devices.png'%}">                    
                         <span>Registros</span>
                     </a>
                 </li>

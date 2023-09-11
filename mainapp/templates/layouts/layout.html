@@ -44,7 +44,10 @@
     </div>
 
     <header class="layout">
-        <h1 class="header-title">SENA</h1>
+        <div class="header-title">
+            <h1>SENA</h1>
+            <p class="header-title-module"></p>
+        </div>
         <div class="dropdown">
             <button class="btn btn-green2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               Opciones
@@ -83,11 +86,11 @@
     <!-- Select con busqueda -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> 
     <!--Mi Script-->
-    <script src="{% static 'js/script.js' %}"></script>
     <script src="{% static 'mainapp/js/mainapp.js' %}"></script>
     <script src="{% static 'module1/js/module1.js' %}"></script>
     <script src="{% static 'module2/js/module2.js' %}"></script>
     <script src="{% static 'admin/js/admin.js' %}"></script>
+    <script type="module" src="{% static 'js/script.js' %}"></script>
     <script>
     //Select con busqueda
     $( '#single-select-field' ).select2( {

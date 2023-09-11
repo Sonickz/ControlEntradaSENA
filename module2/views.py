@@ -22,10 +22,18 @@ def index(request):
         
         try:
             user = get_object_or_404(Usuarios, documento=code)
+            vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
+            dispositivos = Dispositivos.objects.filter(usuario=user.idusuario)
+            
+             #Si el usuario tiene un ingreso activo, hacer salida
+            salida = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
 
             return render(request, 'SecondaryModule.html', {
                 'title': user,
                 'users': user,
+                'vehicles': vehiculos,
+                'dispositivos': dispositivos,
+                'salida': salida,
             })
         except Http404:
             return redirect('registeruser', code=code)

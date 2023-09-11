@@ -5,11 +5,11 @@
     --hovercolorclare: rgba(202, 255, 182, 0.144);
     --text-color: rgba(140, 223, 120, 1);
     --header-height: 70px;
-    /*Admin*/
+    /*Root Admin*/
     --width: 250px;
     --padding: 10px;
     --width-collapsed: 50px;
-    --gradient: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 100%);   
+    --gradient: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 100%);
     --menu-transition: all .5s ease;
 }
 
@@ -55,7 +55,6 @@ main {
 */
 header.layout {
     background-color: var(--bgcolor);
-    
     width: 100%;
     height: var(--header-height);
     display: flex;
@@ -65,8 +64,22 @@ header.layout {
     justify-content: space-between;
     color: white;
 
-    .header-title{
+    .header-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         font-family: 'ZurichBlack', Helvetica, sans-serif;
+    }
+
+    .header-title h1 {
+        margin-right: 10px;
+    }
+
+    .header-title p {
+        margin: 0;
+        font-style: italic;
+        color: var(--text-color);
+        font-size: 25px
     }
 
 }
@@ -330,11 +343,7 @@ header.layout {
     color: white !important;
 }
 
-.btn-rounded {
-    border-radius: 20px;
-    width: 140px;
-}
-
+/* Boton verde V2 */
 .btn-green2 {
     background-color: white;
     color: var(--bgcolor-clare);
@@ -355,10 +364,10 @@ header.layout {
 /* OTROS */
 
 /* Boton verde - atras */
-.back-button {
-    position: absolute;
-    left: 70px;
+.back-button {    
     color: var(--text-color);
+    position: absolute;
+    left: 60px;
 }
 
 .back-button:hover {
@@ -387,24 +396,23 @@ header.layout {
     color: white;
 }
 
+/* Alerta */
 .alert {
     margin-bottom: 20px;
 }
 
-
-/* CARD ESCANEO */
-
-/* GENERALES */
+/* Header de article */
 article header .header-title {
     text-align: center;
     color: var(--text-color);
     font-weight: bolder;
 }
 
+/*============================================= CARDS ===============================================*/
 
-/* REGISTRO - ELECCION TIPO */
-
-
+/* 
+    CARD DE ELECCION 
+*/
 .card-select .card {
     width: 80%;
 }
@@ -427,39 +435,42 @@ article header .header-title {
     color: var(--text-color);
 }
 
+/* Imagen */
 .card-select .card-body a img {
-    width: 50%;
+    width: 45%;
+    margin-bottom: 10px;
 }
 
+/* Texto */
 .card-select .card-body a span {
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1.9rem;
 }
 
-/* REGISTRO - FORMULARIO */
-#ingreso.register .card {
+
+/* 
+    CARD DE FORMULARIO 
+*/
+.card-form .card {
     width: 70%;
 }
 
-#ingreso.form .card .card-body form {
+.card-form .card .card-body form {
     width: 90%;
 }
 
 
-/* ESCANEO CARNET */
-
-/* Modal botones ingreso/salida */
-#ingreso.scan .btn-zone .modal-dialog {
-    max-width: 90%;
-}
+/* 
+    CARD SCAN
+ */
 
 /* Card escaneo */
-#ingreso.scan .card {
+.card-scan .card {
     width: 35%;
 }
 
 /* Card escaneo: Seccion escaneo */
-#ingreso.scan .card .card-code {
+.card-scan .card .card-code {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -470,14 +481,14 @@ article header .header-title {
     width: 80%;
 }
 
-#ingreso.scan .card .card-code img {
+.card-scan .card .card-code img {
     width: 15%;
     opacity: .5;
     position: absolute;
 }
 
 /* Card escaneo: Barra scan */
-#ingreso.scan .card .card-barra {
+.card-scan .card .card-barra {
     width: 80%;
     height: 7px;
     background-color: #8cdf78;
@@ -507,13 +518,13 @@ article header .header-title {
 /* Card footer */
 
 /* Card escaneo: Form */
-#ingreso.scan .card .card-footer form {
+.card-scan .card .card-footer form {
     width: 100%;
     margin: 0 15px;
 }
 
 /* Card escaneo: input */
-#ingreso.scan .card .card-footer input {
+.card-scan .card .card-footer input {
     width: 100%;
     height: 20px;
     border: 1px solid var(--bgcolor-clare);
@@ -521,11 +532,11 @@ article header .header-title {
     padding: 15px;
 }
 
-#ingreso.scan .card .card-footer input:hover {
+.card-scan .card .card-footer input:hover {
     border: 1px solid var(--bgcolor);
 }
 
-#ingreso.scan .card .card-footer input:focus {
+.card-scan .card .card-footer input:focus {
     box-shadow: 0 0 0 0.25rem rgb(127 255 116 / 25%);
 }
 
@@ -533,4 +544,138 @@ article header .header-title {
 .smallCamera {
     width: 12%;
     padding: 0 5px;
+}
+
+/* 
+    CARD PARA ELEMENTOS 
+*/
+.card-select-elements .card .card-header .card-header-element .btn {
+    border: 2px solid #ddd;
+    background-color: white;
+    color: var(--bgcolor-clare);
+}
+
+.card-select-elements .card .card-header .card-header-element .btn:hover {
+    border: 2px solid var(--bgcolor-clare);
+    background-color: var(--bgcolor-clare);
+    color: white;
+}
+
+/* Select vehiculo y dispositivos */
+.card-select-elements .card .select-form {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+}
+
+/* SELECT CERRADO */
+.card-select-elements .card .select-form .select-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 55px;
+    padding: 0 20px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    box-shadow: 0 5px 10px rgb(0 0 0 / 25%);
+    background-color: #fff;
+}
+
+/* Select texto */
+.card-select-elements .card .select-form .select-btn .btn-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Select cerrado: Flecha abajo */
+.card-select-elements .card .select-form .select-btn .arrow-dwn {
+    display: flex;
+    height: 21px;
+    width: 21px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 50%;
+    background: var(--bgcolor-clare);
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+/* Select lista */
+.card-select-elements .card .select-form .list-items {
+    display: none;
+    position: relative;
+    margin-top: 15px;
+    padding: 16px;
+    border: 1px solid rgba(221, 221, 221, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+/* SELECT ABIERTO */
+
+/* Select abierto: Flecha arriba*/
+.card-select-elements .card .select-form .select-btn.open .arrow-dwn {
+    transform: rotate(-180deg);
+}
+
+/* Select lista abierta */
+.card-select-elements .card .select-form .select-btn.open~.list-items {
+    display: block;
+}
+
+/* Items */
+.card-select-elements .card .select-form .list-items .item {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    height: 50px;
+    padding: 0 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card-select-elements .card .select-form .list-items .item:hover {
+    background-color: rgba(126, 241, 98, 0.2);
+}
+
+.card-select-elements .card .select-form .list-items .item-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Item checkbox */
+.card-select-elements .card .select-form .item .checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    margin-right: 12px;
+    border: 1.5px solid #c0c0c0;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-select-elements .card .select-form .checkbox .check-icon {
+    color: #fff;
+    font-size: 11px;
+    transform: scale(0);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Cuando tiene check */
+.card-select-elements .card .select-form .item.checked .checkbox {
+    background-color: var(--bgcolor);
+    border-color: var(--bgcolor);
+}
+
+.card-select-elements .card .select-form .item.checked .check-icon {
+    transform: scale(1);
 }

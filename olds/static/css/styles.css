@@ -569,13 +569,13 @@ header.layout .header-admin img {
     font-weight: bold;
 }
 
-#ingreso.consulta .card .card-header .card-header-element .btn {
+#ingreso .card .card-header .card-header-element .btn {
     border: 2px solid #ddd;
     background-color: white;
     color: var(--bgcolor-clare);
 }
 
-#ingreso.consulta .card .card-header .card-header-element .btn:hover {
+#ingreso .card .card-header .card-header-element .btn:hover {
     border: 2px solid var(--bgcolor-clare);
     background-color: var(--bgcolor-clare);
     color: white;

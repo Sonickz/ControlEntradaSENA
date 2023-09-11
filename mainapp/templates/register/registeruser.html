@@ -6,18 +6,18 @@
 
 <!-- VISTA: Elegir rol -->
 {% if not rol %}
-<article id="ingreso" class="card-select">
+<article id="register-user" class="card-select">
     <header>
         <h1 class="header-title">Nuevo usuario</h1>
     </header>
     <section class="card">
-        <header class="card-header">
-            <h1 class="card-title">Rol</h1>
+        <header class="card-header">            
             <a class="back-button" href="#" role="button" onclick="goBack()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                  </svg>
+                </svg>
             </a>
+            <h1 class="card-title">Rol</h1>
         </header>
         <div class="card-body">
             <ul>
@@ -39,6 +39,12 @@
                         <span>Visitante</span>
                     </a>
                 </li>
+                <li class="col">
+                    <a role="button" href="?rol=4">
+                        <img src="{% static "assets/icons/roles/funcionario.png" %}" alt="">
+                        <span>Funcionario</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </section>
@@ -46,17 +52,11 @@
 
 <!-- VISTA: Formulario-->
 {% else %}
-<article id="ingreso" class="register form register-user">
+<article id="register-user" class="card-form">
     <section class="card">
         <header class="card-header">
             <h1 class="card-title">
-                {% if rol == "1" %}
-                    Registrar Instructor
-                {% elif rol == "2" %}
-                    Registrar Aprendiz
-                {% elif rol == "3" %}
-                    Registrar Visitante
-                {% endif %}
+                Registrar {{rol_selected}}
             </h1>
             <a class="back-button" href="#" role="button" onclick="goBack()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -124,6 +124,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col">
+                        <label>{{form.centro.label}}</label>
                         {{form.centro}}
                     </div>
                     <div class="col">
@@ -154,6 +155,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col">
+                        <label>{{form.centro.label}}</label>
                         {{form.centro}}
                     </div>
                     <div class="col">

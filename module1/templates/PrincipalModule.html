@@ -4,9 +4,9 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block content %}
-<article id="ingreso" class="scan">
+<article id="ingreso" class="card-scan">
 
-    <!-- Alerta despues de registro -->
+    <!-- Alerta -->
     <div class="Alert d-none" data-status="{% if messages %}{% for message in messages %}{{message}}{% endfor %}{% endif %}"></div>
 
     <!-- Card escaneo -->
@@ -23,7 +23,7 @@
         <div class="card-footer">
             <form method="post" id="code-form">
             {% csrf_token %}
-                <input id="code-input" class="form-control onlynumbers" type="text" name="code" onkeypress="return valideNumber(event)" maxlength="10" minlength="6" autocomplete="off" autofocus required>
+                <input id="code-input" class="form-control onlynumbers" type="text" name="code" maxlength="10" minlength="6" autocomplete="off" autofocus required>
             </form>
             <!-- Boton enter -->
             <button class="btn btn-green" type="button" id="btn-send">
