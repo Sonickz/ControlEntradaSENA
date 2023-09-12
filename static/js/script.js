@@ -1,38 +1,44 @@
-import { actualModule, valideNumber, goBack, Exists, successAlert, Upper } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments } from './functions.js'
 
 //Modulo actual
 actualModule();
 
 //Solo numeros
 const onlyNumbers = document.querySelectorAll(".onlynumbers")
-if (Exists(onlyNumbers)) {
-  onlyNumbers.forEach(input => {
-    input.addEventListener("keypress", () => {
-      if (!valideNumber(event)) {
-        event.preventDefault();
-      }
-    })
-  });
-}
+applyFunctions(onlyNumbers, "keypress", () => {
+  if (!valideNumber(event)) {
+    event.preventDefault();
+  }
+})
 
 //Ir a la pestaña anterior
 const backArrow = document.querySelector(".back-button")
 if (Exists(backArrow)) {
-  backArrow.addEventListener("click", () => {
-    goBack();
-  })
+  applyFunctions([backArrow], "click", goBack)
 }
 
 //Upper
 const upperInputs = document.querySelectorAll(".upper")
-console.log(upperInputs)
-if (Exists(upperInputs)) {
-  upperInputs.forEach(input =>{    
-    input.addEventListener("input", ()=>{
-      Upper(input);
-    })
+applyFunctionsArguments(upperInputs, "input", Upper)
+
+//BOTON ENVIAR
+const codeInput = document.getElementById("code-input");
+const btnSend = document.getElementById('btn-send');
+const codeForm = document.getElementById("code-form")
+if (Exists(btnSend) && (codeInput)) {
+  codeInput.addEventListener("input", () => {
+    let inputValue = codeInput.value
+    if (inputValue.length >= 6) {
+      btnSend.addEventListener('click', () => {
+        codeForm.submit();
+      });
+    }
   })
 }
+
+//SELECTS
+const selects = document.querySelectorAll(".select-btn")
+applyFunctionsArguments(selects, "click", openSelect)
 
 //Alerta 
 const Alert = document.querySelector('.Alert');
@@ -56,6 +62,7 @@ if (Exists(Alert)) {
       break;
   }
 }
+
 
 //TECLADO TOTEM
 
@@ -217,22 +224,6 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 
 }
 
-//BOTON ENVIAR
-const codeInput = document.getElementById("code-input");
-const btnSend = document.getElementById('btn-send');
-const codeForm = document.getElementById("code-form")
-
-if (Exists(btnSend) && (codeInput)) {
-  codeInput.addEventListener("input", () => {
-    let inputValue = codeInput.value
-    if (inputValue.length >= 6) {
-      btnSend.addEventListener('click', () => {
-        codeForm.submit();
-      });
-    }
-  })
-}
-
 
 //CAMARA
 
@@ -337,59 +328,50 @@ if (Exists(camaraModal)) {
 
 
 //SELECT DISPOSITIVOS Y VEHICULOS
-function openSelect(btn) {
-  btn.classList.toggle("open");
-}
+if (Exists(selects)) {
 
-//Form de vehiculo y dispositivos
-const vehicleInput = document.getElementById('vehicle');
-const devicesInput = document.getElementById('devices');
+  //DISPOSITIVOS
+  const devicesInput = document.getElementById('devices');
+  const deviceItems = document.querySelectorAll(".item-device");
+  const btnText = document.querySelector(".device .btn-text");
+  let selectedCount = 0;
 
-//Seleccionar dispositivos
-const deviceItems = document.querySelectorAll(".item-device");
-//Texto select dispositivos
-const btnText = document.querySelector(".device .btn-text");
+  applyFunctionsArguments(deviceItems, "click", (item) => {
+    if (item.classList.contains("checked") || selectedCount < 3) {
+      item.classList.toggle("checked");
+      //Actualizar contador
+      selectedCount = document.querySelectorAll(".item-device.checked").length;
+      // Obtener todos los elementos con la clase 'checked'
+      const checkedItems = document.querySelectorAll(".item-device.checked");
+      // Obtener los valores de los elementos con la clase 'checked'
+      const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
+      // Asignar los valores al campo de entrada oculto
+      devicesInput.value = valuesChecks.join(",");
 
-//Iterar sobre cada dispositivo
-deviceItems.forEach(item => {
-
-  item.addEventListener("click", () => {
-    // Cambiar el estado de la clase 'checked' del elemento clicado
-    item.classList.toggle("checked");
-
-    // Obtener todos los elementos con la clase 'checked'
-    const checkedItems = document.querySelectorAll(".item-device.checked");
-    // Obtener los valores de los elementos con la clase 'checked'
-    const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
-
-    // Asignar los valores al campo de entrada oculto
-    devicesInput.value = valuesChecks.join(",");
-
-    // Cambiar el texto del select segun la cantidad de dispositivos seleccionados
-    if (checkedItems && checkedItems.length > 1) {
-      btnText.innerText = `${checkedItems.length} Seleccionados`;
-    } else if (checkedItems && checkedItems.length > 0) {
-      btnText.innerText = checkedItems[0].innerText;
-    } else {
-      btnText.innerText = "Seleccionar Dispositivos";
+      // Cambiar el texto del select segun la cantidad de dispositivos seleccionados
+      if (checkedItems && checkedItems.length > 1) {
+        btnText.innerText = `${checkedItems.length} Seleccionados`;
+      } else if (checkedItems && checkedItems.length > 0) {
+        btnText.innerText = checkedItems[0].innerText;
+      } else {
+        btnText.innerText = "Seleccionar Dispositivos";
+      }
     }
-  });
-})
+  })
 
-//Seleccionar vehiculos
-const vehicleItems = document.querySelectorAll(".item-vehicle");
-const btnTextVehicle = document.querySelector(".vehicle .btn-text");
+  //VEHICULOS
 
-vehicleItems.forEach(item => {
-  item.addEventListener("click", () => {
-    if (item.classList.contains("checked")) {
-      item.classList.remove("checked");
-    } else {
-      // Remover la clase 'checked' de todos los elementos
-      vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
-      // Agregar la clase 'checked' al elemento clicado
-      item.classList.add("checked");
-    }
+  //Seleccionar vehiculos
+  const vehicleInput = document.getElementById('vehicle');
+  const vehicleItems = document.querySelectorAll(".item-vehicle");
+  const btnTextVehicle = document.querySelector(".vehicle .btn-text");
+
+  applyFunctionsArguments(vehicleItems, "click", (item) => {
+
+    item.classList.add("checked");
+    // Remover la clase 'checked' de todos los elementos
+    vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
+    // Agregar la clase 'checked' al elemento clicado        
 
     // Buscar el elemento clicado con la clase 'checked'
     const checkedItem = document.querySelector(".item-vehicle.checked");
@@ -404,6 +386,7 @@ vehicleItems.forEach(item => {
       btnTextVehicle.innerText = "Seleccionar Vehiculo";
       vehicleInput.value = "";
     }
-  });
-});
+  })
+
+}
 

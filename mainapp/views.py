@@ -3,6 +3,7 @@ from django.urls import reverse
 from administrator.models import *
 from administrator.forms import *
 from django.contrib import messages
+from django.http import JsonResponse, HttpResponseRedirect
 
 #Inicio
 def index(request):
@@ -45,4 +46,69 @@ def registeruser(request, code):
         'rol': rol,
         'rol_selected': rol_selected,
         'form': form
+    })
+
+#===================================================================================================
+
+#Registrar vehiculo
+def registervehicle(request, code):
+    users = Usuarios.objects.get(documento=code)
+    #Tipo vehiculo
+    vehicle = request.GET.get('vehicle')
+    type = request.GET.get('type')
+
+    if type:
+         options = VehiculosMarca.objects.filter(tipo=type)
+         options_list = [{'id': option.idmarcavehiculo, 'marca': option.nombre} for option in options]
+         return JsonResponse({'options': options_list})
+
+    #Tipo vehiculo y usuario predeterminados
+    initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
+
+    form = RegisterVehicle(request.POST or None, request.FILES or None, initial=initial_data)
+
+    form.fields['placa'].required = vehicle != "3"
+    form.fields['modelo'].required = vehicle != "3"
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        redirect = reverse("module2") + f"?code={code}"
+        messages.info(request, "success-vehicle")
+        return HttpResponseRedirect(redirect)
+
+    return render(request, 'register/registervehicle.html',{
+        'title': 'Registrar Vehiculo',
+        'vehicle': vehicle,
+        'form': form,
+        'users': users
+    })
+
+#===================================================================================================
+
+#Registrar dispositivo
+def registerdevice(request, code):
+    doc = request.GET.get('doc')
+    users = Usuarios.objects.get(documento=code)
+    
+    selectedType = request.GET.get("selectedType")
+    if selectedType:
+        options = DispositivosMarca.objects.filter(tipo=selectedType)   
+        option_list = [{'id': option.idmarcadispositivo, 'marca': option.nombre} for option in options]
+        return JsonResponse({'options': option_list})
+    
+    
+    initial_data = {'usuario': users.idusuario}
+    form = RegisterDevice(request.POST or None, request.FILES or None, initial=initial_data)
+    form.fields['documento'].required = bool(doc)
+    
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        redirect = reverse("module2") + f"?code={code}"
+        messages.info(request, "success-device")
+        return HttpResponseRedirect(redirect)
+
+    return render(request, 'register/registerdevice.html',{
+        'title': 'Registrar Dispositivo',
+        'form': form,
+        'doc': doc
     })

@@ -113,8 +113,8 @@ class RegisterVehicle(ModelForm):
 
     #Campos
     usuario = forms.ModelChoiceField(queryset=Usuarios.objects.all(), widget=forms.HiddenInput(attrs={'readonly': True}), label="")
-    tipo = forms.ModelChoiceField(queryset=VehiculosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), label="", empty_label="Tipo de vehiculo", disabled=True)
-    placa = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 6, 'autofocus': True, 'onkeyup': 'Upper(this)'}))
+    tipo = forms.ModelChoiceField(queryset=VehiculosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select tipo-vehiculo'}), label="", empty_label="Tipo de vehiculo", disabled=True)
+    placa = forms.CharField(widget=forms.TextInput(attrs={'class':'upper', 'maxlength': 6, 'autofocus': True}))
     marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-vehiculo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     modelo = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}), label="", choices=YEAR_CHOICES)
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)

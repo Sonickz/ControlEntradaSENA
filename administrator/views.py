@@ -61,7 +61,7 @@ def access(request):
 @login_required(login_url="admin")
 def users(request):
     model = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
-    paginator = Paginator(model, 10)  # Paginator // Mostrar 10 usuarios por pagina
+    paginator = Paginator(model, 100)  # Paginator // Mostrar 10 usuarios por pagina
     page = request.GET.get('page') # Pagina actual
     users = paginator.get_page(page) # Enviar el paginator y detectar la actual
 

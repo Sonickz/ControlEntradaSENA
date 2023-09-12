@@ -1,6 +1,26 @@
 //=====================================================================================================
 //FUNCIONES GENERALES
 
+//Funcion para aplicar funciones
+export function applyFunctions(elements, event, callback) {
+    if (Exists(elements)) {
+        elements.forEach(element => {
+            element.addEventListener(event, callback)
+        })
+    }
+}
+
+//Funcion para aplicar funciones con argumentos
+export function applyFunctionsArguments(elements, event, callback) {
+    if (Exists(elements)) {
+        elements.forEach(element => {
+            element.addEventListener(event, ()=>{
+                callback(element)
+            })
+        })
+    }
+}
+
 //Funcion para validar existencia del elemento
 export function Exists(element) {
     return element !== null && typeof element === 'object';
@@ -47,6 +67,11 @@ export function goBack() {
     window.history.back();
 }
 
+//Abrir select
+export function openSelect(btn) {
+    btn.classList.toggle("open");
+}
+
 //Funcion Alerta SweetAlert
 export function successAlert(title, text) {
     Swal.fire({
@@ -54,7 +79,7 @@ export function successAlert(title, text) {
         title: title,
         text: text,
         showConfirmButton: false,
-        timer: 2000
+        timer: 1000
     })
 }
 

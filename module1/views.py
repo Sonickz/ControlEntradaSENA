@@ -1,19 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from administrator.models import *
 from administrator.forms import *
-from django.http import JsonResponse
-from django.http import HttpResponse
 from django.contrib import messages
 from django.http import Http404
-from django.db.models import Subquery
 #Fecha y hora
 from datetime import datetime 
-from openpyxl import Workbook #Generar archivos excel
-from io import BytesIO
-from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 
-
-
+#Modulo1
 def index(request):
 
     #Si se envia un formulario
