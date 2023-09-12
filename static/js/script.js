@@ -1,4 +1,4 @@
-import { actualModule, valideNumber, Upper, goBack, Exists, successAlert } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper } from './functions.js'
 
 //Modulo actual
 actualModule();
@@ -20,6 +20,17 @@ const backArrow = document.querySelector(".back-button")
 if (Exists(backArrow)) {
   backArrow.addEventListener("click", () => {
     goBack();
+  })
+}
+
+//Upper
+const upperInputs = document.querySelectorAll(".upper")
+console.log(upperInputs)
+if (Exists(upperInputs)) {
+  upperInputs.forEach(input =>{    
+    input.addEventListener("input", ()=>{
+      Upper(input);
+    })
   })
 }
 

@@ -45,18 +45,18 @@ export function Upper(input) {
 //Volver atras
 export function goBack() {
     window.history.back();
-  }
+}
 
 //Funcion Alerta SweetAlert
 export function successAlert(title, text) {
     Swal.fire({
-      icon: 'success',
-      title: title,
-      text: text,
-      showConfirmButton: false,
-      timer: 2000
+        icon: 'success',
+        title: title,
+        text: text,
+        showConfirmButton: false,
+        timer: 2000
     })
-  }
+}
 
 //=====================================================================================================
 

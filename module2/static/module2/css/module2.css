@@ -26,3 +26,6 @@
     font-weight: bold;
     color: var(--text-color);
 }
+#module2 .select img{
+    width: 45%;
+}

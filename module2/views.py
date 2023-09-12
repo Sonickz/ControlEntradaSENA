@@ -8,8 +8,6 @@ from django.http import Http404
 from django.db.models import Subquery
 #Fecha y hora
 from datetime import datetime 
-date = datetime.now().strftime("%Y-%m-%d")
-hour = datetime.now().strftime("%H:%M:%S")
 from openpyxl import Workbook #Generar archivos excel
 from io import BytesIO
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
@@ -25,6 +23,8 @@ def index(request):
             vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
             dispositivos = Dispositivos.objects.filter(usuario=user.idusuario)
             
+            date = datetime.now().strftime("%Y-%m-%d")
+            hour = datetime.now().strftime("%H:%M:%S")
              #Si el usuario tiene un ingreso activo, hacer salida
             salida = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')).first() or None
 

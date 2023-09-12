@@ -70,7 +70,7 @@ class RegisterDevice(ModelForm):
 
     #Campos
     usuario = forms.ModelChoiceField(queryset=Usuarios.objects.all(), widget=forms.HiddenInput())
-    sn = forms.CharField(widget=forms.TextInput(attrs={'maxlength': 50, 'onkeyup': 'Upper(this)'}), label="Serial Number")
+    sn = forms.CharField(widget=forms.TextInput(attrs={'class': 'upper', 'maxlength': 50}), label="Serial Number")
     tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select tipo-dispositivo'}), label="", empty_label="Tipo de dispositivo")
     marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-dispositivo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}))
