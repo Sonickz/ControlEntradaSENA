@@ -30,7 +30,7 @@ def index(request):
             return render(request, 'SecondaryModule.html', {
                 'title': user,
                 'users': user,
-                'vehicles': vehiculos,
+                'vehiculos': vehiculos,
                 'dispositivos': dispositivos,
                 'salida': salida,
             })

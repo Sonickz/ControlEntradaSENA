@@ -5,6 +5,9 @@ from administrator.forms import *
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponseRedirect
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 #Inicio
 def index(request):
 
@@ -52,16 +55,17 @@ def registeruser(request, code):
 
 #Registrar vehiculo
 def registervehicle(request, code):
+    url = request.GET.get('url')
     users = Usuarios.objects.get(documento=code)
     #Tipo vehiculo
     vehicle = request.GET.get('vehicle')
     type = request.GET.get('type')
-
+    
     if type:
-         options = VehiculosMarca.objects.filter(tipo=type)
-         options_list = [{'id': option.idmarcavehiculo, 'marca': option.nombre} for option in options]
-         return JsonResponse({'options': options_list})
-
+        options = VehiculosMarca.objects.filter(tipo=type)        
+        options_list = [{'id': option.idmarcavehiculo, 'marca': option.nombre} for option in options]        
+        return JsonResponse({'options': options_list})
+    
     #Tipo vehiculo y usuario predeterminados
     initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
 
@@ -71,16 +75,20 @@ def registervehicle(request, code):
     form.fields['modelo'].required = vehicle != "3"
 
     if request.method == 'POST' and form.is_valid():
-        form.save()
-        redirect = reverse("module2") + f"?code={code}"
+        form.save()        
         messages.info(request, "success-vehicle")
-        return HttpResponseRedirect(redirect)
+        if url == "module2":
+            url = reverse("module2") + f"?code={code}"
+            return HttpResponseRedirect(url)
+        elif url == "module3":
+            return HttpResponseRedirect(url)
 
     return render(request, 'register/registervehicle.html',{
         'title': 'Registrar Vehiculo',
         'vehicle': vehicle,
         'form': form,
-        'users': users
+        'users': users, 
+        'url': url
     })
 
 #===================================================================================================

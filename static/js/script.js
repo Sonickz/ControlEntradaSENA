@@ -367,18 +367,19 @@ if (Exists(selects)) {
   const btnTextVehicle = document.querySelector(".vehicle .btn-text");
 
   applyFunctionsArguments(vehicleItems, "click", (item) => {
-
-    item.classList.add("checked");
-    // Remover la clase 'checked' de todos los elementos
-    vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
+    if (!item.classList.contains("checked")) {
+      // Remover la clase 'checked' de todos los elementos
+      vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
+    }
     // Agregar la clase 'checked' al elemento clicado        
-
+    item.classList.toggle("checked");    
     // Buscar el elemento clicado con la clase 'checked'
     const checkedItem = document.querySelector(".item-vehicle.checked");
 
     if (checkedItem) {
       // Actualizar el valor y el texto basados en el elemento seleccionado
       const valueCheck = checkedItem.getAttribute("value");
+      
       vehicleInput.value = valueCheck;
       btnTextVehicle.innerText = checkedItem.innerText;
     } else {
