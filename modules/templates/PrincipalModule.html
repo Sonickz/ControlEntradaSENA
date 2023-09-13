@@ -1,0 +1,14 @@
+{% extends 'layouts/layout.html'%}
+{% load static %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+<article id="ingreso" class="card-scan">
+    <!-- Alerta -->
+    {% include 'layouts/components/Alert.html' %}
+    <!-- Card escaneo -->
+    {% include 'layouts/components/CardScanPost.html' %}
+
+</article>
+{% endblock %}

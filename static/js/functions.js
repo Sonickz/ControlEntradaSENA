@@ -31,12 +31,15 @@ export function actualModule() {
     const url = window.location.href
     const module1 = "module1"
     const module2 = "module2"
+    const module3 = "module3"
     const headerTextModule = document.querySelector(".header-title-module")
 
     if (url.includes(module1)) {
         headerTextModule.innerHTML = "Modulo 1>";
     } else if (url.includes(module2)) {
         headerTextModule.innerHTML = "Modulo 2>";
+    } else if (url.includes(module3)){
+        headerTextModule.innerHTML = "Modulo 3>";
     }
 }
 

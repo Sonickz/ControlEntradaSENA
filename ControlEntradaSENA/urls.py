@@ -21,6 +21,5 @@ urlpatterns = [
     path("admin2/", admin.site.urls),
     path("", include("mainapp.urls")),
     path("", include("administrator.urls")),
-    path("", include("module1.urls")),
-    path("", include("module2.urls"))
+    path("", include("modules.urls"))
 ]

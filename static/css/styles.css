@@ -546,6 +546,7 @@ article header .header-title {
     padding: 0 5px;
 }
 
+
 /* 
     CARD PARA ELEMENTOS 
 */
@@ -559,6 +560,40 @@ article header .header-title {
     border: 2px solid var(--bgcolor-clare);
     background-color: var(--bgcolor-clare);
     color: white;
+}
+
+/* card header */
+.card-select-elements .card .card-header{
+    justify-content: space-between;
+}
+
+/* card body */
+.card-select-elements .card .card-body{
+    margin: 80px 0;
+}
+
+.card-select-elements .back-button{
+    position: static;
+}
+
+.card-select-elements .accept{
+    width: 25%;
+}
+
+.card-select-elements .select .col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-select-elements .select label{
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+.card-select-elements .select img{
+    width: 45%;
 }
 
 /* Select vehiculo y dispositivos */
@@ -679,3 +714,4 @@ article header .header-title {
 .card-select-elements .card .select-form .item.checked .check-icon {
     transform: scale(1);
 }
+

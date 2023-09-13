@@ -16,11 +16,11 @@ class RegisterUser(ModelForm):
         fields = "__all__"
 
     #Campos
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class': 'upper', 'maxlength': '50', 'autofocus': True}))
+    nombres = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50'}))
     tipodocumento = forms.ModelChoiceField(queryset=DocumentoTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Tipo de documento", label="")
     documento = forms.CharField(widget=forms.TextInput(attrs={'onkeypress': 'return valideNumber(event)', 'readonly': True}))
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '10', 'onkeypress': 'return valideNumber(event)'}))
+    telefono = forms.CharField(widget=forms.TextInput(attrs={'class': 'onlynumbers', 'maxlength': '10'}))
     correo = forms.EmailField(widget=forms.TextInput(attrs={'maxlength': '50'}))
     centro = forms.ModelChoiceField(queryset=Centros.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Centro", label="Centro")
     rol = forms.ModelChoiceField(queryset=Roles.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'disabled': True}), empty_label="Rol", label="Rol")
