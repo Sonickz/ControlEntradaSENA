@@ -224,9 +224,7 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 
 }
 
-
 //CAMARA
-
 // Obtener referencia al elemento de video y al canvas
 const camaraModal = document.getElementById('camaraModal');
 if (Exists(camaraModal)) {
@@ -326,7 +324,6 @@ if (Exists(camaraModal)) {
   }
 }
 
-
 //SELECT DISPOSITIVOS Y VEHICULOS
 if (Exists(selects)) {
 
@@ -360,11 +357,6 @@ if (Exists(selects)) {
       }
     }
   })
-
-
-
-
-
 
 
   //VEHICULOS

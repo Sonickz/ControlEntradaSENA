@@ -7,6 +7,7 @@ from mainapp.views import actualUrl, AccessOrExit, getUser
 #Modulo1
 def module1(request):
 
+    actualUrl(request)
     #Si se envia un formulario
     if request.method == 'POST':
         code = request.POST.get('code')

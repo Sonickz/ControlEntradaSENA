@@ -1,4 +1,4 @@
-{% extends 'layouts/admin_base.html' %}
+{% extends 'layouts/admin_base_access.html' %}
 {% load static %}
 
 {% block title %} {{title}} {% endblock %}
@@ -6,15 +6,14 @@
 {% block card_title %} {{title}} {% endblock %}
 {% block card_register_btn %} Registrar {{title}} {% endblock %}
 
-
 {% block card_table %}
 
 <div class="btn-change-table access">
-    <button type="button" class="btn btn-green2 btn-green2-active" data-id="1">Ingresos activos</button>    
-    <button type="button" class="btn btn-green2" data-id="2">Ingresos y salidas</button>    
+    <button type="button" class="btn btn-green2 btn-green2-active" data-table="1">Ingresos activos</button>    
+    <button type="button" class="btn btn-green2" data-table="2">Ingresos y salidas</button>    
   </div>
 
-<div class="access table-container table-1">
+<div class="access table-container table-1" data-table="1">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -44,7 +43,7 @@
   </table>
 </div>
 
-<div class="access table-container table-2 table-animation d-none">
+<div class="access table-container table-2 d-none" data-table="2">
     <table class="table table-striped">
       <thead>
         <tr>

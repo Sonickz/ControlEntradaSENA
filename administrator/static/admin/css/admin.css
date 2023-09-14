@@ -242,6 +242,15 @@ body.admin main {
     justify-content: space-between;
 }
 
+#admin .card .card-main .card-header.access{
+    justify-content: center;
+}
+
+#admin .card .card-main .card-header .report.access{
+    position: absolute;
+    left: 20px;
+}
+
 #admin .card .card-body {
     margin: 10px 0;
 }

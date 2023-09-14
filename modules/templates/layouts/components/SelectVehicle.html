@@ -1,0 +1,43 @@
+{% load static %}
+<div class="col">
+    <img src="{% static 'assets/icons/vehicles2.png' %}">
+    <label for="names">Vehiculos</label>  
+    {% if ingreso %}      
+    <!-- Zona select -->                    
+        <div class="select-form vehicle">
+            <!-- Select -->
+            <div class="select-btn open">
+                <span class="btn-text">{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</span>
+            </div>      
+            <!-- Item -->                
+            <input type="hidden" class="item-selected" value="{{ingreso.vehiculo.idvehiculo}}">
+        </div> 
+    {% else %}
+    <!-- Zona select -->  
+    <div class="select-form vehicle">
+        <!-- Select -->
+        <div class="select-btn open">
+            <span class="btn-text">Seleccionar Vehiculo</span>
+            <span class="arrow-dwn">
+                <i class="fa-solid fa-chevron-down"></i>
+            </span>
+        </div>     
+        <!-- Lista -->                   
+        <ul class="list-items">
+            {% if vehiculos %}
+                {% for vehiculo in vehiculos %}
+                <!-- Item -->
+                <li class="item item-vehicle" value="{{vehiculo.idvehiculo}}">
+                    <span class="checkbox">
+                        <i class="fa-solid fa-check check-icon"></i>
+                    </span>
+                    <span class="item-text">{{vehiculo}}</span>
+                </li>
+                {% endfor %} 
+            {% else %} 
+                <span class="item-text">Ningun vehiculo registrado</span>
+            {% endif %}                                                          
+        </ul>
+    </div>
+    {% endif %}                                                       
+</div>

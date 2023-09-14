@@ -5,11 +5,19 @@ from django.core.paginator import Paginator, Page
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import *
-from django.db import connection
 from .forms import *
 from openpyxl import Workbook #Generar archivos excel
 from io import BytesIO
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+
+#Funcion para crear paginacion segun un modelo
+def createPagination(request, model, cant):
+    paginator = Paginator(model, cant)  # Paginator
+    page = request.GET.get('page') # Pagina actual
+    pages = paginator.get_page(page) # Enviar el paginator y detectar la actual
+    return pages
+
+#=============================================================
 
 #Login admin
 @user_passes_test(lambda u: not u.is_authenticated, login_url='adminpanel') #Si el usuario ya esta logeado no va a poder acceder a la pagina de login 
@@ -42,8 +50,7 @@ def logout_admin(request):
 def adminpanel(request):
     return render(request, 'adminpanel.html')
 
-#=============================================================
-
+#Ingresos
 @login_required(login_url="admin")
 def access(request):
     access = Ingresos.objects.all()
@@ -55,19 +62,13 @@ def access(request):
         'exits': exits
     })
 
-
-#=============================================================
 #Lista usuarios
 @login_required(login_url="admin")
 def users(request):
     model = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
-    paginator = Paginator(model, 100)  # Paginator // Mostrar 10 usuarios por pagina
-    page = request.GET.get('page') # Pagina actual
-    users = paginator.get_page(page) # Enviar el paginator y detectar la actual
-
+    users = createPagination(request, model, 100)
     roles = Roles.objects.all()
-    
-    
+        
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
         'users': users,

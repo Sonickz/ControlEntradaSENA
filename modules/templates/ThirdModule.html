@@ -39,92 +39,9 @@
             <!-- Seleccionar vehiculos y dispositivos -->
             <div class="row w-100 select">
                 <!-- Vehiculos -->
-                <div class="col">
-                    <img src="{% static 'assets/icons/vehicles2.png' %}">
-                    <label for="names">Vehiculos</label>  
-                    {% if ingreso %}      
-                    <!-- Zona select -->                    
-                        <div class="select-form vehicle">
-                            <!-- Select -->
-                            <div class="select-btn open">
-                                <span class="btn-text">{% if ingreso.vehiculo %}{{ingreso.vehiculo}}{% else %}Ninguno{% endif %}</span>
-                            </div>      
-                            <!-- Item -->                
-                            <input type="hidden" class="item-selected" value="{{ingreso.vehiculo.idvehiculo}}">
-                        </div> 
-                    {% else %}
-                    <!-- Zona select -->  
-                    <div class="select-form vehicle">
-                        <!-- Select -->
-                        <div class="select-btn open">
-                            <span class="btn-text">Seleccionar Vehiculo</span>
-                            <span class="arrow-dwn">
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </span>
-                        </div>     
-                        <!-- Lista -->                   
-                        <ul class="list-items">
-                            {% if vehiculos %}
-                                {% for vehiculo in vehiculos %}
-                                <!-- Item -->
-                                <li class="item item-vehicle" value="{{vehiculo.idvehiculo}}">
-                                    <span class="checkbox">
-                                        <i class="fa-solid fa-check check-icon"></i>
-                                    </span>
-                                    <span class="item-text">{{vehiculo}}</span>
-                                </li>
-                                {% endfor %} 
-                            {% else %} 
-                                <span class="item-text">Ningun vehiculo registrado</span>
-                            {% endif %}                                                          
-                        </ul>
-                    </div>
-                    {% endif %}                                                       
-                </div>
+                {% include 'layouts/components/SelectVehicle.html' %}
                 <!-- Dispositivos -->
-                <div class="col">
-                    <img src="{% static 'assets/icons/devices2.png' %}">
-                    <label for="names">Dispositivos</label>  
-                    <!-- Zona select -->                           
-                    <div class="select-form device">
-                        <!-- Select -->
-                        <div class="select-btn {% if not ingreso %}open{% endif %}">
-                            {% if not ingreso %}
-                                <span class="btn-text">Seleccionar Dispositivos</span>
-                            {% elif ingreso.dispositivo %}
-                            <span class="btn-text">{{ingreso.dispositivo}}</span>
-                            {% endif %}
-                            <span class="arrow-dwn">
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </span>
-                        </div>      
-                        <!-- Lista -->                  
-                        <ul class="list-items">
-                            {% if dispositivos %}
-                                {% if not ingreso %}
-                                    {% for dispositivo in dispositivos %}
-                                    <!-- Item -->
-                                    <li class="item item-device" value="{{dispositivo.iddispositivo}}">
-                                        <span class="checkbox">
-                                            <i class="fa-solid fa-check check-icon"></i>
-                                        </span>
-                                        <span class="item-text">{{dispositivo}}</span>
-                                    </li>
-                                    {% endfor %}
-                                {% elif ingreso.dispositivo %}
-                                    <li class="item item-device checked" value="{{ingreso.dispositivo.iddispositivo}}">
-                                        <span class="checkbox">
-                                            <i class="fa-solid fa-check check-icon"></i>
-                                        </span>
-                                        <span class="item-text">{{ingreso.dispositivo}}</span>
-                                    </li>
-                                {% endif %}
-                            {% else %} 
-                                <span class="item-text">Ningun dispositivo registrado</span>
-                            {% endif %}                                       
-                        </ul>
-                    </div>                                             
-                </div>
+                {% include 'layouts/components/SelectDevices.html' %}
             </div>      
         </div>
         <footer class="card-footer">
