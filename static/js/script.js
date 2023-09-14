@@ -334,16 +334,17 @@ if (Exists(selects)) {
   const devicesInput = document.getElementById('devices');
   const deviceItems = document.querySelectorAll(".item-device");
   const btnText = document.querySelector(".device .btn-text");
-  
+
   let selectedCount = 0;
 
   applyFunctionsArguments(deviceItems, "click", (item) => {
     if (item.classList.contains("checked") || selectedCount < 3) {
       item.classList.toggle("checked");
+
       //Actualizar contador
       selectedCount = document.querySelectorAll(".item-device.checked").length;
       // Obtener todos los elementos con la clase 'checked'
-      const checkedItems = document.querySelectorAll(".item-device.checked");
+      const checkedItems = document.querySelectorAll(".item-device.checked");console.log(checkedItems)
       // Obtener los valores de los elementos con la clase 'checked'
       const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
       // Asignar los valores al campo de entrada oculto
@@ -360,6 +361,12 @@ if (Exists(selects)) {
     }
   })
 
+
+
+
+
+
+
   //VEHICULOS
 
   //Seleccionar vehiculos
@@ -373,14 +380,14 @@ if (Exists(selects)) {
       vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
     }
     // Agregar la clase 'checked' al elemento clicado        
-    item.classList.toggle("checked");    
+    item.classList.toggle("checked");
     // Buscar el elemento clicado con la clase 'checked'
     const checkedItem = document.querySelector(".item-vehicle.checked");
 
     if (checkedItem) {
       // Actualizar el valor y el texto basados en el elemento seleccionado
       const valueCheck = checkedItem.getAttribute("value");
-      
+
       vehicleInput.value = valueCheck;
       btnTextVehicle.innerText = checkedItem.innerText;
     } else {
@@ -439,7 +446,7 @@ if (typeVehicle) {
 
       const options = data.options
 
-      options.forEach(option =>{
+      options.forEach(option => {
         const optionElement = document.createElement("option")
         optionElement.value = option.id
         optionElement.textContent = option.marca

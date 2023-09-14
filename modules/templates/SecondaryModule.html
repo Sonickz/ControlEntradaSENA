@@ -45,8 +45,12 @@
                     <!-- Zona select -->                           
                     <div class="select-form device">
                         <!-- Select -->
-                        <div class="select-btn open">
-                            <span class="btn-text">Seleccionar Dispositivos</span>
+                        <div class="select-btn {% if not ingreso %}open{% endif %}">
+                            {% if not ingreso %}
+                                <span class="btn-text">Seleccionar Dispositivos</span>
+                            {% elif ingreso.dispositivo  %}
+                                <span class="btn-text">{{ingreso.dispositivo}}</span>
+                            {% endif%}
                             <span class="arrow-dwn">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </span>
@@ -64,14 +68,14 @@
                                                 <span class="item-text">{{dispositivo}}</span>
                                             </li>
                                     {% endfor %}
-                                {% else %}
+                                {% elif ingreso.dispositivo %}
                                     <!-- Item -->
-                                    <li class="item item-device checked" value="{{dispositivo.iddispositivo}}">
+                                    <li class="item item-device checked" value="{{ingreso.dispositivo.iddispositivo}}">
                                         <span class="checkbox">
                                             <i class="fa-solid fa-check check-icon"></i>
                                         </span>
-                                        <span class="item-text">{{dispositivo}}</span>
-                                    </li>
+                                        <span class="item-text">{{ingreso.dispositivo}}</span>
+                                    </li>                                    
                                 {% endif %}
                             {% else %}
                                 <span class="item-text">Ningun dispositivo registrado</span>
@@ -87,7 +91,7 @@
                 <div class="col-lg col-md col-sm col-xs-12 ">
                     <form id="form-access" method="post">
                         {% csrf_token %}
-                        <input id="devices" type="hidden" name="devices" value="">      
+                        <input id="devices" type="hidden" name="devices" value="{% if ingreso.dispositivo %}{{ingreso.dispositivo.iddispositivo}}{% endif %}">      
                         <button type="submit" class="btn accept">{% if ingreso %}Salir{% else %}Ingresar{% endif %}</button>
                     </form> 
                 </div>                          

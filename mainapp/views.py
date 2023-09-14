@@ -22,7 +22,8 @@ def getUser(code, type):
     vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
     dispositivos = Dispositivos.objects.filter(usuario=user.idusuario)    
     #Si el usuario tiene un ingreso activo
-    ingreso = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')) or None
+    ingreso = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')) or None    
+    ingreso = ingreso[0] if ingreso else None
 
     #Dependiendo del modulo retornar
     if type == "module1":

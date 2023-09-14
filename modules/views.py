@@ -33,14 +33,7 @@ def module2(request):
         code = request.GET.get('code')                
         try:     
             #Obtener datos del usuario       
-            ingreso, user, dispositivos = getUser(code, type="module2")            
-            for i in ingreso:
-                print(i.idingreso)
-                print(i.fecha)
-                print(i.horaingreso)
-                print(i.usuario)
-                print(i.vehiculo)
-                print(i.dispositivo)
+            ingreso, user, dispositivos = getUser(code, type="module2")                                    
             #Al enviar el formulario            
             if request.method == 'POST':
                 vehiculo = None   
