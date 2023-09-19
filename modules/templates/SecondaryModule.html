@@ -46,9 +46,11 @@
             <div class="row w-100 text-center">
                 <!-- Boton ingresar y form para enviar el vehiculo y los dispositivos --> 
                 <div class="col-lg col-md col-sm col-xs-12 ">
+                    <!-- Input para comprobar dispositivo -->
+                    {% include 'layouts/components/CompSelectDevice.html'%}
                     <form id="form-access" method="post">
                         {% csrf_token %}
-                        <input id="devices" type="hidden" name="devices" value="{% if ingreso.dispositivo %}{{ingreso.dispositivo.iddispositivo}}{% endif %}">      
+                        <input id="devices" type="hidden" name="devices" value="{% if ingreso.dispositivo %}{{ingreso.dispositivo.iddispositivo}}{% endif %}">                             
                         <button type="submit" class="btn accept">{% if ingreso %}Salir{% else %}Ingresar{% endif %}</button>
                     </form> 
                 </div>                          

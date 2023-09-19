@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from administrator.models import *
 from administrator.forms import *
-from django.http import Http404
-from mainapp.views import actualUrl, AccessOrExit, getUser
+from django.http import Http404, JsonResponse
+from mainapp.views import actualUrl, AccessOrExit, getUser, compExitDevice
 
 #Modulo1
 def module1(request):
@@ -29,13 +29,17 @@ def module1(request):
 def module2(request):
 
     actualUrl(request)
-    #Si se detecta el GET
-    if 'code' in request.GET:
-        code = request.GET.get('code')                
+
+    code = request.GET.get('code')                
+    if code: 
         try:     
             #Obtener datos del usuario       
-            ingreso, user, dispositivos = getUser(code, type="module2")                                    
-            #Al enviar el formulario            
+            ingreso, user, dispositivos = getUser(code, type="module2")                         
+            #Comprobar dispositivo de salida
+            exit_device = request.GET.get('exitDevice')     
+            if exit_device:
+                return compExitDevice(exit_device, ingreso)
+            
             if request.method == 'POST':
                 vehiculo = None   
                 #Obtener dispositivos           
@@ -44,14 +48,13 @@ def module2(request):
                 #Hacer ingreso o salida                           
                 AccessOrExit(request, ingreso, user, vehiculo, dispositivos[0])
                 return redirect("module2")                
-
             return render(request, 'SecondaryModule.html', {
                 'title': user,
                 'users': user,
                 'dispositivos': dispositivos,
                 'ingreso': ingreso,
             })
-        #Si no existe, redireccionar 
+            #Si no existe, redireccionar 
         except Http404:            
             return redirect("registeruser", code=code)
         

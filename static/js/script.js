@@ -1,4 +1,4 @@
-import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert } from './functions.js'
 
 //Modulo actual
 actualModule();
@@ -62,6 +62,7 @@ if (Exists(Alert)) {
       break;
   }
 }
+
 
 
 //TECLADO TOTEM
@@ -341,7 +342,7 @@ if (Exists(selects)) {
       //Actualizar contador
       selectedCount = document.querySelectorAll(".item-device.checked").length;
       // Obtener todos los elementos con la clase 'checked'
-      const checkedItems = document.querySelectorAll(".item-device.checked");console.log(checkedItems)
+      const checkedItems = document.querySelectorAll(".item-device.checked"); console.log(checkedItems)
       // Obtener los valores de los elementos con la clase 'checked'
       const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
       // Asignar los valores al campo de entrada oculto
@@ -389,6 +390,37 @@ if (Exists(selects)) {
     }
   })
 
+}
+
+//ALERTA POR COMPROBACION DE DISPOSITIVO
+
+const deviceExit = document.getElementById("device_exit") // Input del dispositivo a escanear
+const user = deviceExit.getAttribute("data-user") // Capturar el usuario
+
+if (Exists(deviceExit)) {
+  //Focus al input despues de 2sg fuera
+  deviceExit.addEventListener("blur", () => {
+    setTimeout(() => {
+      deviceExit.focus()
+    }, 2000)
+  })
+  //Al enviar
+  deviceExit.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault() //Prevenir el envio del formulario
+      const url = `?code=${user}&exitDevice=${deviceExit.value}` //Url para enviar el codigo del usuario y el dispositivo
+      fetch(url) 
+        .then(response => response.json())
+        .then(data => {
+          const response = data.response
+          if (response.status === "success") {
+            successAlert("Dispositivo encontrado", "El dispositivo coincide con el ingreso")
+          } else {
+            errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso")
+          }
+        })
+    }
+  })
 }
 
 //=====================================================================================================

@@ -86,5 +86,22 @@ export function successAlert(title, text) {
     })
 }
 
+function playSoundAlert(){
+    const audio = "/static/assets/sounds/beep-alert.mp3"
+    const soundAlert = new Audio(audio)
+    soundAlert.play()
+}
+//Funcion Alerta Error SweetAlert
+export function errorAlert(title, text) {
+    Swal.fire({
+        icon: 'error',
+        title: title,
+        text: text,
+        showConfirmButton: false,
+        timer: 2000
+    })
+    playSoundAlert()
+}
+
 //=====================================================================================================
 

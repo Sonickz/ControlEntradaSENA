@@ -408,6 +408,17 @@ article header .header-title {
     font-weight: bolder;
 }
 
+/* Input oculto*/
+.hidden {
+    color: white;
+    height: 0px;
+    width: none;
+    border: 0px;
+    outline: none;
+
+}
+
+
 /*============================================= CARDS ===============================================*/
 
 /* 
