@@ -2,8 +2,7 @@
 
 body.admin {
     background-color: #fff;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
+    font-family: 'Nunito', sans-serif;    
     transition: var(--menu-transition);
 }
 
@@ -378,7 +377,6 @@ body.admin main {
 }
 
 .table {
-    width: auto;
     white-space: nowrap;
 }
 
