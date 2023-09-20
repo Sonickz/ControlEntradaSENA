@@ -9,6 +9,7 @@ from .forms import *
 from openpyxl import Workbook #Generar archivos excel
 from io import BytesIO
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+import json
 
 #Funcion para crear paginacion segun un modelo
 def createPagination(request, model, cant):
@@ -67,7 +68,7 @@ def access(request):
 def users(request):
     model = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
     users = createPagination(request, model, 100)
-    roles = Roles.objects.all()
+    roles = Roles.objects.all()    
         
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
@@ -115,73 +116,6 @@ def edit_user(request, id):
         'title': 'Editar usuario',
         'form': form,
     })
-
-#Reporte en excel
-def report_users(request):
-
-    #Tabla
-    datos = Usuarios.objects.all()
-    #Crear libro
-    wb = Workbook()    
-
-    #Crear hoja para tabla "ingresos"
-    ws_ingresos = wb.active
-    ws_ingresos.title = "Usuarios"
-    ws_ingresos.append(["Nombres", "Apellidos", "Tipo documento", "Documento", "Telefono", "Correo", "Centro", "Rol", "Ficha", "Imagen"])
-    header_cells = ws_ingresos["A1:J1"]
-    
-    #Diseño de celdas
-    bold_font = Font(bold=True)
-    center_alignment = Alignment(horizontal="center", vertical="center")
-    header_fill = PatternFill(start_color="C0C0C0", end_color="C0C0C0", fill_type="solid")
-    thin_border = Border(left=Side(style="thin"), 
-                         right=Side(style="thin"), 
-                         top=Side(style="thin"), 
-                         bottom=Side(style="thin"))
-
-    #Establecer diseño de encabezado
-    for row in header_cells:
-        for cell in row:
-            cell.font = bold_font
-            cell.alignment = center_alignment
-            cell.fill = header_fill
-            cell.border = thin_border
-    
-    # Establecer alineacion de celdas
-    for row in ws_ingresos.iter_rows(min_row=2):
-        for cell in row:
-            cell.alignment = center_alignment
-            if cell.value:                
-                cell.border = thin_border
-
-    # Establecer ancho de columnas
-    column_width = 40
-    for column in ws_ingresos.columns:
-        ws_ingresos.column_dimensions[column[0].column_letter].width = column_width
-
-    #Llenar tabla "salidas"
-    for dato in datos:
-        ws_ingresos.append([dato.nombres,
-                            dato.apellidos,
-                            dato.tipodocumento.nombre,                            
-                            dato.documento,
-                            dato.telefono,
-                            dato.correo,
-                            dato.centro.nombre if dato.centro is not None else "No aplica",
-                            dato.rol.nombre,
-                            f"{dato.ficha.numero}: {dato.ficha.nombre.nombre}" if dato.ficha is not None else "No aplica",
-                            ])
-
-    # Crear un objeto BytesIO para guardar el archivo en memoria
-    output = BytesIO()
-    wb.save(output)
-    output.seek(0)
-
-    # Configurar la respuesta HTTP para descargar el archivo
-    response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response["Content-Disposition"] = "attachment; filename=Reporte de Usuarios - ControlEntradaSENA V1.3.0.xlsx"
-
-    return response
 
 #=============================================================
 
@@ -332,7 +266,111 @@ def about(request):
     })
 
 
+#===========================================================================
+#Reporte en excel
+def reports(request, model):
 
+    #Crear libro
+    wb = Workbook()    
+    #Crear hoja
+    ws_sheet = wb.active
+        
+    #Reporte de Ingresos y salidas
+    if model == "Ingresos":
 
+        reportData(ws_sheet, model) 
 
+        ws_sheet2 = wb.create_sheet(title="Salidas")
+        reportData(ws_sheet2, model="Salidas")
 
+                      
+
+    # Crear un objeto BytesIO para guardar el archivo en memoria
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    # Configurar la respuesta HTTP para descargar el archivo
+    response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response["Content-Disposition"] = f"attachment; filename=Reporte de {model} - ControlEntradaSENA V1.3.0.xlsx"
+
+    return response
+
+def reportData(ws_sheet, model):
+    if model == "Ingresos":
+        model = Ingresos.objects.all() #Modelo
+        ws_sheet.title = "Ingresos activos" #Titulo hoja
+        #Columnas
+        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivo", "Hora Ingreso"]) 
+        header_cells = ws_sheet["A1:F1"]
+        #Llenar hoja
+        for ingreso in model:
+            ws_sheet.append([ingreso.idingreso,
+                    ingreso.fecha,
+                    f"{ingreso.usuario.nombres} {ingreso.usuario.apellidos}",
+                    f"{ingreso.vehiculo.tipo.nombre} {ingreso.vehiculo.marca.nombre}: {ingreso.vehiculo.placa}" if ingreso.vehiculo else "Ninguno",
+                    f"{ingreso.dispositivo.tipo} {ingreso.dispositivo.marca}: #{ingreso.dispositivo.sn}" if ingreso.dispositivo else "Ninguno",
+                    ingreso.horaingreso])                    
+
+    elif model == "Salidas":
+        model = Salidas.objects.all()
+        ws_sheet.title = "Salidas" 
+        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivo", "Hora Ingreso", "Hora Salida" ]) 
+        header_cells = ws_sheet["A1:G1"]
+        for salida in model:
+            ws_sheet.append([salida.idsalida,
+                                 salida.fecha,
+                                f"{salida.ingreso.usuario.nombres} {salida.ingreso.usuario.apellidos}",
+                                f"{salida.vehiculo.tipo.nombre} {salida.vehiculo.marca.nombre}: {salida.vehiculo.placa}" if salida.vehiculo else "Ninguno",
+                                f"{salida.dispositivo.tipo} {salida.dispositivo.marca}: #{salida.dispositivo.sn}" if salida.dispositivo else "Ninguno",
+                                salida.ingreso.horaingreso,
+                                salida.horasalida])
+            
+    elif model == "Usuarios":
+        model = Usuarios.objects.all()
+        ws_sheet.title = "Usuarios" 
+        ws_sheet.append(["Id", "Nombres", "Apellidos", "Tipo de Documento", "Documento", "Telefono", "Correo", "Centro", "Rol", "Ficha"]) 
+        header_cells = ws_sheet["A1:G1"]
+        for salida in model:
+            ws_sheet.append([salida.idsalida,
+                                 salida.fecha,
+                                f"{salida.ingreso.usuario.nombres} {salida.ingreso.usuario.apellidos}",
+                                f"{salida.vehiculo.tipo.nombre} {salida.vehiculo.marca.nombre}: {salida.vehiculo.placa}" if salida.vehiculo else "Ninguno",
+                                f"{salida.dispositivo.tipo} {salida.dispositivo.marca}: #{salida.dispositivo.sn}" if salida.dispositivo else "Ninguno",
+                                salida.ingreso.horaingreso,
+                                salida.horasalida])
+        
+    designExcel(header_cells, ws_sheet)
+        
+
+def designExcel(header_cells, ws_sheet):
+    #Diseño de celdas
+    bold_font = Font(bold=True)
+    center_alignment = Alignment(horizontal="center", vertical="center")
+    header_fill = PatternFill(start_color="C0C0C0", end_color="C0C0C0", fill_type="solid")
+    thin_border = Border(left=Side(style="thin"), 
+                         right=Side(style="thin"), 
+                         top=Side(style="thin"), 
+                         bottom=Side(style="thin"))
+
+    #Establecer diseño de encabezado
+    for row in header_cells:
+        for cell in row:
+            cell.font = bold_font
+            cell.alignment = center_alignment
+            cell.fill = header_fill
+            cell.border = thin_border            
+    
+    # Establecer alineacion de celdas
+    for row in ws_sheet.iter_rows(min_row=2):
+        for cell in row:
+            cell.alignment = center_alignment
+            if cell.value:                
+                cell.border = thin_border
+
+    # Establecer ancho de columnas
+    column_width = 40
+    for column in ws_sheet.columns:
+        ws_sheet.column_dimensions[column[0].column_letter].width = column_width
+        
+        
