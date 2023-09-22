@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator, Page
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from .models import *
 from .forms import *
@@ -373,4 +373,11 @@ def designExcel(header_cells, ws_sheet):
     for column in ws_sheet.columns:
         ws_sheet.column_dimensions[column[0].column_letter].width = column_width
         
-        
+
+#==========================================================================
+#Api
+def api(request, model, code):
+    if model == "users":
+        model = Usuarios.objects.get(documento=code)
+        return JsonResponse({"status": "success", "id": model.idusuario, "rol": {"id": model.rol.idrol, "nombre": model.rol.nombre}}) if model else JsonResponse({"error": "No existe el usuario"})
+    

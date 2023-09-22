@@ -15,7 +15,7 @@ def module1(request):
             #Obtener usuario
             ingreso, user = getUser(code, type="module1")
             #Hacer ingreso o salida
-            AccessOrExit(request, ingreso, user, vehiculo=None, dispositivo=None)
+            AccessOrExit(request, ingreso, user, vehiculo=None, dispositivos=None)
             return redirect("module1")        
         #Si el usuario no existe redirigir a registro
         except Http404:
@@ -34,25 +34,26 @@ def module2(request):
     if code: 
         try:     
             #Obtener datos del usuario       
-            ingreso, user, dispositivos = getUser(code, type="module2")                         
+            ingreso, user, dispositivos, dispositivos_ingreso = getUser(code, type="module2")                                     
             #Comprobar dispositivo de salida
-            exit_device = request.GET.get('exitDevice')     
+            exit_device = request.GET.get('exitDevice')                 
             if exit_device:
                 return compExitDevice(exit_device, ingreso)
             
             if request.method == 'POST':
                 vehiculo = None   
                 #Obtener dispositivos           
-                dispositivos = request.POST.get('devices').split(',')            
-                dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos) if dispositivos else None         
+                dispositivos = request.POST.get('devices').split(',')  
+                dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos) if dispositivos else None                                 
                 #Hacer ingreso o salida                           
-                AccessOrExit(request, ingreso, user, vehiculo, dispositivos[0])
+                AccessOrExit(request, ingreso, user, vehiculo, dispositivos)
                 return redirect("module2")                
             return render(request, 'SecondaryModule.html', {
                 'title': user,
                 'users': user,
                 'dispositivos': dispositivos,
                 'ingreso': ingreso,
+                'dispositivos_ingreso': dispositivos_ingreso,
             })
             #Si no existe, redireccionar 
         except Http404:            
@@ -71,7 +72,11 @@ def module3(request):
         code = request.GET.get('code')                
         try:     
             #Obtener datos del usuario       
-            ingreso, user, vehiculos, dispositivos = getUser(code, type="module3")
+            ingreso, user, vehiculos, dispositivos, dispositivos_ingreso = getUser(code, type="module3")
+            #Comprobar dispositivo de salida
+            exit_device = request.GET.get('exitDevice')                 
+            if exit_device:
+                return compExitDevice(exit_device, ingreso)
             
             #Al enviar el formulario
             if request.method == 'POST':
@@ -82,7 +87,7 @@ def module3(request):
                 dispositivos = request.POST.get('devices').split(',')            
                 dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos) if dispositivos else None         
                 #Hacer ingreso o salida                           
-                AccessOrExit(request, ingreso, user, vehiculo, dispositivos[0])
+                AccessOrExit(request, ingreso, user, vehiculo, dispositivos)
                 return redirect("module3")                
 
             return render(request, 'ThirdModule.html', {
@@ -91,6 +96,7 @@ def module3(request):
                 'vehiculos': vehiculos,
                 'dispositivos': dispositivos,
                 'ingreso': ingreso,
+                'dispositivos_ingreso': dispositivos_ingreso       
             })
         #Si no existe, redireccionar 
         except Http404:            

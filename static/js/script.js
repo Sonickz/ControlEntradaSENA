@@ -1,4 +1,4 @@
-import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert, updateCheckeds, Camera } from './functions.js'
 
 //Modulo actual
 actualModule();
@@ -35,10 +35,6 @@ if (Exists(btnSend) && (codeInput)) {
     }
   })
 }
-
-//SELECTS
-const selects = document.querySelectorAll(".select-btn")
-applyFunctionsArguments(selects, "click", openSelect)
 
 //Alerta 
 const Alert = document.querySelector('.Alert');
@@ -229,101 +225,12 @@ if (pageWidth >= 1080 && pageHeight >= 1800) {
 // Obtener referencia al elemento de video y al canvas
 const camaraModal = document.getElementById('camaraModal');
 if (Exists(camaraModal)) {
-  const btncamAccess = document.getElementById('user-picture-btn');
-  const btnSave = document.getElementById('user-savepicture-btn');
-  const btnRepeat = document.getElementById('user-repeatpicture-btn');
-  const btnTake = document.getElementById('user-takepicture-btn');
-  let video = document.getElementById('user-cam');
-  let canvas = document.getElementById('user-picture');
-  let context = canvas.getContext('2d');
-
-  canvas.width = 800;
-  canvas.height = 680;
-
-  //Al presionar el boton de la camara
-  btncamAccess.addEventListener('click', () => {
-    // Obtener acceso a la webcam
-    navigator.mediaDevices.getUserMedia({ video: true, width: 800, height: 680 })
-      .then(function (stream) {
-        video.srcObject = stream;
-        video.play();
-
-        // Guardar la referencia de la pista de video
-        const videoTrack = stream.getVideoTracks()[0];
-
-        // Agregar un evento para detener la pista cuando el modal se cierre
-        camaraModal.addEventListener('hidden.bs.modal', function () {
-          videoTrack.stop(); // Detener la pista de video
-          video.srcObject = null; // Liberar el recurso de la cámara
-        });
-
-      })
-      .catch(function (error) {
-        console.log('Error al acceder a la webcam:', error);
-      });
-  });
-
-
-  // Función para capturar la imagen
-  function captureImage() {
-    btnTake.style.display = 'none';
-    video.style.display = 'none';
-    canvas.style.display = 'block';
-
-    btnRepeat.style.display = 'block';
-    btnSave.style.display = 'block';
-
-    // Dibujar el cuadro actual del video en el canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  }
-
-  // Función para convertir la imagen base64 en un objeto de archivo
-  function dataURLtoFile(dataUrl, filename) {
-    const arr = dataUrl.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  }
-
-  function repeatImage() {
-    btnRepeat.style.display = 'none';
-    btnSave.style.display = 'none';
-    btnTake.style.display = 'block';
-
-    canvas.style.display = 'none';
-    video.style.display = 'block';
-  }
-
-  function saveImage() {
-    // Obtener la imagen en formato base64
-    const imageData = canvas.toDataURL('image/png');
-    const capturedImage = imageData
-
-    // Generar un archivo a partir de la imagen base64
-    const file = dataURLtoFile(capturedImage, 'captured_image.png');
-
-    // Crear una instancia de DataTransfer
-    const dataTransfer = new DataTransfer();
-
-    // Agregar el archivo al DataTransfer
-    dataTransfer.items.add(file);
-
-    // Simular una selección de archivo para el campo de entrada de tipo "file"
-    const fileInput = document.getElementById('user-file');
-
-    // Asignar el DataTransfer al campo de entrada de tipo "file"
-    fileInput.files = dataTransfer.files;
-
-    // Disparar un evento de cambio en el campo de entrada de tipo "file"
-    const changeEvent = new Event('change');
-    fileInput.dispatchEvent(changeEvent);
-  }
+  Camera();
 }
+
+//SELECTS
+const selects = document.querySelectorAll(".select-btn")
+applyFunctionsArguments(selects, "click", openSelect)
 
 //SELECT DISPOSITIVOS Y VEHICULOS
 if (Exists(selects)) {
@@ -332,33 +239,22 @@ if (Exists(selects)) {
   const devicesInput = document.getElementById('devices');
   const deviceItems = document.querySelectorAll(".item-device");
   const btnText = document.querySelector(".device .btn-text");
+  const user = document.getElementById("user");
+  let rol = null
+  user ? fetch(`/api/users/${user.value}`)
+    .then(response => response.json())
+    .then(data => {
+      rol = data.rol.nombre
+    }) : null;
 
-  let selectedCount = 0;
+  updateCheckeds("Dispositivos", "device", devicesInput, btnText);
 
   applyFunctionsArguments(deviceItems, "click", (item) => {
-    if (item.classList.contains("checked") || selectedCount < 3) {
+    if (item.classList.contains("checked") || rol == "Instructor" || document.querySelectorAll(".item-device.checked").length < 3) {
       item.classList.toggle("checked");
-
-      //Actualizar contador
-      selectedCount = document.querySelectorAll(".item-device.checked").length;
-      // Obtener todos los elementos con la clase 'checked'
-      const checkedItems = document.querySelectorAll(".item-device.checked"); console.log(checkedItems)
-      // Obtener los valores de los elementos con la clase 'checked'
-      const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
-      // Asignar los valores al campo de entrada oculto
-      devicesInput.value = valuesChecks.join(",");
-
-      // Cambiar el texto del select segun la cantidad de dispositivos seleccionados
-      if (checkedItems && checkedItems.length > 1) {
-        btnText.innerText = `${checkedItems.length} Seleccionados`;
-      } else if (checkedItems && checkedItems.length > 0) {
-        btnText.innerText = checkedItems[0].innerText;
-      } else {
-        btnText.innerText = "Seleccionar Dispositivos";
-      }
+      updateCheckeds("Dispositivos", "device", devicesInput, btnText);
     }
   })
-
 
   //VEHICULOS
 
@@ -372,32 +268,18 @@ if (Exists(selects)) {
       // Remover la clase 'checked' de todos los elementos
       vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
     }
-    // Agregar la clase 'checked' al elemento clicado        
     item.classList.toggle("checked");
-    // Buscar el elemento clicado con la clase 'checked'
-    const checkedItem = document.querySelector(".item-vehicle.checked");
-
-    if (checkedItem) {
-      // Actualizar el valor y el texto basados en el elemento seleccionado
-      const valueCheck = checkedItem.getAttribute("value");
-
-      vehicleInput.value = valueCheck;
-      btnTextVehicle.innerText = checkedItem.innerText;
-    } else {
-      // Si no hay elementos seleccionados, restaurar los valores predeterminados
-      btnTextVehicle.innerText = "Seleccionar Vehiculo";
-      vehicleInput.value = "";
-    }
-  })
+    updateCheckeds("Vehiculos", "vehicle", vehicleInput, btnTextVehicle)
+  });
 
 }
 
 //ALERTA POR COMPROBACION DE DISPOSITIVO
 
 const deviceExit = document.getElementById("device_exit") // Input del dispositivo a escanear
-const user = deviceExit.getAttribute("data-user") // Capturar el usuario
 
 if (Exists(deviceExit)) {
+  const user = deviceExit.getAttribute("data-user") // Capturar el usuario
   //Focus al input despues de 2sg fuera
   deviceExit.addEventListener("blur", () => {
     setTimeout(() => {
@@ -409,7 +291,7 @@ if (Exists(deviceExit)) {
     if (e.key === "Enter") {
       e.preventDefault() //Prevenir el envio del formulario
       const url = `?code=${user}&exitDevice=${deviceExit.value}` //Url para enviar el codigo del usuario y el dispositivo
-      fetch(url) 
+      fetch(url)
         .then(response => response.json())
         .then(data => {
           const response = data.response
@@ -418,6 +300,7 @@ if (Exists(deviceExit)) {
           } else {
             errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso")
           }
+          deviceExit.value = ""
         })
     }
   })

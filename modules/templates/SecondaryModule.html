@@ -14,6 +14,7 @@
 </article>
 {% else %}
 <article id="module2" class="card-select-elements module-selects">
+    {% include 'layouts/components/User.html' %}
     <header>
         <h1 class="header-title">
             {% if not ingreso %}
@@ -50,7 +51,7 @@
                     {% include 'layouts/components/CompSelectDevice.html'%}
                     <form id="form-access" method="post">
                         {% csrf_token %}
-                        <input id="devices" type="hidden" name="devices" value="{% if ingreso.dispositivo %}{{ingreso.dispositivo.iddispositivo}}{% endif %}">                             
+                        <input id="devices" type="hidden" name="devices" value="">                             
                         <button type="submit" class="btn accept">{% if ingreso %}Salir{% else %}Ingresar{% endif %}</button>
                     </form> 
                 </div>                          

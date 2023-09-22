@@ -117,10 +117,7 @@ class Ingresos(models.Model):
     idingreso = models.AutoField(db_column='IdIngreso', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(db_column='FechaIngreso')  # Field name made lowercase.
     usuario = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='IdUsuario')  # Field name made lowercase.
-    vehiculo = models.ForeignKey('Vehiculos', models.DO_NOTHING, db_column='IdVehiculo', blank=True, null=True)  # Field name made lowercase.
-    dispositivo = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo', related_name='ingresos_set' ,blank=True, null=True)  # Field name made lowercase.
-    dispositivo2 = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo2', related_name='ingresos_set2', blank=True, null=True)  # Field name made lowercase.
-    dispositivo3 = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo3', related_name='ingresos_set3',blank=True, null=True)  # Field name made lowercase.
+    vehiculo = models.ForeignKey('Vehiculos', models.DO_NOTHING, db_column='IdVehiculo', blank=True, null=True)  # Field name made lowercase.    
     horaingreso = models.TimeField(db_column='HoraIngreso')  # Field name made lowercase.
 
     class Meta:
@@ -128,19 +125,36 @@ class Ingresos(models.Model):
         db_table = 'ingresos'
 
 
+class IngresosDispositivos(models.Model):
+    idingresodispositivo = models.AutoField(db_column='IdIngresoDispositivo', primary_key=True)  # Field name made lowercase.
+    ingreso = models.ForeignKey(Ingresos, models.DO_NOTHING, db_column='IdIngreso')  # Field name made lowercase.
+    dispositivo = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'ingresos_dispositivos'
+
+
 class Salidas(models.Model):
     idsalida = models.AutoField(db_column='IdSalida', primary_key=True)  # Field name made lowercase.
     fecha = models.DateField(db_column='FechaSalida')  # Field name made lowercase.
     ingreso = models.ForeignKey(Ingresos, models.DO_NOTHING, db_column='IdIngreso')  # Field name made lowercase.
-    vehiculo = models.ForeignKey('Vehiculos', models.DO_NOTHING, db_column='IdVehiculo', blank=True, null=True)  # Field name made lowercase.
-    dispositivo = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo', related_name='salidas_set', blank=True, null=True)  # Field name made lowercase.
-    dispositivo2 = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo2', related_name='salidas_set2', blank=True, null=True)  # Field name made lowercase.
-    dispositivo3 = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo3', related_name='salidas_set3', blank=True, null=True)  # Field name made lowercase.
+    vehiculo = models.ForeignKey('Vehiculos', models.DO_NOTHING, db_column='IdVehiculo', blank=True, null=True)  # Field name made lowercase.    
     horasalida = models.TimeField(db_column='HoraSalida')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'salidas'
+
+
+class SalidasDispositivos(models.Model):
+    idsalidadispositivo = models.AutoField(db_column='IdSalidaDispositivo', primary_key=True)  # Field name made lowercase.
+    salida = models.ForeignKey(Salidas, models.DO_NOTHING, db_column='IdSalida')  # Field name made lowercase.
+    dispositivo = models.ForeignKey(Dispositivos, models.DO_NOTHING, db_column='IdDispositivo')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'salidas_dispositivos'
 
 
 class Jornada(models.Model):

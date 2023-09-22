@@ -24,29 +24,37 @@ def getUser(code, type):
     #Si el usuario tiene un ingreso activo
     ingreso = Ingresos.objects.filter(usuario=user.idusuario).exclude(idingreso__in=Salidas.objects.values('ingreso')) or None    
     ingreso = ingreso[0] if ingreso else None
+    #Dispositivos con los que ingreso el usuario
+    dispositivos_ingreso = IngresosDispositivos.objects.filter(ingreso=ingreso.idingreso) if ingreso else None
 
     #Dependiendo del modulo retornar
     if type == "module1":
         return ingreso, user
     elif type == "module2":
-        return ingreso, user, dispositivos
+        return ingreso, user, dispositivos, dispositivos_ingreso
     elif type == "module3":
-        return ingreso, user, vehiculos, dispositivos
+        return ingreso, user, vehiculos, dispositivos, dispositivos_ingreso
 
 #Funcion para ingresos o salidas
-def AccessOrExit(request, ingreso, user, vehiculo, dispositivo):
+def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
     date = datetime.now().strftime("%Y-%m-%d")
     hour = datetime.now().strftime("%H:%M:%S")
 
     #Si el usuario ha ingresado: Hacer salida
     if ingreso:
-        Salidas.objects.create(fecha=date, ingreso=ingreso, vehiculo=vehiculo, dispositivo=dispositivo, horasalida=hour)        
+        salida = Salidas.objects.create(fecha=date, ingreso=ingreso, vehiculo=vehiculo, horasalida=hour)        
+        if dispositivos:
+            for dispositivo in dispositivos:
+                SalidasDispositivos.objects.create(salida=salida, dispositivo=dispositivo)
         status = "Salida"
         messages.success(request, "success-exit")
 
     #Si el usuario no ha ingresado: Hacer ingreso
     else:
-        Ingresos.objects.create(fecha=date, usuario=user, vehiculo=vehiculo, dispositivo=dispositivo, horaingreso=hour)
+        ingreso = Ingresos.objects.create(fecha=date, usuario=user, vehiculo=vehiculo, horaingreso=hour)
+        if dispositivos:
+            for dispositivo in dispositivos:            
+                IngresosDispositivos.objects.create(ingreso=ingreso, dispositivo=dispositivo)
         status = "Ingreso"
         messages.success(request, "success-access")
     
@@ -54,7 +62,7 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivo):
 def compExitDevice(exit_device, ingreso):   
         try:
             device = Dispositivos.objects.get(sn=exit_device.upper())
-            ingreso = Ingresos.objects.get(idingreso=ingreso.idingreso, dispositivo=device) if device else None
+            exit_device = IngresosDispositivos.objects.get(ingreso=ingreso.idingreso, dispositivo=device)
             return JsonResponse({'response': {'status': 'success', 'message': 'El dispositivo coincide', 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})
         except:                
             return JsonResponse({'response': {'status': 'error', 'message': 'El dispositivo no coincide'}})

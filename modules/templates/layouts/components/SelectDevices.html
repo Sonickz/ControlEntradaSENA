@@ -5,42 +5,36 @@
     <!-- Zona select -->                           
     <div class="select-form device">
         <!-- Select -->
-         <div class="select-btn {% if not ingreso %}open{% endif %}"> {% comment %} Si esta ingresando abrir select {% endcomment %}
-            {% comment %} Si esta ingresando {% endcomment %}
-            {% if not ingreso %}
-                <span class="btn-text">Seleccionar Dispositivos</span>
-            {% comment %} Si esta saliendo y tiene dispositivo {% endcomment %}
-            {% elif ingreso.dispositivo  %}
-                <span class="btn-text">{{ingreso.dispositivo}}</span>
-            {% endif%}
+         <div class="select-btn open">           
+            <span class="btn-text">Seleccionar Dispositivos</span>            
             <span class="arrow-dwn">
                 <i class="fa-solid fa-chevron-down"></i>
             </span>
         </div>      
         <!-- Lista -->                  
-        <ul class="list-items">
-            {% if dispositivos %}
-                {% comment %} Si esta ingresando {% endcomment %}
-                {% if not ingreso %}
-                    {% for dispositivo in dispositivos %}
-                            <!-- Item -->
-                            <li class="item item-device" value="{{dispositivo.iddispositivo}}">
-                                <span class="checkbox">
-                                    <i class="fa-solid fa-check check-icon"></i>
-                                </span>
-                                <span class="item-text">{{dispositivo}}</span>
-                            </li>
-                    {% endfor %}
-                {% comment %} Si esta saliendo y tiene dispositivo {% endcomment %}
-                {% elif ingreso.dispositivo %}
+        <ul class="list-items">            
+            {% comment %} Si esta ingresando {% endcomment %}
+            {% if dispositivos and not ingreso %}
+                {% for dispositivo in dispositivos %}
+                       <!-- Item -->
+                       <li class="item item-device" value="{{dispositivo.iddispositivo}}">
+                           <span class="checkbox">
+                               <i class="fa-solid fa-check check-icon"></i>
+                           </span>
+                           <span class="item-text">{{dispositivo}}</span>
+                       </li>
+                {% endfor %}
+            {% comment %} Si esta saliendo y tiene dispositivo {% endcomment %}
+            {% elif ingreso and dispositivos_ingreso %}
+                {% for dispositivo_ingreso in dispositivos_ingreso %}
                     <!-- Item -->
-                    <li class="item item-device checked" value="{{ingreso.dispositivo.iddispositivo}}">
+                    <li class="item item-device checked" value="{{dispositivo_ingreso.dispositivo.iddispositivo}}">
                         <span class="checkbox">
                             <i class="fa-solid fa-check check-icon"></i>
                         </span>
-                        <span class="item-text">{{ingreso.dispositivo}}</span>                        
-                    </li>                                    
-                {% endif %}
+                        <span class="item-text">{{dispositivo_ingreso.dispositivo}}</span>                        
+                    </li>   
+                {% endfor %}
             {% else %}
                 <span class="item-text">Ningun dispositivo registrado</span>
             {% endif %}                                       

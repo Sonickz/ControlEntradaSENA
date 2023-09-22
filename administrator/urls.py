@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin/vehiculos", views.vehicles, name="vehiculos"),
     path("admin/vehiculos/editvehiculo/<int:id>", views.edit_vehiculo, name="editvehiculo"),
     path("admin/about", views.about, name="about"),
+    path("api/<str:model>/<str:code>", views.api, name="api")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
