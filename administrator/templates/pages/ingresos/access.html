@@ -7,43 +7,47 @@
 
 {% block card_table %}
 
-<div class="btn-change-table access">
+<div class="btn-change-table">
   <button type="button" class="btn btn-green2 btn-green2-active" data-table="1">Ingresos activos</button>    
   <button type="button" class="btn btn-green2" data-table="2">Ingresos y salidas</button>    
 </div>
 
-<div class="access table-container table-1" data-table="1">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Id</th> 
-        <th scope="col">Fecha</th>
-        <th scope="col">Usuario</th>
-        <th scope="col">Rol</th>
-        <th scope="col">Vehiculo</th>
-        <th scope="col">Dispositivo</th>
-        <th scope="col">Hora ingreso</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody class="tbody">
-      {% for enter in access %}
-      <tr>
-        <th scope="row">{{enter.idingreso}}</th>
-        <td>{{enter.fecha}}</td>
-        <td>{{enter.usuario}}</td>
-        <td>{{enter.usuario.rol}}</td>
-        <td>{{enter.dispositivo|default:"Ninguno"}}</td>
-        <td>{{enter.vehiculo|default:"Ninguno"}}</td>      
-        <td>{{enter.horaingreso}}</td>  
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="table-container">
+  <div class="table-scroll">
+    <table class="table table-striped" data-table="1">
+      <thead>
+        <tr>
+          <th scope="col">Id</th> 
+          <th scope="col">Fecha</th>
+          <th scope="col">Usuario</th>
+          <th scope="col">Rol</th>
+          <th scope="col">Vehiculo</th>
+          <th scope="col">Dispositivo</th>
+          <th scope="col">Hora ingreso</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody class="tbody">
+        {% for enter in access %}
+        <tr>
+          <th scope="row">{{enter.idingreso}}</th>
+          <td>{{enter.fecha}}</td>
+          <td>{{enter.usuario}}</td>
+          <td>{{enter.usuario.rol}}</td>
+          <td>{{enter.dispositivo|default:"Ninguno"}}</td>
+          <td>{{enter.vehiculo|default:"Ninguno"}}</td>      
+          <td>{{enter.horaingreso}}</td>  
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include 'layouts/components/Pagination.html' with pagination=access name="access"%}
 </div>
 
-<div class="access table-container table-2 d-none" data-table="2">
-    <table class="table table-striped">
+<div class="table-container d-none">
+  <div class="table-scroll">
+    <table class="table table-striped" data-table="2">
       <thead>
         <tr>
           <th scope="col">Id</th> 
@@ -73,6 +77,10 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+  {% include 'layouts/components/Pagination.html' with pagination=exits name="exits"%}
 </div>
+
+
 
 {% endblock %}

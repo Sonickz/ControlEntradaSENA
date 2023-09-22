@@ -10,11 +10,12 @@ from openpyxl import Workbook #Generar archivos excel
 from io import BytesIO
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 import json
+from itertools import chain
 
 #Funcion para crear paginacion segun un modelo
-def createPagination(request, model, cant):
+def createPagination(request, name, model, cant):
     paginator = Paginator(model, cant)  # Paginator
-    page = request.GET.get('page') # Pagina actual
+    page = request.GET.get(name) # Pagina actual
     pages = paginator.get_page(page) # Enviar el paginator y detectar la actual
     return pages
 
@@ -54,27 +55,29 @@ def adminpanel(request):
 #Ingresos
 @login_required(login_url="admin")
 def access(request):
-    access = Ingresos.objects.all()
+    access = Ingresos.objects.all().exclude(idingreso__in=Salidas.objects.values('ingreso'))
+    access = createPagination(request, "access", access, 100)
     exits = Salidas.objects.all()
+    exits = createPagination(request, "exits", exits, 100)
 
     return render(request, "pages/ingresos/access.html", {
         'title': 'Ingresos',
         'access': access,
-        'exits': exits
+        'exits': exits,
     })
 
 #Lista usuarios
 @login_required(login_url="admin")
 def users(request):
-    model = Usuarios.objects.all().prefetch_related('dispositivos_set').prefetch_related('vehiculos_set')
-    users = createPagination(request, model, 100)
-    roles = Roles.objects.all()    
+    
+    roles = Roles.objects.all()
+
+    
         
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
-        'users': users,
-        'roles': roles
-    })
+        'roles': roles,
+        })
 
 #Registrar usuario
 def register_user(request, rol):

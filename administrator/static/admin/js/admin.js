@@ -1,10 +1,12 @@
-import { applyFunctions, applyFunctionsArguments } from "../../../../static/js/functions.js"
+import { applyFunctions, applyFunctionsArguments, changeTables } from "../../../../static/js/functions.js"
 
 //ADMIN
 
-//Menu Admin
+//======================================================================
+
+//MENU ADMIN
 if (window.location.href.includes('/admin/')) { //Si el enlace tiene admin 
-  //Añadir al body clases
+  //Añadir al body, clases
   document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add("admin", "body-collapsed");
   });
@@ -23,7 +25,7 @@ if (window.location.href.includes('/admin/')) { //Si el enlace tiene admin
   });
 }
 
-//Item del menu activo
+//MENU: ITEM ACTIVO
 const adminMenu = document.getElementById("adminmenu")
 const items = adminMenu.querySelectorAll(".menu-items .item");
 const url = window.location.href;
@@ -36,6 +38,8 @@ items.forEach((item) => {
   }
 });
 
+//======================================================================
+
 //Animacion admin | Cambiar entre tabla select y form
 const btnRegister = document.getElementById('btn-register');
 if (btnRegister) {
@@ -45,29 +49,19 @@ if (btnRegister) {
   });
 
   const adminMain = document.getElementById("admin")
-  const btnBack = document.getElementById('btn-back').addEventListener("click", () => {
+  const btnBack = document.getElementById('btn-back')
+
+  btnBack ? btnBack.addEventListener("click", () => {
     adminMain.classList.remove("slide")
-  })
+  }): "";
 
 }
 
-
-
 //Cambiar entre tablas con los botones
 const btns = document.querySelectorAll(".btn-change-table .btn");
-const tables = document.querySelectorAll(".table-container")
-applyFunctionsArguments(btns, "click", (btn)=>{
-  btns.forEach((otherbtn) => {
-    otherbtn.classList.remove("btn-green2-active");
-  })
+const tables = document.querySelectorAll(".table-container");
+changeTables(btns, tables);
 
-  btn.classList.add("btn-green2-active");
-  let dataBtn = btn.getAttribute("data-table");
-  tables.forEach((table) => {
-    table.classList.add("d-none");
-    let dataTable = table.getAttribute("data-table");
-    if (dataTable == dataBtn){
-      table.classList.remove("d-none");
-    }    
-  })
-})
+
+
+

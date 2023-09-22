@@ -241,15 +241,6 @@ body.admin main {
     justify-content: space-between;
 }
 
-#admin .card .card-main .card-header.access{
-    justify-content: center;
-}
-
-#admin .card .card-main .card-header .report.access{
-    position: absolute;
-    left: 20px;
-}
-
 #admin .card .card-body {
     margin: 10px 0;
 }
@@ -294,16 +285,18 @@ body.admin main {
     color: var(--bgcolor-clare);
 }
 
-/* Ocultar filas */
-.hidden-row {
-    opacity: 0;
-    visibility: hidden;
-    transition: all 1s ease;
-}
-
 /* ALERTAS */
 #admin .alert {
     margin: 20px 0 0 0;
+}
+
+/* BOTONES PARA CAMBIAR ENTRE TABLAS */
+.btn-change-table {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
 }
 
 /* CAMBIO ENTRE VISTAS DE CARD */
@@ -387,127 +380,6 @@ body.admin main {
 /* Cambio entre tablas */
 
 
-/* SELECT ORDENAR POR */
-
-/* Select general */
-#admin .card .select-form {
-    position: relative;
-    max-width: 350px;
-    width: 100%;
-}
-
-/* SELECT CERRADO */
-#admin .card .select-form .select-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 55px;
-    padding: 0 20px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    box-shadow: 0 5px 10px rgb(0 0 0 / 25%);
-    background-color: #fff;
-}
-
-/* Select texto */
-#admin .card .select-form .select-btn .btn-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333;
-}
-
-/* Select cerrado: Flecha abajo */
-#admin .card .select-form .select-btn .arrow-dwn {
-    display: flex;
-    height: 21px;
-    width: 21px;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 50%;
-    background: var(--bgcolor-clare);
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-}
-
-/* Select lista */
-#admin .card .select-form .list-items {
-    display: none;
-    position: relative;
-    margin-top: 15px;
-    padding: 16px;
-    border: 1px solid rgba(221, 221, 221, 0.3);
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-}
-
-/* SELECT ABIERTO */
-
-/* Select abierto: Flecha arriba*/
-#admin .card .select-form .select-btn.open .arrow-dwn {
-    transform: rotate(-180deg);
-}
-
-/* Select lista abierta */
-#admin .card .select-form .select-btn.open~.list-items {
-    display: block;
-}
-
-/* Items */
-#admin .card .select-form .list-items .item {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    height: 50px;
-    padding: 0 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#admin .card .select-form .list-items .item:hover {
-    background-color: rgba(126, 241, 98, 0.2);
-}
-
-#admin .card .select-form .list-items .item-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333;
-}
-
-/* Item checkbox */
-#admin .card .select-form .item .checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    margin-right: 12px;
-    border: 1.5px solid #c0c0c0;
-    border-radius: 10px;
-    transition: all 0.3s ease-in-out;
-}
-
-#admin .card .select-form .checkbox .check-icon {
-    color: #fff;
-    font-size: 11px;
-    transform: scale(0);
-    transition: all 0.2s ease-in-out;
-}
-
-
-/* Cuando tiene check */
-#admin .card .select-form .item.checked .checkbox {
-    background-color: var(--bgcolor);
-    border-color: var(--bgcolor);
-}
-
-#admin .card .select-form .item.checked .check-icon {
-    transform: scale(1);
-}
-
 /* Bordes tabla */
 tr td,
 th {
@@ -536,6 +408,37 @@ tr:last-child td:last-child {
 /* Filas tabla */
 .table tbody tr:hover {
     background-color: var(--hovercolorclare);
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    vertical-align: middle;
+
+    .current-page {
+        margin: 0 10px;
+        border: 1px solid var(--bgcolor-clare);
+        border-radius: 10px;
+        padding: 0 10px;
+        color: white;
+        background-color: var(--text-color);
+        font-weight: bold;
+    }
+}
+
+.pagination a {
+    vertical-align: middle;
+    font-size: 16px;
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.pagination a:hover {
+    color: var(--bgcolor);
 }
 
 /*=============================================================================================================*/
@@ -586,46 +489,20 @@ tr:last-child td:last-child {
 
 
 /*
+    ADMIN PANEL | INGRESOS 
+*/
+
+#admin .card .card-header .report.access{
+    position: absolute;
+    left: 70px;
+}
+
+
+/*
     ADMIN PANEL | USERS 
 */
 
-.btn-change-table {
-    margin: 30px 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 15px;
-}
 
-.pagination {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    vertical-align: middle;
-
-    .current-page {
-        margin: 0 10px;
-        border: 1px solid var(--bgcolor-clare);
-        border-radius: 10px;
-        padding: 0 10px;
-        color: white;
-        background-color: var(--text-color);
-        font-weight: bold;
-    }
-}
-
-.pagination a {
-    vertical-align: middle;
-    font-size: 16px;
-    color: var(--text-color);
-    text-decoration: none;
-    margin: 0 5px;
-}
-
-.pagination a:hover {
-    color: var(--bgcolor);
-}
 
 /*
     ADMIN PANEL | DEVICES

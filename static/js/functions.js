@@ -14,7 +14,7 @@ export function applyFunctions(elements, event, callback) {
 export function applyFunctionsArguments(elements, event, callback) {
     if (Exists(elements)) {
         elements.forEach(element => {
-            element.addEventListener(event, ()=>{
+            element.addEventListener(event, () => {
                 callback(element)
             })
         })
@@ -38,7 +38,7 @@ export function actualModule() {
         headerTextModule.innerHTML = "Modulo 1>";
     } else if (url.includes(module2)) {
         headerTextModule.innerHTML = "Modulo 2>";
-    } else if (url.includes(module3)){
+    } else if (url.includes(module3)) {
         headerTextModule.innerHTML = "Modulo 3>";
     }
 }
@@ -86,7 +86,7 @@ export function successAlert(title, text) {
     })
 }
 
-function playSoundAlert(){
+function playSoundAlert() {
     const audio = "/static/assets/sounds/beep-alert.mp3"
     const soundAlert = new Audio(audio)
     soundAlert.play()
@@ -104,22 +104,22 @@ export function errorAlert(title, text) {
 }
 
 //Funcion para tomar los valores de items seleccionados
-export function updateCheckeds(name, type_item, input, btnText){
+export function updateCheckeds(name, type_item, input, btnText) {
     // Obtener todos los elementos con la clase 'checked'
-    const checkedItems = document.querySelectorAll(`.item-${type_item}.checked`);     
+    const checkedItems = document.querySelectorAll(`.item-${type_item}.checked`);
     // Obtener los valores de los elementos con la clase 'checked'
     const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
     // Asignar los valores al campo de entrada oculto
-    input ? input.value = valuesChecks.join(","): "";
-  
+    input ? input.value = valuesChecks.join(",") : "";
+
     // Cambiar el texto del select segun la cantidad de dispositivos seleccionados
-    btnText ? btnText.innerText = checkedItems.length > 1 ? `${checkedItems.length} Seleccionados` : checkedItems.length === 1 ? checkedItems[0].innerText : `Seleccionar ${name}`: "";
-    }
+    btnText ? btnText.innerText = checkedItems.length > 1 ? `${checkedItems.length} Seleccionados` : checkedItems.length === 1 ? checkedItems[0].innerText : `Seleccionar ${name}` : "";
+}
 
 //=====================================================================================================
 
 //Funcion para iniciar camara
-export function Camera(){
+export function Camera() {
     const btncamAccess = document.getElementById('user-picture-btn');
     const btnSave = document.getElementById('user-savepicture-btn');
     const btnRepeat = document.getElementById('user-repeatpicture-btn');
@@ -133,85 +133,263 @@ export function Camera(){
 
     //Al presionar el boton de la camara
     btncamAccess.addEventListener('click', () => {
-      // Obtener acceso a la webcam
-      navigator.mediaDevices.getUserMedia({ video: true, width: 800, height: 680 })
-        .then(function (stream) {
-          video.srcObject = stream;
-          video.play();
+        // Obtener acceso a la webcam
+        navigator.mediaDevices.getUserMedia({ video: true, width: 800, height: 680 })
+            .then(function (stream) {
+                video.srcObject = stream;
+                video.play();
 
-          // Guardar la referencia de la pista de video
-          const videoTrack = stream.getVideoTracks()[0];
+                // Guardar la referencia de la pista de video
+                const videoTrack = stream.getVideoTracks()[0];
 
-          // Agregar un evento para detener la pista cuando el modal se cierre
-          camaraModal.addEventListener('hidden.bs.modal', function () {
-            videoTrack.stop(); // Detener la pista de video
-            video.srcObject = null; // Liberar el recurso de la cámara
-          });
+                // Agregar un evento para detener la pista cuando el modal se cierre
+                camaraModal.addEventListener('hidden.bs.modal', function () {
+                    videoTrack.stop(); // Detener la pista de video
+                    video.srcObject = null; // Liberar el recurso de la cámara
+                });
 
-        })
-        .catch(function (error) {
-          console.log('Error al acceder a la webcam:', error);
-        });
+            })
+            .catch(function (error) {
+                console.log('Error al acceder a la webcam:', error);
+            });
     });
 
 
     // Función para capturar la imagen
     function captureImage() {
-      btnTake.style.display = 'none';
-      video.style.display = 'none';
-      canvas.style.display = 'block';
+        btnTake.style.display = 'none';
+        video.style.display = 'none';
+        canvas.style.display = 'block';
 
-      btnRepeat.style.display = 'block';
-      btnSave.style.display = 'block';
+        btnRepeat.style.display = 'block';
+        btnSave.style.display = 'block';
 
-      // Dibujar el cuadro actual del video en el canvas
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Dibujar el cuadro actual del video en el canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
     }
 
     // Función para convertir la imagen base64 en un objeto de archivo
     function dataURLtoFile(dataUrl, filename) {
-      const arr = dataUrl.split(',');
-      const mime = arr[0].match(/:(.*?);/)[1];
-      const bstr = atob(arr[1]);
-      let n = bstr.length;
-      const u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new File([u8arr], filename, { type: mime });
+        const arr = dataUrl.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
     }
 
     function repeatImage() {
-      btnRepeat.style.display = 'none';
-      btnSave.style.display = 'none';
-      btnTake.style.display = 'block';
+        btnRepeat.style.display = 'none';
+        btnSave.style.display = 'none';
+        btnTake.style.display = 'block';
 
-      canvas.style.display = 'none';
-      video.style.display = 'block';
+        canvas.style.display = 'none';
+        video.style.display = 'block';
     }
 
     function saveImage() {
-      // Obtener la imagen en formato base64
-      const imageData = canvas.toDataURL('image/png');
-      const capturedImage = imageData
+        // Obtener la imagen en formato base64
+        const imageData = canvas.toDataURL('image/png');
+        const capturedImage = imageData
 
-      // Generar un archivo a partir de la imagen base64
-      const file = dataURLtoFile(capturedImage, 'captured_image.png');
+        // Generar un archivo a partir de la imagen base64
+        const file = dataURLtoFile(capturedImage, 'captured_image.png');
 
-      // Crear una instancia de DataTransfer
-      const dataTransfer = new DataTransfer();
+        // Crear una instancia de DataTransfer
+        const dataTransfer = new DataTransfer();
 
-      // Agregar el archivo al DataTransfer
-      dataTransfer.items.add(file);
+        // Agregar el archivo al DataTransfer
+        dataTransfer.items.add(file);
 
-      // Simular una selección de archivo para el campo de entrada de tipo "file"
-      const fileInput = document.getElementById('user-file');
+        // Simular una selección de archivo para el campo de entrada de tipo "file"
+        const fileInput = document.getElementById('user-file');
 
-      // Asignar el DataTransfer al campo de entrada de tipo "file"
-      fileInput.files = dataTransfer.files;
+        // Asignar el DataTransfer al campo de entrada de tipo "file"
+        fileInput.files = dataTransfer.files;
 
-      // Disparar un evento de cambio en el campo de entrada de tipo "file"
-      const changeEvent = new Event('change');
-      fileInput.dispatchEvent(changeEvent);
+        // Disparar un evento de cambio en el campo de entrada de tipo "file"
+        const changeEvent = new Event('change');
+        fileInput.dispatchEvent(changeEvent);
     }
-  }
+}
+
+export function totemKeyboard() {
+    //Resolucion del dispositivo
+    let pageWidth = window.innerWidth;
+    let pageHeight = window.innerHeight;
+
+    //Si se tiene la resolucion del totem
+    if (pageWidth >= 1080 && pageHeight >= 1800) {
+        const keyboard = document.querySelector('.keyboard'); //Keyboard
+        let keys = document.querySelectorAll('.keys'); //Teclas
+        let letters = Array.from(keys).filter(key => !key.classList.contains("special_key") && !key.classList.contains("disabled")); //Letras
+        const inputs = document.querySelectorAll('input'); //Inputs
+        let activeInput = null; //Input activo
+
+        //Para cada input le agrego un evento click
+        inputs.forEach(input => {
+            input.addEventListener('click', function () {
+                activeInput = input; // Input actual
+                keyboard.classList.add('active'); //Abrir teclado
+            });
+            if (input.hasAttribute('autofocus')) { //Si tiene el atributo autofocus
+                keyboard.classList.add('active'); //Abrir teclado
+            }
+        });
+
+        //Para cada key le agrego un evento click
+        keys.forEach(key => {
+            key.setAttribute('keyname', key.textContent); //Agrego el atributo keyname con el nombre de la tecla
+            if (!key.classList.contains("caps_lock_key") && !key.classList.contains("shift_left")) {
+                key.addEventListener('click', function () {
+                    KeyClick(key, activeInput) //Funcion para agregar una letra al input
+                })
+            }
+        })
+
+        //Tecla enter
+        const enterKey = document.querySelector('.enter_key').addEventListener('click', function () {
+            EnterKey(activeInput);
+        });
+
+        //Tecla backspace
+        const backspaceKey = document.querySelector('.backspace_key')
+        backspaceKey.addEventListener('mousedown', function () {//Si se mantiene presionada la tecla
+            BackspaceKeyDown(activeInput)
+        });
+
+        backspaceKey.addEventListener('mouseup', function () {//Si se suelta la tecla
+            BackspaceKeyUp(activeInput);
+        });
+
+        //Tecla espacio
+        const spaceKey = document.querySelector('.space_key').addEventListener('click', function () {
+            SpaceKey(activeInput);
+        });
+
+        //Tecla Bloq mayus
+        const caps_lock_key = document.querySelector('.caps_lock_key')
+        caps_lock_key.addEventListener('click', function () {
+            BloqMayusKey();
+        });
+
+        //Tecla shift
+        const shift_left = document.querySelector('.shift_left')
+        shift_left.addEventListener('click', function () {
+            ShiftKey();
+        });
+
+        //FUNCIONES
+
+        function mayusLetters(letter) {
+            letter.innerText = letter.innerText.toUpperCase(); //Letras en mayuscula
+        }
+
+        function normalLetters(letter) {
+            letter.innerText = letter.getAttribute('keyname'); //Letras en minuscula
+        }
+
+        //Funcion para agregar una letra al input
+        function KeyClick(key, input) {
+            let onlynumbers = input.classList.contains("onlynumbers") //Verificar si el input tiene la clase solo numeros
+
+            key.classList.add('active'); //Agrego la clase active
+            setTimeout(() => { //Despues de 200ms remuevo la clase active
+                key.classList.remove('active')
+            }, 200);
+
+            // sourcery skip: merge-nested-ifs
+            if (letters.includes(key)) {
+                if (!onlynumbers || (onlynumbers && !isNaN(key.innerText))) { //Si el campo no tiene la clase solonumeros || Si el campo es de solo numeros y la key es un numero
+                    input.value += key.innerText;
+                }
+            }
+
+        }
+
+        //Funcion para agregar un enter
+        function EnterKey(input) {
+            let form = input.closest('form'); //Formulario actual
+            form.submit(); //Envio el formulario
+        }
+
+        //Funcion para agregar un espacio al input
+        function BackspaceKeyDown(input) {
+            backspaceKey.classList.add('active');
+            actionInterval = setInterval(() => { //Cada 70ms remuevo el ultimo caracter del input
+                input.value = input.value.slice(0, -1);
+            }, 60);
+        }
+
+        function BackspaceKeyUp() {
+            backspaceKey.classList.remove('active');
+            clearInterval(actionInterval);//Paro el intervalo
+        }
+
+        //Funcion para agregar un espacio al input
+        function SpaceKey(input) {
+            input.value += ' ';
+        }
+
+        //Funcion para bloquear mayusculas
+        function BloqMayusKey() {
+            caps_lock_key.classList.toggle("active");
+
+            letters.forEach(letter => { //Para cada letra
+                if (caps_lock_key.classList.contains('active')) { //Si bloq mayus esta activa
+                    mayusLetters(letter);
+                    letter.addEventListener("click", function () {
+                        letters.forEach(function (letter) {
+                            mayusLetters(letter);
+                        })
+                    });
+                } else {
+                    normalLetters(letter); //Si no volver a la normalidad
+                }
+            });
+        };
+
+
+        //Funcion shift
+        function ShiftKey() {
+            shift_left.classList.toggle('active');
+
+            letters.forEach(letter => { //Para cada letra
+                if (shift_left.classList.contains('active')) {
+                    mayusLetters(letter);
+                    letter.addEventListener("click", function () {
+                        letters.forEach(letter => {
+                            normalLetters(letter);
+                        });
+                        shift_left.classList.remove('active'); //Remover la clase active 
+                    });
+                } else {
+                    normalLetters(letter);
+                }
+            });
+        }
+
+
+    }
+}
+
+//=====================================================================================================
+
+//Cambiar entre tablas segun botones
+export function changeTables(btns, tables) {
+    applyFunctionsArguments(btns, "click", (btn) => {
+        btns.forEach((otherbtn) => {
+            otherbtn.classList.remove("btn-green2-active");
+        })
+        btn.classList.add("btn-green2-active");
+        let dataBtn = btn.getAttribute("data-table");
+
+        tables.forEach((table) => {
+            let dataTable = table.querySelector("table").getAttribute("data-table");
+            dataBtn == dataTable ? table.classList.remove("d-none") : table.classList.add("d-none");
+        })
+    })
+}
