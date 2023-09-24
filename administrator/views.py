@@ -70,13 +70,19 @@ def access(request):
 @login_required(login_url="admin")
 def users(request):
     
+    users = {}
     roles = Roles.objects.all()
-
-    
-        
+    for rol in roles:
+        model = Usuarios.objects.filter(rol=rol.idrol)
+        users[rol.nombre] = {
+                "name":rol.nombre.lower(),
+                "model":createPagination(request, f"{rol.nombre}", model, 100)
+        }
+    print(users)        
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
         'roles': roles,
+        'users': users,
         })
 
 #Registrar usuario
