@@ -1,4 +1,4 @@
-import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert, updateCheckeds, Camera, totemKeyboard } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert, updateCheckeds, Camera, totemKeyboard, compDevice } from './functions.js'
 
 //Modulo actual
 actualModule();
@@ -120,34 +120,10 @@ if (Exists(selects)) {
 //ALERTA POR COMPROBACION DE DISPOSITIVO
 
 const deviceExit = document.getElementById("device_exit") // Input del dispositivo a escanear
+const deviceAccess = document.getElementById("device_access")
 
-if (Exists(deviceExit)) {
-  const user = deviceExit.getAttribute("data-user") // Capturar el usuario
-  //Focus al input despues de 2sg fuera
-  deviceExit.addEventListener("blur", () => {
-    setTimeout(() => {
-      deviceExit.focus()
-    }, 2000)
-  })
-  //Al enviar
-  deviceExit.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault() //Prevenir el envio del formulario
-      const url = `?code=${user}&exitDevice=${deviceExit.value}` //Url para enviar el codigo del usuario y el dispositivo
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          const response = data.response
-          if (response.status === "success") {
-            successAlert("Dispositivo encontrado", "El dispositivo coincide con el ingreso")
-          } else {
-            errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso")
-          }
-          deviceExit.value = ""
-        })
-    }
-  })
-}
+Exists(deviceAccess) ? compDevice(deviceAccess, 1) : Exists(deviceExit) ? compDevice(deviceExit, 2) : null;
+  
 
 //=====================================================================================================
 //REGISTROS

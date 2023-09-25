@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from administrator.models import *
 from administrator.forms import *
 from django.http import Http404, JsonResponse
-from mainapp.views import actualUrl, AccessOrExit, getUser, compExitDevice
+from mainapp.views import actualUrl, AccessOrExit, getUser, compDevice
 
 #Modulo1
 def module1(request):
@@ -36,9 +36,12 @@ def module2(request):
             #Obtener datos del usuario       
             ingreso, user, dispositivos, dispositivos_ingreso = getUser(code, type="module2")                                     
             #Comprobar dispositivo de salida
-            exit_device = request.GET.get('exitDevice')                 
-            if exit_device:
-                return compExitDevice(exit_device, ingreso)
+            access_device = request.GET.get("accessDevice")
+            exit_device = request.GET.get('exitDevice')        
+            if access_device:
+                return compDevice(access_device, 1, ingreso, user)
+            elif exit_device:
+                return compDevice(exit_device, 2, ingreso, user=None)
             
             if request.method == 'POST':
                 vehiculo = None   
@@ -75,8 +78,12 @@ def module3(request):
             ingreso, user, vehiculos, dispositivos, dispositivos_ingreso = getUser(code, type="module3")
             #Comprobar dispositivo de salida
             exit_device = request.GET.get('exitDevice')                 
-            if exit_device:
-                return compExitDevice(exit_device, ingreso)
+            access_device = request.GET.get("accessDevice")
+            exit_device = request.GET.get('exitDevice')        
+            if access_device:
+                return compDevice(access_device, 1, ingreso, user)
+            elif exit_device:
+                return compDevice(exit_device, 2, ingreso, user=None)
             
             #Al enviar el formulario
             if request.method == 'POST':

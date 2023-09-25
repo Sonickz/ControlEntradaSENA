@@ -116,6 +116,47 @@ export function updateCheckeds(name, type_item, input, btnText) {
     btnText ? btnText.innerText = checkedItems.length > 1 ? `${checkedItems.length} Seleccionados` : checkedItems.length === 1 ? checkedItems[0].innerText : `Seleccionar ${name}` : "";
 }
 
+
+//Funcion para comprobar dispositivo de entrada o salida
+export function compDevice(input, type) {
+    const devicesInput = document.getElementById('devices');
+    const btnText = document.querySelector(".device .btn-text");
+    const devices = document.querySelectorAll(".item-device")
+    const user = input.getAttribute("data-user");
+    //Focus al input despues de 2sg fuera
+    input.addEventListener("blur", () => {
+        setTimeout(() => {
+            input.focus()
+        }, 2000)
+    })
+
+    input.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault() //Prevenir el envio del formulario
+            const url = type === 1 ? `?code=${user}&accessDevice=${input.value}`: type === 2 ? `?code=${user}&exitDevice=${input.value}`: "";
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const response = data.response
+                    if (response.status === "success") {
+                        type === 1 ? successAlert("Dispositivo encontrado", "El dispositivo esta registrado") : type === 2 ? successAlert("Dispositivo encontrado", "El dispositivo coincide con el ingreso") : ""
+                        if (type === 1){
+                           devices.forEach(device =>{
+                            let id = device.value
+                            id === response.device.id ? device.classList.add("checked") : null
+                            updateCheckeds("Dispositivos", "device", devicesInput, btnText)
+                           }) 
+                        }
+                    } else {
+                        type === 1 ? errorAlert("Dispositivo no encontrado", "El dispositivo no esta registrado") : type === 2 ? errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso") : "";
+                    }
+                    input.value = ""
+                })
+
+        }
+    });
+}
+
 //=====================================================================================================
 
 //Funcion para iniciar camara
@@ -396,7 +437,7 @@ export function changeTables(btns, tables) {
 
 //Cambiar entre vistas / cards
 export function changeView(btn, container) {
-    btn.addEventListener("click", () => {
+    btn ? btn.addEventListener("click", () => {
         container.classList.add("slide")
-    })
+    }) : null;
 }

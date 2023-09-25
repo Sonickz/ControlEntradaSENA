@@ -59,9 +59,16 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
         messages.success(request, "success-access")
     
 #Funcion para validar que el dispositivo de salida coincida con el de ingreso  
-def compExitDevice(exit_device, ingreso):   
+def compDevice(device, type, ingreso, user):  
+    if type == 1:
         try:
-            device = Dispositivos.objects.get(sn=exit_device.upper())
+            device = Dispositivos.objects.get(usuario=user, sn=device.upper())
+            return JsonResponse({'response': {'status': 'success', 'message': 'El dispositivo esta registrado', 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})
+        except:                
+            return JsonResponse({'response': {'status': 'error', 'message': 'El dispositivo no esta registrado'}})
+    elif type == 2: 
+        try:
+            device = Dispositivos.objects.get(sn=device.upper())
             exit_device = IngresosDispositivos.objects.get(ingreso=ingreso.idingreso, dispositivo=device)
             return JsonResponse({'response': {'status': 'success', 'message': 'El dispositivo coincide', 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})
         except:                
