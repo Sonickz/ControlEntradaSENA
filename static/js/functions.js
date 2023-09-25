@@ -393,3 +393,10 @@ export function changeTables(btns, tables) {
         })
     })
 }
+
+//Cambiar entre vistas / cards
+export function changeView(btn, container) {
+    btn.addEventListener("click", () => {
+        container.classList.add("slide")
+    })
+}

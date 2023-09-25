@@ -20,32 +20,7 @@
             <h1 class="card-title">Rol</h1>
         </header>
         <div class="card-body">
-            <ul>
-                <li class="col">
-                    <a role="button" href="?rol=1">
-                        <img src="{% static "assets/icons/roles/instructor.png" %}" alt="">
-                        <span>Instructor</span>
-                    </a>
-                </li>
-                <li class="col">
-                    <a role="button" href="?rol=2">
-                        <img src="{% static "assets/icons/roles/aprendiz.png" %}" alt="">
-                        <span>Aprendiz</span>
-                    </a>
-                </li>
-                <li class="col">
-                    <a role="button" href="?rol=3">
-                        <img src="{% static "assets/icons/roles/visitante.png" %}" alt="">
-                        <span>Visitante</span>
-                    </a>
-                </li>
-                <li class="col">
-                    <a role="button" href="?rol=4">
-                        <img src="{% static "assets/icons/roles/funcionario.png" %}" alt="">
-                        <span>Funcionario</span>
-                    </a>
-                </li>
-            </ul>
+            {% include 'layouts/components/SelectRol.html' with rol1="?rol=1" rol2="?rol=2" rol3="?rol=3" rol4="?rol=4" %}
         </div>
     </section>
 </article>

@@ -74,9 +74,10 @@ def users(request):
     roles = Roles.objects.all()
     for rol in roles:
         model = Usuarios.objects.filter(rol=rol.idrol)
-        users[rol.nombre] = {
-                "name":rol.nombre.lower(),
-                "model":createPagination(request, f"{rol.nombre}", model, 100)
+        rol_nombre = rol.nombre.lower()
+        users[rol_nombre] = {
+                "name":rol_nombre,
+                "model":createPagination(request, f"{rol_nombre}", model, 100)
         }
     print(users)        
     return render(request, 'pages/usuarios/users.html', {

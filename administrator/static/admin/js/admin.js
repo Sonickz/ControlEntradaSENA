@@ -1,4 +1,4 @@
-import { applyFunctions, applyFunctionsArguments, changeTables } from "../../../../static/js/functions.js"
+import { applyFunctions, applyFunctionsArguments, changeTables, changeView } from "../../../../static/js/functions.js"
 
 //ADMIN
 
@@ -40,22 +40,10 @@ items.forEach((item) => {
 
 //======================================================================
 
-//Animacion admin | Cambiar entre tabla select y form
-const btnRegister = document.getElementById('btn-register');
-if (btnRegister) {
-
-  btnRegister.addEventListener('click', () => {
-    adminMain.classList.add('slide');
-  });
-
-  const adminMain = document.getElementById("admin")
-  const btnBack = document.getElementById('btn-back')
-
-  btnBack ? btnBack.addEventListener("click", () => {
-    adminMain.classList.remove("slide")
-  }): "";
-
-}
+//Animacion admin | Cambiar entre dos vistas
+const btnRegister = document.getElementById("btn-register");
+const adminContainer = document.getElementById("admin")
+changeView(btnRegister, adminContainer);
 
 //Cambiar entre tablas con los botones
 const btns = document.querySelectorAll(".btn-change-table .btn");

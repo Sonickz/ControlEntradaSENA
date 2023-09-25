@@ -359,14 +359,16 @@ body.admin main {
     margin-top: 20px;
     justify-content: normal;
     align-items: normal;
-    max-height: 55vh;
-    min-height: 55vh;
     overflow: hidden;
 }
 
 .table-container {
-    overflow: scroll;
     transition: all 1s ease;
+}
+
+.table-scroll{
+    overflow: scroll;
+    height: 50vh;
 }
 
 .table {
@@ -502,7 +504,9 @@ tr:last-child td:last-child {
     ADMIN PANEL | USERS 
 */
 
-
+#admin.slide .card{
+    height: 400px;
+}
 
 /*
     ADMIN PANEL | DEVICES
