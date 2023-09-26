@@ -56,7 +56,8 @@
           <th scope="col">Usuario</th>
           <th scope="col">Rol</th>
           <th scope="col">Vehiculo</th>
-          <th scope="col">Dispositivo</th>
+          <th scope="col">Dispositivos Ingreso</th>
+          <th scope="col">Dispositivos Salida</th>
           <th scope="col">Hora ingreso</th>
           <th scope="col">Hora salida</th>
         </tr>
@@ -69,8 +70,19 @@
           <td>{{exit.ingreso.idingreso}}</td>
           <td>{{exit.ingreso.usuario}}</td>
           <td>{{exit.ingreso.usuario.rol}}</td>
-          <td>{{exit.dispositivo|default:"Ninguno"}}</td>
-          <td>{{exit.vehiculo|default:"Ninguno"}}</td>      
+          <td>{{exit.vehiculo|default:"Ninguno"}}</td>  
+          <td>
+            {% for ingreso in exit.ingreso.dispositivos_ingreso %}
+              {{ingreso.dispositivo}}
+            {% endfor %}
+          </td>    
+          <td>
+            {% if exit.dispositivos_salida %} 
+              {% for exit in exit.dispositivos_salida %}
+                {{exit.dispositivo}}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            {% endif %}
+          </td>
           <td>{{exit.ingreso.horaingreso}}</td>  
           <td>{{exit.horasalida}}</td>  
         </tr>

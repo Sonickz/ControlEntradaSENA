@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator, Page
+from django.db.models import Prefetch
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from .models import *
@@ -57,7 +58,8 @@ def adminpanel(request):
 def access(request):
     access = Ingresos.objects.all().exclude(idingreso__in=Salidas.objects.values('ingreso'))
     access = createPagination(request, "access", access, 100)
-    exits = Salidas.objects.all()
+    exits = Salidas.objects.all().prefetch_related(
+        Prefetch("salidasdispositivos_set", queryset=SalidasDispositivos.objects.all(), to_attr="dispositivos_salida"))
     exits = createPagination(request, "exits", exits, 100)
 
     return render(request, "pages/ingresos/access.html", {
@@ -76,8 +78,8 @@ def users(request):
         model = Usuarios.objects.filter(rol=rol.idrol)
         rol_nombre = rol.nombre.lower()
         users[rol_nombre] = {
-                "name":rol_nombre,
-                "model":createPagination(request, f"{rol_nombre}", model, 100)
+                "name": rol_nombre,
+                "model": createPagination(request, f"{rol_nombre}", model, 100)
         }
     print(users)        
     return render(request, 'pages/usuarios/users.html', {

@@ -104,9 +104,9 @@ export function errorAlert(title, text) {
 }
 
 //Funcion para tomar los valores de items seleccionados
-export function updateCheckeds(name, type_item, input, btnText) {
+export function updateCheckeds(name, items, input, btnText) {
     // Obtener todos los elementos con la clase 'checked'
-    const checkedItems = document.querySelectorAll(`.item-${type_item}.checked`);
+    const checkedItems = [...items].filter(item => item.classList.contains("checked"))
     // Obtener los valores de los elementos con la clase 'checked'
     const valuesChecks = [...checkedItems].map(checkedItem => checkedItem.getAttribute("value"));
     // Asignar los valores al campo de entrada oculto
@@ -121,7 +121,7 @@ export function updateCheckeds(name, type_item, input, btnText) {
 export function compDevice(input, type) {
     const devicesInput = document.getElementById('devices');
     const btnText = document.querySelector(".device .btn-text");
-    const devices = document.querySelectorAll(".item-device")
+    const deviceItems = document.querySelectorAll(".item-device")
     const user = input.getAttribute("data-user");
     //Focus al input despues de 2sg fuera
     input.addEventListener("blur", () => {
@@ -133,26 +133,23 @@ export function compDevice(input, type) {
     input.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
             e.preventDefault() //Prevenir el envio del formulario
-            const url = type === 1 ? `?code=${user}&accessDevice=${input.value}`: type === 2 ? `?code=${user}&exitDevice=${input.value}`: "";
+            const url = type === 1 ? `?code=${user}&accessDevice=${input.value}` : type === 2 ? `?code=${user}&exitDevice=${input.value}` : null;
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     const response = data.response
                     if (response.status === "success") {
-                        type === 1 ? successAlert("Dispositivo encontrado", "El dispositivo esta registrado") : type === 2 ? successAlert("Dispositivo encontrado", "El dispositivo coincide con el ingreso") : ""
-                        if (type === 1){
-                           devices.forEach(device =>{
+                        type === 1 ? successAlert("Dispositivo encontrado", "El dispositivo esta registrado") : type === 2 ? successAlert("Dispositivo encontrado", "El dispositivo coincide con el ingreso") : null;
+                        deviceItems.forEach(device => {
                             let id = device.value
                             id === response.device.id ? device.classList.add("checked") : null
-                            updateCheckeds("Dispositivos", "device", devicesInput, btnText)
-                           }) 
-                        }
+                            updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText)
+                        })
                     } else {
-                        type === 1 ? errorAlert("Dispositivo no encontrado", "El dispositivo no esta registrado") : type === 2 ? errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso") : "";
+                        type === 1 ? errorAlert("Dispositivo no encontrado", "El dispositivo no esta registrado") : type === 2 ? errorAlert("Dispositivo no encontrado", "El dispositivo no coincide con el ingreso") : null;
                     }
                     input.value = ""
                 })
-
         }
     });
 }

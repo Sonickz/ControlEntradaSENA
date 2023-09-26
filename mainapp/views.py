@@ -59,20 +59,19 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
         messages.success(request, "success-access")
     
 #Funcion para validar que el dispositivo de salida coincida con el de ingreso  
-def compDevice(device, type, ingreso, user):  
-    if type == 1:
+def compDevice(device, type, ingreso, user):      
         try:
-            device = Dispositivos.objects.get(usuario=user, sn=device.upper())
-            return JsonResponse({'response': {'status': 'success', 'message': 'El dispositivo esta registrado', 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})
+            if type == 1:
+                device = Dispositivos.objects.get(usuario=user, sn=device.upper())
+                message = "El dispositivo esta registrado" if device else "El dispositivo no esta registrado"
+            elif type == 2: 
+                device = Dispositivos.objects.get(sn=device.upper())
+                exit_device = IngresosDispositivos.objects.get(ingreso=ingreso.idingreso, dispositivo=device)
+                message = "El dispositivo coincide" if exit_device else "El dispositivo no coincide"
+            return JsonResponse({'response': {'status': 'success', 'message': message, 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})            
         except:                
-            return JsonResponse({'response': {'status': 'error', 'message': 'El dispositivo no esta registrado'}})
-    elif type == 2: 
-        try:
-            device = Dispositivos.objects.get(sn=device.upper())
-            exit_device = IngresosDispositivos.objects.get(ingreso=ingreso.idingreso, dispositivo=device)
-            return JsonResponse({'response': {'status': 'success', 'message': 'El dispositivo coincide', 'device':{'id': device.iddispositivo, 'user': device.usuario.nombres, 'type': device.tipo.nombre, 'mark': device.marca.nombre, 'sn': device.sn}}})
-        except:                
-            return JsonResponse({'response': {'status': 'error', 'message': 'El dispositivo no coincide'}})
+            return JsonResponse({'response': {'status': 'error', 'message': 'El dispositivo no existe'}})
+    
 #===================================================================================================
 
 #Inicio

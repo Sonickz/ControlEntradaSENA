@@ -84,18 +84,19 @@ if (Exists(selects)) {
   const btnText = document.querySelector(".device .btn-text");
   const user = document.getElementById("user");
   let rol = null
+  
   user ? fetch(`/api/users/${user.value}`)
     .then(response => response.json())
     .then(data => {
       rol = data.rol.nombre
     }) : null;
 
-  updateCheckeds("Dispositivos", "device", devicesInput, btnText);
+  updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
 
   applyFunctionsArguments(deviceItems, "click", (item) => {
     if (item.classList.contains("checked") || rol == "Instructor" || document.querySelectorAll(".item-device.checked").length < 3) {
       item.classList.toggle("checked");
-      updateCheckeds("Dispositivos", "device", devicesInput, btnText);
+      updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
     }
   })
 
@@ -112,7 +113,7 @@ if (Exists(selects)) {
       vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
     }
     item.classList.toggle("checked");
-    updateCheckeds("Vehiculos", "vehicle", vehicleInput, btnTextVehicle)
+    updateCheckeds("Vehiculos", vehicleItems, vehicleInput, btnTextVehicle)
   });
 
 }
