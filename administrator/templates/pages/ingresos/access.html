@@ -8,11 +8,11 @@
 {% block card_table %}
 
 <div class="btn-change-table">
-  <button type="button" class="btn btn-green2 btn-green2-active" data-table="1">Ingresos activos</button>    
-  <button type="button" class="btn btn-green2" data-table="2">Ingresos y salidas</button>    
+  <button type="button" class="btn btn-green2 btn-green2" data-table="1">Ingresos activos</button>    
+  <button type="button" class="btn btn-green2 btn-green2-active" data-table="2">Ingresos y salidas</button>    
 </div>
 
-<div class="table-container">
+<div class="table-container d-none">
   <div class="table-scroll">
     <table class="table table-striped" data-table="1">
       <thead>
@@ -34,8 +34,10 @@
           <td>{{enter.fecha}}</td>
           <td>{{enter.usuario}}</td>
           <td>{{enter.usuario.rol}}</td>
-          <td>{{enter.dispositivo|default:"Ninguno"}}</td>
           <td>{{enter.vehiculo|default:"Ninguno"}}</td>      
+          <td class="button-col">
+            <button type="button" class="btn btn-green btn-table access" data-bs-toggle="modal" data-bs-target="#accessDevicesModal" data-access="{{enter.idingreso}}">Ver</button>
+          </td>
           <td>{{enter.horaingreso}}</td>  
         </tr>
         {% endfor %}
@@ -45,7 +47,7 @@
   {% include 'layouts/components/Pagination.html' with pagination=access name="access"%}
 </div>
 
-<div class="table-container d-none">
+<div class="table-container">
   <div class="table-scroll">
     <table class="table table-striped" data-table="2">
       <thead>
@@ -56,8 +58,7 @@
           <th scope="col">Usuario</th>
           <th scope="col">Rol</th>
           <th scope="col">Vehiculo</th>
-          <th scope="col">Dispositivos Ingreso</th>
-          <th scope="col">Dispositivos Salida</th>
+          <th scope="col">Dispositivos</th>
           <th scope="col">Hora ingreso</th>
           <th scope="col">Hora salida</th>
         </tr>
@@ -71,17 +72,8 @@
           <td>{{exit.ingreso.usuario}}</td>
           <td>{{exit.ingreso.usuario.rol}}</td>
           <td>{{exit.vehiculo|default:"Ninguno"}}</td>  
-          <td>
-            {% for ingreso in exit.ingreso.dispositivos_ingreso %}
-              {{ingreso.dispositivo}}
-            {% endfor %}
-          </td>    
-          <td>
-            {% if exit.dispositivos_salida %} 
-              {% for exit in exit.dispositivos_salida %}
-                {{exit.dispositivo}}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            {% endif %}
+          <td class="button-col">
+            <button type="button" class="btn btn-green btn-table exit" data-bs-toggle="modal" data-bs-target="#exitDevicesModal" data-access="{{exit.ingreso.idingreso}}" data-exit="{{exit.idsalida}}">Ver</button>
           </td>
           <td>{{exit.ingreso.horaingreso}}</td>  
           <td>{{exit.horasalida}}</td>  
@@ -93,6 +85,7 @@
   {% include 'layouts/components/Pagination.html' with pagination=exits name="exits"%}
 </div>
 
-
+{% include 'layouts/components/AccessDevicesModal.html' %}
+{% include 'layouts/components/ExitDevicesModal.html' %}
 
 {% endblock %}

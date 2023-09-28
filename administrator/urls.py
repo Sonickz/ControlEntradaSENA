@@ -1,8 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
-
 
 urlpatterns = [
     path("login/", views.login_admin, name="login"),
@@ -19,6 +18,5 @@ urlpatterns = [
     path("admin/dispositivo/editdispositivo/<int:id>", views.edit_dispositivo, name="editdispositivo"),
     path("admin/vehiculos", views.vehicles, name="vehiculos"),
     path("admin/vehiculos/editvehiculo/<int:id>", views.edit_vehiculo, name="editvehiculo"),
-    path("admin/about", views.about, name="about"),
-    path("api/<str:model>/<str:code>", views.api, name="api")
+    path("admin/about", views.about, name="about")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

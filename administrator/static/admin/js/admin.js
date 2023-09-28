@@ -1,4 +1,4 @@
-import { applyFunctions, applyFunctionsArguments, changeTables, changeView } from "../../../../static/js/functions.js"
+import { applyFunctions, applyFunctionsArguments, changeTables, changeView, showDataModal, transferDataModal } from "../../../../static/js/functions.js"
 
 //ADMIN
 
@@ -50,6 +50,19 @@ const btns = document.querySelectorAll(".btn-change-table .btn");
 const tables = document.querySelectorAll(".table-container");
 changeTables(btns, tables);
 
+//
+const accessBtns = document.querySelectorAll(".btn-table.access");
+const accessDevicesModal = document.querySelector(".modal.access-devices")
+const feedListAccess = accessDevicesModal.querySelector(".access .feed .feed-items");
+const dataAccess = {"pk": "data-access", "name": "Dispositivo ingreso", "api": "accessdevices"}
+accessDevicesModal ? transferDataModal(accessBtns, accessDevicesModal, feedListAccess, dataAccess ) : null;
 
-
+const exitBtns = document.querySelectorAll(".btn-table.exit");
+const exitDevicesModal = document.querySelector(".modal.exit-devices")
+const feedListExitAccess = exitDevicesModal.querySelector(".access .feed .feed-items");
+const feedListExit = exitDevicesModal.querySelector(".exit .feed .feed-items");
+const dataExitAccess = {"pk": "data-access", "name": "Dispositivo ingreso", "api": "accessdevices"}
+const dataExit = {"pk": "data-exit", "name": "Dispositivo salida", "api": "exitdevices"}
+exitDevicesModal ? transferDataModal(exitBtns, exitDevicesModal, feedListExitAccess, dataExitAccess ) : null;
+exitDevicesModal ? transferDataModal(exitBtns, exitDevicesModal, feedListExit, dataExit ) : null;
 

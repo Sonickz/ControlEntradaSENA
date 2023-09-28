@@ -91,8 +91,8 @@ def module3(request):
                 vehiculo = request.POST.get('vehicle')
                 vehiculo = Vehiculos.objects.get(idvehiculo=vehiculo) if vehiculo else None     
                 #Obtener dispositivos           
-                dispositivos = request.POST.get('devices').split(',')            
-                dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos) if dispositivos else None         
+                dispositivos = request.POST.get('devices')         
+                dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos.split(',')) if dispositivos else None         
                 #Hacer ingreso o salida                           
                 AccessOrExit(request, ingreso, user, vehiculo, dispositivos)
                 return redirect("module3")                

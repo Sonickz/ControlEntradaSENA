@@ -438,3 +438,74 @@ export function changeView(btn, container) {
         container.classList.add("slide")
     }) : null;
 }
+
+export function transferDataModal(btns, Modal, feedList, data) {
+    const dataAttribute = data.pk
+    applyFunctionsArguments(btns, "click", (btn) => {
+        const dataBtn = btn.getAttribute(dataAttribute);
+        Modal.setAttribute(dataAttribute, dataBtn);
+        feedList.innerHTML = ""
+        showDataModal(Modal, feedList, data)
+    })
+}
+
+export function showDataModal(Modal, feedList, data) {
+    const dataAttribute = data.pk
+    const name = data.name
+    const api = data.api
+    const feedItems = feedList.querySelectorAll(".feed-item");
+    const pk = Modal.getAttribute(dataAttribute)
+
+    const url = `/api/${api}/${pk}`
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const items = data.response.data
+            items.forEach(item => {
+                let id = item.device.id
+                let type = item.device.type
+                let mark = item.device.mark
+                let sn = item.device.sn
+
+                feedItems.length > 0 ? feedItems.forEach(item => {
+                    let idItem = item.getAttribute("data-id")
+                    idItem != id ? createDevice(feedList, name, id, type, mark, sn) : null
+                }) : createDevice(feedList, name, id, type, mark, sn)
+            })
+        })
+        .catch((error) =>{
+        })
+}
+
+function createDevice(feed, name, id, type, mark, sn) {
+    // Crear el elemento <li>
+    const listItem = document.createElement('li');
+    listItem.classList.add('feed-item'); // Agregar la clase 'feed-item'
+    listItem.setAttribute("data-id", id)
+    // Crear el elemento <div> con la clase 'icon'
+    const iconDiv = document.createElement('div');
+    iconDiv.classList.add('icon');
+
+    // Crear la imagen <img> con la clase 'icon-img' y establecer el atributo 'src'
+    const imgElement = document.createElement('img');
+    imgElement.classList.add('icon-img');
+    imgElement.src = "/static/assets/icons/dispositivo white.png";
+
+    // Crear los elementos <span> y establecer su contenido
+    const textSpan = document.createElement('span');
+    textSpan.classList.add('text');
+    textSpan.textContent = `${type} ${mark}: #${sn}`;
+
+    const subTextSpan = document.createElement('span');
+    subTextSpan.classList.add('sub-text');
+    subTextSpan.textContent = name;
+
+    // Agregar los elementos al DOM
+    iconDiv.appendChild(imgElement);
+    listItem.appendChild(iconDiv);
+    listItem.appendChild(textSpan);
+    listItem.appendChild(subTextSpan);
+
+    // Agregar el elemento <li> al documento
+    feed.appendChild(listItem);
+}

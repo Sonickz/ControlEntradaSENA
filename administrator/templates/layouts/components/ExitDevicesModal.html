@@ -1,0 +1,19 @@
+{% load static %}
+<!-- Modal -->
+<div class="modal fade devices exit-devices" id="exitDevicesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Dispositivos</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">            
+                {% include 'layouts/components/CardDevices.html' with title="Ingreso" class="access" %}
+                {% include 'layouts/components/CardDevices.html' with title="Salida" class="exit" %}            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

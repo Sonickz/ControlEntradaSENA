@@ -6,18 +6,17 @@
     <div class="select-form vehicle">
         <!-- Select -->
         <div class="select-btn open">
-            {% if not ingreso %}
-            <span class="btn-text">Seleccionar Vehiculo</span>
-            <span class="arrow-dwn">
-                <i class="fa-solid fa-chevron-down"></i>
-            </span>
-            {% comment %} Si ingreso y tiene vehiculo {% endcomment %}
-            {% elif ingreso and ingreso.vehiculo %}
+            {% if ingreso and ingreso.vehiculo %}
             <span class="btn-text">{{ingreso.vehiculo}}</span>
-            {% endif %}            
+            {% else %}  
+                <span class="btn-text">Seleccionar Vehiculo</span>
+                <span class="arrow-dwn">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </span>
+            {% endif %}                      
         </div>     
-        <!-- Lista -->                   
-        {% if not ingreso %}
+        <!-- Lista -->   
+        {% if not ingreso%}    
             <ul class="list-items">
                 {% if vehiculos %}
                     {% for vehiculo in vehiculos %}
@@ -32,7 +31,7 @@
                 {% else %}
                     <span class="item-text">Ningun vehiculo registrado</span>
                 {% endif %}
-            </ul>
-        {% endif %}                                                          
+            </ul>     
+        {% endif %}                                                    
     </div>                                                     
 </div>
