@@ -1,4 +1,4 @@
-import { applyFunctions, applyFunctionsArguments, changeTables, changeView, showDataModal, transferDataModal } from "../../../../static/js/functions.js"
+import { applyFunctions, applyFunctionsArguments, changeTables, changeView, dataAccess, dataUsers, showDataModal, transferDataModal } from "../../../../static/js/functions.js"
 
 //ADMIN
 
@@ -50,19 +50,65 @@ const btns = document.querySelectorAll(".btn-change-table .btn");
 const tables = document.querySelectorAll(".table-container");
 changeTables(btns, tables);
 
-//
+//Ver elementos en un modal
+
+//Ingreso 
 const accessBtns = document.querySelectorAll(".btn-table.access");
 const accessDevicesModal = document.querySelector(".modal.access-devices")
-const feedListAccess = accessDevicesModal.querySelector(".access .feed .feed-items");
-const dataAccess = {"pk": "data-access", "name": "Dispositivo ingreso", "api": "accessdevices"}
-accessDevicesModal ? transferDataModal(accessBtns, accessDevicesModal, feedListAccess, dataAccess ) : null;
+if (accessDevicesModal) {
+  const feedListActiveAccess = {
+    ListAccess: {
+      list: accessDevicesModal.querySelector(".access .feed .feed-items"),
+      pk: "data-access",
+      api: "accessdevices",
+      name: "Dispositivo ingreso",
+      func: dataUsers,
+    },
+    }
+    transferDataModal(accessBtns, accessDevicesModal, feedListActiveAccess)
+  }
 
-const exitBtns = document.querySelectorAll(".btn-table.exit");
-const exitDevicesModal = document.querySelector(".modal.exit-devices")
-const feedListExitAccess = exitDevicesModal.querySelector(".access .feed .feed-items");
-const feedListExit = exitDevicesModal.querySelector(".exit .feed .feed-items");
-const dataExitAccess = {"pk": "data-access", "name": "Dispositivo ingreso", "api": "accessdevices"}
-const dataExit = {"pk": "data-exit", "name": "Dispositivo salida", "api": "exitdevices"}
-exitDevicesModal ? transferDataModal(exitBtns, exitDevicesModal, feedListExitAccess, dataExitAccess ) : null;
-exitDevicesModal ? transferDataModal(exitBtns, exitDevicesModal, feedListExit, dataExit ) : null;
+  const exitBtns = document.querySelectorAll(".btn-table.exit");
+  const exitDevicesModal = document.querySelector(".modal.exit-devices")
+  if (exitDevicesModal) {
+    const feedListExit = {
+      ListAccess: {
+        list: exitDevicesModal.querySelector(".access .feed .feed-items"),
+        pk: "data-access",
+        api: "accessdevices",
+        name: "Dispositivo ingreso",
+        func: dataAccess
+      },
+      ListExit: {
+        list: exitDevicesModal.querySelector(".exit .feed .feed-items"),
+        pk: "data-exit",
+        api: "exitdevices",
+        name: "Dispositivo salida",
+        func: dataAccess
+    }
+  }
+  transferDataModal(exitBtns, exitDevicesModal, feedListExit)
+}
 
+//Usuarios
+const usersBtns = document.querySelectorAll(".btn-table");
+const usersModal = document.getElementById("userElementsModal");
+if (usersModal) {
+  const feedListUsers = {
+    ListVehicles: {
+      list: document.querySelector(".vehicles .feed .feed-items"),
+      pk: "data-user",
+      api: "users",
+      name: "Vehiculo",
+      func: dataUsers,
+    },
+    ListDevices: {
+      list: document.querySelector(".devices .feed .feed-items"),
+      pk: "data-user",
+      api: "users",
+      name: "Dispositivo",
+      func: dataUsers,
+    }
+  }
+  transferDataModal(usersBtns, usersModal, feedListUsers)
+}

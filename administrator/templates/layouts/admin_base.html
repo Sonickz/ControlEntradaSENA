@@ -10,9 +10,9 @@
     <section class="card-main">
       <header class="card-header">  
         <!-- Btn Descargar Reporte -->    
-        <a role="button" href="{% url 'reports' 2 %}" class="btn btn-green report"> 
+        <a role="button" href="{% url 'reports' model="usuarios" %}" class="btn btn-green report"> 
           <img src="{% static 'assets/icons/excel.png' %}" width="25" alt="">
-            Descargar Reporte
+          <span>Reporte General</span>
         </a>
         <h1 class="card-title">{% block card_title %}{% endblock %}</h1>
         <!-- Btn Registrar Usuario -->
@@ -31,6 +31,9 @@
         </div>
       </div> 
     </section>
+    {% block Modal %}
+    
+    {% endblock %}
     <!-- Card REGISTER -->
     <section class="card-register card-select">
        {% block card_register %}

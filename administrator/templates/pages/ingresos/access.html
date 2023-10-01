@@ -28,19 +28,7 @@
         </tr>
       </thead>
       <tbody class="tbody">
-        {% for enter in access %}
-        <tr>
-          <th scope="row">{{enter.idingreso}}</th>
-          <td>{{enter.fecha}}</td>
-          <td>{{enter.usuario}}</td>
-          <td>{{enter.usuario.rol}}</td>
-          <td>{{enter.vehiculo|default:"Ninguno"}}</td>      
-          <td class="button-col">
-            <button type="button" class="btn btn-green btn-table access" data-bs-toggle="modal" data-bs-target="#accessDevicesModal" data-access="{{enter.idingreso}}">Ver</button>
-          </td>
-          <td>{{enter.horaingreso}}</td>  
-        </tr>
-        {% endfor %}
+        {% include 'layouts/components/TableContent.html' with search=search_access items=access item=enter include='pages/ingresos/tables/ActiveAccess.html'%}        
       </tbody>
     </table>
   </div>
@@ -64,28 +52,15 @@
         </tr>
       </thead>
       <tbody class="tbody">
-        {% for exit in exits %}
-        <tr>
-          <th scope="row">{{exit.idsalida}}</th>
-          <td>{{exit.fecha}}</td>
-          <td>{{exit.ingreso.idingreso}}</td>
-          <td>{{exit.ingreso.usuario}}</td>
-          <td>{{exit.ingreso.usuario.rol}}</td>
-          <td>{{exit.vehiculo|default:"Ninguno"}}</td>  
-          <td class="button-col">
-            <button type="button" class="btn btn-green btn-table exit" data-bs-toggle="modal" data-bs-target="#exitDevicesModal" data-access="{{exit.ingreso.idingreso}}" data-exit="{{exit.idsalida}}">Ver</button>
-          </td>
-          <td>{{exit.ingreso.horaingreso}}</td>  
-          <td>{{exit.horasalida}}</td>  
-        </tr>
-        {% endfor %}
+        {% include 'layouts/components/TableContent.html' with search=search_exit items=exits item=exit include='pages/ingresos/tables/Exits.html'%}
       </tbody>
     </table>
   </div>
   {% include 'layouts/components/Pagination.html' with pagination=exits name="exits"%}
 </div>
 
-{% include 'layouts/components/AccessDevicesModal.html' %}
-{% include 'layouts/components/ExitDevicesModal.html' %}
+{% include 'layouts/components/ElementsModal.html' with class="access-devices" id="accessDevicesModal" title="Dispositivos" cardName1="Dispositivos de ingreso" cardClass1="access" %}
+{% include 'layouts/components/ElementsModal.html' with class="exit-devices" id="exitDevicesModal" title="Dispositivos" cardName1="Dispositivos de ingreso" cardClass1="access" card2="true" cardName2="Dispositivos de salida" cardClass2="exit" %}
+
 
 {% endblock %}

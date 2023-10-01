@@ -418,11 +418,16 @@ export function totemKeyboard() {
 
 //Cambiar entre tablas segun botones
 export function changeTables(btns, tables) {
+    const btnReport = document.querySelector(".report")
     applyFunctionsArguments(btns, "click", (btn) => {
         btns.forEach((otherbtn) => {
             otherbtn.classList.remove("btn-green2-active");
         })
         btn.classList.add("btn-green2-active");
+        if (btn.classList.contains("users")) {
+            btnReport.href = `reports/${btn.textContent.toLowerCase()}`
+            btnReport.querySelector("span").textContent = `Reporte de ${btn.textContent}`
+        }
         let dataBtn = btn.getAttribute("data-table");
 
         tables.forEach((table) => {
@@ -439,49 +444,44 @@ export function changeView(btn, container) {
     }) : null;
 }
 
-export function transferDataModal(btns, Modal, feedList, data) {
-    const dataAttribute = data.pk
+//Llevar informacion a modal por botones
+export function transferDataModal(btns, Modal, feeds) {
     applyFunctionsArguments(btns, "click", (btn) => {
-        const dataBtn = btn.getAttribute(dataAttribute);
-        Modal.setAttribute(dataAttribute, dataBtn);
-        feedList.innerHTML = ""
-        showDataModal(Modal, feedList, data)
+        Object.keys(feeds).forEach((feed) => {
+            const feedList = feeds[feed]
+            const list = feedList.list
+            const func = feedList.func
+            const data = { "pk": feedList.pk, "name": feedList.name, "api": feedList.api }
+            list.innerHTML = ""
+
+            const dataAttribute = data.pk
+            const dataBtn = btn.getAttribute(dataAttribute);
+            Modal.setAttribute(dataAttribute, dataBtn);
+
+            showDataModal(Modal, list, data, func)
+        })
     })
 }
 
-export function showDataModal(Modal, feedList, data) {
+export function showDataModal(Modal, feedList, data, func) {
     const dataAttribute = data.pk
-    const name = data.name
-    const api = data.api
-    const feedItems = feedList.querySelectorAll(".feed-item");
     const pk = Modal.getAttribute(dataAttribute)
+    const api = data.api
+    const name = data.name
 
     const url = `/api/${api}/${pk}`
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            const items = data.response.data
-            items.forEach(item => {
-                let id = item.device.id
-                let type = item.device.type
-                let mark = item.device.mark
-                let sn = item.device.sn
-
-                feedItems.length > 0 ? feedItems.forEach(item => {
-                    let idItem = item.getAttribute("data-id")
-                    idItem != id ? createDevice(feedList, name, id, type, mark, sn) : null
-                }) : createDevice(feedList, name, id, type, mark, sn)
-            })
-        })
-        .catch((error) =>{
+            func(data, feedList, name)
         })
 }
 
-function createDevice(feed, name, id, type, mark, sn) {
+function createElementFeed(feedList, name, element) {
     // Crear el elemento <li>
     const listItem = document.createElement('li');
     listItem.classList.add('feed-item'); // Agregar la clase 'feed-item'
-    listItem.setAttribute("data-id", id)
     // Crear el elemento <div> con la clase 'icon'
     const iconDiv = document.createElement('div');
     iconDiv.classList.add('icon');
@@ -494,7 +494,7 @@ function createDevice(feed, name, id, type, mark, sn) {
     // Crear los elementos <span> y establecer su contenido
     const textSpan = document.createElement('span');
     textSpan.classList.add('text');
-    textSpan.textContent = `${type} ${mark}: #${sn}`;
+    textSpan.textContent = element;
 
     const subTextSpan = document.createElement('span');
     subTextSpan.classList.add('sub-text');
@@ -507,5 +507,29 @@ function createDevice(feed, name, id, type, mark, sn) {
     listItem.appendChild(subTextSpan);
 
     // Agregar el elemento <li> al documento
-    feed.appendChild(listItem);
+    feedList.appendChild(listItem);
+}
+
+export function dataUsers(data, feedList, type) {
+    if (type == "Vehiculo") {
+        const vehicles = data.response.data.vehiculos
+        vehicles ? vehicles.forEach(vehicle => {
+            const vehicleElement = `${vehicle.tipo} ${vehicle.marca} ${vehicle.modelo}: #${vehicle.placa}`
+            createElementFeed(feedList, "Vehiculo", vehicleElement)
+        }) : null;
+    } else if (type == "Dispositivo") {
+        const devices = data.response.data.dispositivos
+        devices ? devices.forEach(device => {
+            const deviceElement = `${device.tipo} ${device.marca}: #${device.sn}`
+            createElementFeed(feedList, "Dispositivo", deviceElement)
+        }) : null;
+    }
+}
+
+export function dataAccess(data, feedList, type) {
+    const ingresos = data.response.data
+    ingresos ? ingresos.forEach(ingreso => {
+        const deviceElement = `${ingreso.device.type} ${ingreso.device.mark}: #${ingreso.device.sn}`
+        createElementFeed(feedList, type, deviceElement)
+    }) : null;
 }

@@ -1,8 +1,8 @@
 {% load static %}
-<div class="card modal-devices-card {{class}}">
+<div class="card card-elements {{cardClass}}">
     <header class="card-header">
         <img class="header-icon" src="{% static 'assets/icons/log-in-green.png' %}" width="40px">
-        <h3 class="header-title">Dispositivos de {{title}}</h3>
+        <h3 class="header-title">{{cardName}}</h3>
     </header>
     <div class="separator"></div>
     <div class="card-body">

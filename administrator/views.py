@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 from django.http import HttpResponse
 from django.contrib import messages
 from .models import *
@@ -57,14 +57,33 @@ def adminpanel(request):
 def access(request):
     access = Ingresos.objects.all().exclude(idingreso__in=Salidas.objects.values('ingreso'))
     access = createPagination(request, "access", access, 100)
-    exits = Salidas.objects.all().prefetch_related(
-        Prefetch("salidasdispositivos_set", queryset=SalidasDispositivos.objects.all(), to_attr="dispositivos_salida"))
+    exits = Salidas.objects.all()
     exits = createPagination(request, "exits", exits, 100)
-
+    
+    searchAccess = None
+    searchExit = None
+    search = request.GET.get("search")
+    if search:
+        searchAccess = Ingresos.objects.filter(
+            Q(idingreso__icontains=search) | Q(fecha__icontains=search) | Q(usuario__nombres__icontains=search) |
+            Q(usuario__apellidos__icontains=search) | Q(usuario__documento__icontains=search) |
+            Q(vehiculo__placa__icontains=search) | Q(horaingreso__icontains=search)
+        )
+        
+        searchExit = Salidas.objects.filter(
+            Q(idsalida__icontains=search) |  Q(fecha__icontains=search) | 
+            Q(ingreso__usuario__nombres__icontains=search) | Q(ingreso__usuario__apellidos__icontains=search) | 
+            Q(ingreso__usuario__documento__icontains=search) |
+            Q(vehiculo__placa__icontains=search) | Q(ingreso__horaingreso__icontains=search) |
+            Q(horasalida__icontains=search)
+        )
+                
     return render(request, "pages/ingresos/access.html", {
         'title': 'Ingresos',
         'access': access,
         'exits': exits,
+        'search_access': searchAccess,
+        'search_exit': searchExit
     })
 
 #Lista usuarios
@@ -80,7 +99,7 @@ def users(request):
                 "name": rol_nombre,
                 "model": createPagination(request, f"{rol_nombre}", model, 100)
         }
-    print(users)        
+               
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
         'roles': roles,
@@ -286,15 +305,31 @@ def reports(request, model):
     #Crear hoja
     ws_sheet = wb.active
         
+    
+
     #Reporte de Ingresos y salidas
-    if model == "Ingresos":
-
+    if model == "ingresos":
+        name = "Ingresos y Salidas"
         reportData(ws_sheet, model) 
-
         ws_sheet2 = wb.create_sheet(title="Salidas")
-        reportData(ws_sheet2, model="Salidas")
+        reportData(ws_sheet2, model="salidas")
 
-                      
+    elif model == "usuarios":
+        name = "Usuarios" 
+        reportData(ws_sheet, model="aprendiz")
+        ws_sheet2 = wb.create_sheet(title="Instructores")
+        reportData(ws_sheet2, model="instructor")
+        ws_sheet3 = wb.create_sheet(title="Visitantes")
+        reportData(ws_sheet3, model="visitante")
+        ws_sheet4 = wb.create_sheet(title="Administrativos")
+        reportData(ws_sheet4, model="administrativo")
+
+    else:
+        name = reportData(ws_sheet, model)
+
+    
+    
+        
 
     # Crear un objeto BytesIO para guardar el archivo en memoria
     output = BytesIO()
@@ -303,62 +338,137 @@ def reports(request, model):
 
     # Configurar la respuesta HTTP para descargar el archivo
     response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response["Content-Disposition"] = f"attachment; filename=Reporte de {model} - ControlEntradaSENA V1.3.0.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=Reporte de {name} - ControlEntradaSENA V1.3.0.xlsx"
 
     return response
 
 def reportData(ws_sheet, model):
-    if model == "Ingresos":
-        model = Ingresos.objects.all() #Modelo
-        ws_sheet.title = "Ingresos activos" #Titulo hoja
+    if model == "ingresos":
+        model = Ingresos.objects.all().prefetch_related("ingresosdispositivos_set")
+        ws_sheet.title = "Ingresos" #Titulo hoja
         #Columnas
         ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivo", "Hora Ingreso"]) 
         header_cells = ws_sheet["A1:F1"]
         #Llenar hoja
-        for ingreso in model:
+        for ingreso in model: 
+            dispositivos = []     
+            for ingreso_dispositivo in ingreso.ingresosdispositivos_set.all():                
+                dispositivos.append(str(ingreso_dispositivo.dispositivo))
             ws_sheet.append([ingreso.idingreso,
                     ingreso.fecha,
-                    f"{ingreso.usuario.nombres} {ingreso.usuario.apellidos}",
-                    f"{ingreso.vehiculo.tipo.nombre} {ingreso.vehiculo.marca.nombre}: {ingreso.vehiculo.placa}" if ingreso.vehiculo else "Ninguno",
-                    f"{ingreso.dispositivo.tipo} {ingreso.dispositivo.marca}: #{ingreso.dispositivo.sn}" if ingreso.dispositivo else "Ninguno",
-                    ingreso.horaingreso])                    
-
-    elif model == "Salidas":
-        model = Salidas.objects.all()
+                    f"{str(ingreso.usuario)}: {ingreso.usuario.documento}",
+                    str(ingreso.vehiculo) if ingreso.vehiculo else "Ninguno",
+                    ", ".join(dispositivos) if dispositivos else "Ninguno",
+                    ingreso.horaingreso])                                                  
+            
+    elif model == "salidas":
+        model = Salidas.objects.all().prefetch_related("salidasdispositivos_set")
         ws_sheet.title = "Salidas" 
-        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivo", "Hora Ingreso", "Hora Salida" ]) 
-        header_cells = ws_sheet["A1:G1"]
+        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivos", "Hora Ingreso", "Hora Salida" ]) 
+        header_cells = ws_sheet["A1:H1"]
         for salida in model:
+            dispositivos = []
+            for salida_dispositivo in salida.salidasdispositivos_set.all():
+                dispositivos.append(str(salida_dispositivo.dispositivo))
             ws_sheet.append([salida.idsalida,
                                  salida.fecha,
-                                f"{salida.ingreso.usuario.nombres} {salida.ingreso.usuario.apellidos}",
-                                f"{salida.vehiculo.tipo.nombre} {salida.vehiculo.marca.nombre}: {salida.vehiculo.placa}" if salida.vehiculo else "Ninguno",
-                                f"{salida.dispositivo.tipo} {salida.dispositivo.marca}: #{salida.dispositivo.sn}" if salida.dispositivo else "Ninguno",
+                                 salida.ingreso.idingreso,
+                                f"{str(salida.ingreso.usuario)}: {salida.ingreso.usuario.documento}",
+                                str(salida.vehiculo)if salida.vehiculo else "Ninguno",
+                                ", ".join(dispositivos) if dispositivos else "Ninugno",
                                 salida.ingreso.horaingreso,
                                 salida.horasalida])
             
-    elif model == "Usuarios":
-        model = Usuarios.objects.all()
-        ws_sheet.title = "Usuarios" 
-        ws_sheet.append(["Id", "Nombres", "Apellidos", "Tipo de Documento", "Documento", "Telefono", "Correo", "Centro", "Rol", "Ficha"]) 
-        header_cells = ws_sheet["A1:G1"]
-        for salida in model:
-            ws_sheet.append([salida.idsalida,
-                                 salida.fecha,
-                                f"{salida.ingreso.usuario.nombres} {salida.ingreso.usuario.apellidos}",
-                                f"{salida.vehiculo.tipo.nombre} {salida.vehiculo.marca.nombre}: {salida.vehiculo.placa}" if salida.vehiculo else "Ninguno",
-                                f"{salida.dispositivo.tipo} {salida.dispositivo.marca}: #{salida.dispositivo.sn}" if salida.dispositivo else "Ninguno",
-                                salida.ingreso.horaingreso,
-                                salida.horasalida])
-        
+    elif model == "aprendiz":
+        model = Usuarios.objects.filter(rol=2).prefetch_related("vehiculos_set").prefetch_related("dispositivos_set")        
+        ws_sheet.title = "Aprendices" 
+        ws_sheet.append(["Id", "Nombres", "Apellidos", "Tipo de Documento", "Documento", "Telefono", "Correo", "Centro", "Rol", "Ficha", "Dispositivos", "Vehiculos"]) 
+        header_cells = ws_sheet["A1:L1"]
+        for user in model:
+            dispositivos = []
+            vehiculos = []
+            for dispositivo in user.dispositivos_set.all():
+                dispositivos.append(str(dispositivo))
+            for vehiculo in user.vehiculos_set.all():
+                vehiculos.append(str(vehiculo))
+            ws_sheet.append([user.idusuario,
+                                user.nombres,
+                                user.apellidos,
+                                str(user.tipodocumento),
+                                user.documento,
+                                user.telefono,
+                                user.correo,
+                                str(user.centro),
+                                str(user.rol),
+                                str(user.ficha),
+                                ", ".join(dispositivos) if dispositivos else "Ninguno",
+                                ", ".join(vehiculos) if vehiculos else "Ninguno"
+                                ])
+            
+    elif model == "instructor" or model == "administrativo":
+        if model == "instructor":
+            model = Usuarios.objects.filter(rol=1).prefetch_related("vehiculos_set").prefetch_related("dispositivos_set")
+            ws_sheet.title = "Instructores" 
+        else:
+            model = Usuarios.objects.filter(rol=4).prefetch_related("vehiculos_set").prefetch_related("dispositivos_set")        
+            ws_sheet.title = "Administradores" 
+            
+        ws_sheet.append(["Id", "Nombres", "Apellidos", "Tipo de Documento", "Documento", "Telefono", "Correo", "Centro", "Rol", "Dispositivos", "Vehiculos"]) 
+        header_cells = ws_sheet["A1:K1"]
+        for user in model:
+            dispositivos = []
+            vehiculos = []
+            for dispositivo in user.dispositivos_set.all():
+                dispositivos.append(str(dispositivo))
+            for vehiculo in user.vehiculos_set.all():
+                vehiculos.append(str(vehiculo))
+            ws_sheet.append([user.idusuario,
+                                user.nombres,
+                                user.apellidos,
+                                str(user.tipodocumento),
+                                user.documento,
+                                user.telefono,
+                                user.correo,
+                                str(user.centro),
+                                str(user.rol),
+                                ", ".join(dispositivos) if dispositivos else "Ninguno",
+                                ", ".join(vehiculos) if vehiculos else "Ninguno"
+                                ])
+            
+    elif model == "visitante":
+        model = Usuarios.objects.filter(rol=3).prefetch_related("vehiculos_set").prefetch_related("dispositivos_set")        
+        ws_sheet.title = "Visitantes" 
+        ws_sheet.append(["Id", "Nombres", "Apellidos", "Tipo de Documento", "Documento", "Telefono", "Correo", "Rol", "Dispositivos", "Vehiculos"]) 
+        header_cells = ws_sheet["A1:J1"]
+        for user in model:
+            dispositivos = []
+            vehiculos = []
+            for dispositivo in user.dispositivos_set.all():
+                dispositivos.append(str(dispositivo))
+            for vehiculo in user.vehiculos_set.all():
+                vehiculos.append(str(vehiculo))
+            ws_sheet.append([user.idusuario,
+                                user.nombres,
+                                user.apellidos,
+                                str(user.tipodocumento),
+                                user.documento,
+                                user.telefono,
+                                user.correo,
+                                str(user.rol),
+                                ", ".join(dispositivos) if dispositivos else "Ninguno",
+                                ", ".join(vehiculos) if vehiculos else "Ninguno"
+                                ])
+    
     designExcel(header_cells, ws_sheet)
+    
+    return ws_sheet.title         
         
 
 def designExcel(header_cells, ws_sheet):
     #Diseño de celdas
     bold_font = Font(bold=True)
     center_alignment = Alignment(horizontal="center", vertical="center")
-    header_fill = PatternFill(start_color="C0C0C0", end_color="C0C0C0", fill_type="solid")
+    header_fill = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
     thin_border = Border(left=Side(style="thin"), 
                          right=Side(style="thin"), 
                          top=Side(style="thin"), 

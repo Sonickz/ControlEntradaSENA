@@ -423,7 +423,7 @@ tr:last-child td:last-child {
 /* DISPOSITIVOS MODAL */
 
 /* Modal */
-.devices .modal-body{
+.elements .modal-body{
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -431,7 +431,7 @@ tr:last-child td:last-child {
 }
 
 /* Card */
-.modal-devices-card{
+.card-elements{
     padding: 15px 10px;
 
     .card-header{

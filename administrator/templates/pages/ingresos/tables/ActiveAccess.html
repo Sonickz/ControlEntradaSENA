@@ -1,0 +1,11 @@
+<tr>
+    <th scope="row">{{item.idingreso}}</th>
+    <td>{{item.fecha}}</td>
+    <td>{{item.usuario}}</td>
+    <td>{{item.usuario.rol}}</td>
+    <td>{{item.vehiculo|default:"Ninguno"}}</td>      
+    <td class="button-col">
+      {% include 'layouts/components/ButtonModal.html' with class="access" target="accessDevicesModal" data1="data-access" value1=item.idingreso %}
+    </td>
+    <td>{{item.horaingreso}}</td>  
+</tr>

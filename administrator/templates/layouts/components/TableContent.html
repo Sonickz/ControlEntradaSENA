@@ -1,0 +1,11 @@
+{% if search %} 
+    {% with items=search %}
+        {% for item in items %}
+          {% include include %}
+        {% endfor %}
+    {% endwith %}
+{% else %}
+    {% for item in items %}
+        {% include include %}
+    {% endfor %}
+{% endif %}

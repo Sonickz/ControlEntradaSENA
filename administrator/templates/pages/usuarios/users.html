@@ -11,7 +11,7 @@
 
 <div class="btn-change-table">
   {% for rol in roles %}
-    <button type="button" class="btn btn-green2 {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}">{{rol}}</button>
+    <button type="button" class="btn btn-green2 users {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}">{{rol}}</button>
   {% endfor %}
 </div>
 
@@ -25,12 +25,15 @@
           <th scope="col">Nombres</th>
           <th scope="col">Apellidos</th>
           <th scope="col">Rol</th>
-          <th scope="col">Ficha</th>
+          {% if rol == "aprendiz" %}
+            <th scope="col">Ficha</th>
+          {% endif %}
           <th scope="col">Documento</th>
-          <th scope="col">Centro</th>
+          {% if rol != "visitante" %}
+            <th scope="col">Centro</th>
+          {% endif %}
           <th scope="col">Telefono</th>
-          <th scope="col">Dispositivo</th>
-          <th scope="col">Vehiculo</th>
+          <th scope="col">Vehiculos y Dispositivos</th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,11 +48,14 @@
           <td>{{user.tipodocumento}} {{user.documento}}</td>
           <td class="centro">{{user.centro|default:""}}</td>
           <td>{{user.telefono}}</td>
-          <td>{% for dispositivo in user.dispositivos_set.all %}{{dispositivo|default:"Ninguno"}}{% endfor %}</td>
-          <td>{% for vehiculo in user.vehiculos_set.all %}{{vehiculo|default:"Ninguno"}}{% endfor %}</td>
+          <td class="button-col">
+            {% include 'layouts/components/ButtonModal.html' with class="elements" target="userElementsModal" data1="data-user" value1=user.idusuario %}
+          </td>
           <td class="actions">
             <!-- Dropdows de acciones-->
-            {% include 'layouts/components/Dropdown.html' %}
+            {% with url="edituser/"|add:user.idusuario %}
+              {% include 'layouts/components/Dropdown.html' with url=url %}
+            {% endwith %}
           </td>
         </tr>
         {% endfor %}
@@ -62,6 +68,9 @@
 
 {% endblock %}
 
+{% block Modal %}
+  {% include 'layouts/components/ElementsModal.html' with id="userElementsModal" title="Vehiculos y dispositivos" cardName1="Vehiculos" cardClass1="vehicles" card2="true" cardName2="Dispositivos" cardClass2="devices" %}
+{% endblock %}
 
 {% block card_register %}
 
