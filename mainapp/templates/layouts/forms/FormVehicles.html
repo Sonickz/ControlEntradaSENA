@@ -1,3 +1,4 @@
+{% include 'layouts/components/FormErrors.html' %}
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}                        
     {{form.usuario}}                

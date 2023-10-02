@@ -133,7 +133,7 @@ class RegisterVehicle(ModelForm):
 
 #==============================================================================================
 
-class RegisterForm(UserCreationForm):
+class RegisterAdmin(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2' ]

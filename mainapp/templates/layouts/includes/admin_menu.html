@@ -43,6 +43,16 @@
             </a>
         </li>
 
+        <!-- Lista de vehiculos -->
+        <li class="item" data-name="vehiculos">
+            <a role="button" href="{% url 'vehicles' %}">
+                <div class="item-icon">
+                    <img src="{% static 'assets/icons/trafico white.png' %}" alt="">
+                </div>
+                <span class="item-title">Lista de vehiculos</span>
+            </a>
+        </li>
+
         <!-- Lista de dispositivos -->
         <li class="item" data-name="devices">
             <a role="button" href="{% url 'devices' %}">
@@ -50,16 +60,6 @@
                     <img src="{% static 'assets/icons/dispositivo white.png' %}" alt="">
                 </div>
                 <span class="item-title">Lista de dispositivos</span>
-            </a>
-        </li>
-
-        <!-- Lista de vehiculos -->
-        <li class="item" data-name="vehiculos">
-            <a role="button" href="{% url 'vehiculos' %}">
-                <div class="item-icon">
-                    <img src="{% static 'assets/icons/trafico white.png' %}" alt="">
-                </div>
-                <span class="item-title">Lista de vehiculos</span>
             </a>
         </li>
 
@@ -88,7 +88,7 @@
 
             <!-- Añadir administrador -->
             <div class="item">
-                <a role="button" href="">
+                <a role="button" href="{% url 'registeradmin' %}">
                     <div class="item-icon">
                         <img src="{% static 'assets/icons/admin white.png' %}" alt="">
                     </div>

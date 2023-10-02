@@ -3,6 +3,10 @@
 
 {% block title %} {{title}} {% endblock %}
 
+{% block report %} 
+  {% url 'reports' model="dispositivos" %}
+{% endblock %}
+
 {% block card_title %} {{title}} {% endblock %}
 
 {% block card_table%}
@@ -28,7 +32,7 @@
     </div>  
     {% if not search %}
       <!-- Paginacion de la tabla -->
-      {% include 'layouts/components/Pagination.html' with pagination=dispositivos name="dispositivos" %} 
+      {% include 'layouts/components/Pagination.html' with pagination=dispositivos name="device" %} 
     {% else %}
       <!-- Paginacion de search -->
       {% include 'layouts/components/Pagination.html' with pagination=search name="device-search" %}

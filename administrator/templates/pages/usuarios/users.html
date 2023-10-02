@@ -5,6 +5,10 @@
 
 {% block card_title %} {{title}} {% endblock %}
 
+{% block report %}
+  {% url 'reports' model="usuarios" %}
+{% endblock %}
+
 {% block card_register_btn %} 
   {% include 'layouts/components/ButtonRegister.html' with name="Registrar usuario" %}
 {% endblock %}

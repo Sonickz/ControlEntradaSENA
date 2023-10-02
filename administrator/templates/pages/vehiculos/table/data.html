@@ -1,0 +1,12 @@
+<tr>
+    <td>{{item.idvehiculo}}</td>
+    <td>{{item.usuario}}: {{item.usuario.documento}}</td>
+    <td>{{item.placa}}</td>
+    <td>{{item.tipo}}</td>
+    <td>{{item.marca}}</td>
+    <td>{{item.modelo}}</td>
+    <td class="actions">
+        {% url 'editvehicle' id=item.idvehiculo as editvehicle_url %}
+        {% include 'layouts/components/Dropdown.html' with url=editvehicle_url %}
+    </td>
+</tr>

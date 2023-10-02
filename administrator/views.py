@@ -168,55 +168,30 @@ def edit_user(request, id):
 
 #=============================================================
 
-# Lista de dispositivos
-@login_required(login_url="admin")
-def devices(request):
-    
-    dispositivos = Dispositivos.objects.all()
-    print(dispositivos)
-    search = request.GET.get("search")
-    if search:
-        search = Dispositivos.objects.filter(
-            Q(sn__icontains=search) | Q(nombre__icontains=search) | Q(estado__icontains=search)
-        )
-        search = createPagination(request, "device-search", search, 100)
-    
-    return render(request, 'pages/dispositivos/devices.html', {
-        'title': 'Dispositivos',
-        'dispositivos': dispositivos
-    })
-
-#Editar dispositivo
-def edit_dispositivo(request, id):
-    instance = Dispositivos.objects.get(iddispositivo=id)
-
-    form = RegisterDevice(request.POST or None, request.FILES or None, instance= instance)
-    if request .method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, "se ha editado correctamente")
-        return redirect('dispositivo')
-        
-    return render(request, 'pages/dispositivos/edit.html', {
-        'title': 'Editar dispositivo',
-        'form': form
-    })
-
-#=============================================================
-
 #Vehiculos
 @login_required(login_url="admin")
 def vehicles(request):
-    vehicles = Vehiculos.objects.all()
-    
+    vehiculos = Vehiculos.objects.all()
+    vehiculos = createPagination(request, "vehicle", vehiculos, 100)
+
+    search = request.GET.get("search")
+    if search:
+        search = Vehiculos.objects.filter(
+            Q(idvehiculo__icontains=search) | Q(usuario__nombres__icontains=search) | Q(usuario__apellidos__icontains=search) | Q(usuario__documento__icontains=search) |
+            Q(tipo__nombre__icontains=search) | Q(placa__icontains=search) | Q(marca__nombre__icontains=search) | Q(modelo__icontains=search)
+        )
+        search = createPagination(request, "vehicle-search", search, 100)
+
     return render(request, 'pages/vehiculos/vehicles.html', {
         'title': 'Vehiculos',
-        'vehicles': vehicles
+        'vehiculos': vehiculos,
+        'search': search
     })
 
 #Editar vehiculos
-def edit_vehiculo(request, id):
+def edit_vehicle(request, id):
     instance=Vehiculos.objects.get(idvehiculo=id)
-
+    vehicle = str(instance.tipo.idtipovehiculo)
     form = RegisterVehicle(request.POST or None, request.FILES or None, instance= instance)
     
     if request .method == "POST" and form.is_valid():
@@ -226,6 +201,7 @@ def edit_vehiculo(request, id):
             
     return render(request, 'pages/vehiculos/edit.html', {
          'title': 'Editar Vehiculos',
+         'vehicle': vehicle,
          'form': form 
     })
 
@@ -235,26 +211,28 @@ def edit_vehiculo(request, id):
 @login_required(login_url="admin")
 def devices(request):
     
-    devices = Dispositivos.objects.all()
+    dispositivos = Dispositivos.objects.all()
+    dispositivos = createPagination(request, "device", dispositivos, 100)
 
-    form = RegisterDevice(request.POST or None, request.FILES or None)
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, "Se ha registrado correctamente")
-        return redirect('dispositivo')
+    search = request.GET.get("search")
+    if search:
+        search = Dispositivos.objects.filter(
+            Q(iddispositivo__icontains=search) | Q(usuario__nombres__icontains=search) | Q(usuario__apellidos__icontains=search) | Q(usuario__documento__icontains=search) | 
+            Q(sn__icontains=search) | Q(tipo__nombre__icontains=search) | Q(marca__nombre__icontains=search)
+        )
+        search = createPagination(request, "device-search", search, 100)
     
     return render(request, 'pages/dispositivos/devices.html', {
         'title': 'Dispositivos',
-        'dispositivos': devices,
-        'form': form
+        'dispositivos': dispositivos,
+        'search': search
     })
 
 #Editar dispositivo
-def edit_dispositivo(request, id):
+def edit_device(request, id):
     instance = Dispositivos.objects.get(iddispositivo=id)
-
     form = RegisterDevice(request.POST or None, request.FILES or None, instance= instance)
+
     if request .method == "POST" and form.is_valid():
         form.save()
         messages.success(request, "se ha editado correctamente")
@@ -265,9 +243,7 @@ def edit_dispositivo(request, id):
         'form': form
     })
 
-
-
-###
+#=============================================================================
 
 #Sanciones
 @login_required(login_url="admin")
@@ -279,10 +255,7 @@ def sanciones(request):
         'penaltys': sanciones
     })
 
-
-
 #Editar sanciones
-
 def edit_sanciones(request, id):
     instance=Sanciones.objects.get(idsancion=id)
 
@@ -311,7 +284,20 @@ def about(request):
         'title': 'Acerca de'
     })
 
+#Registrar admin
+@login_required(login_url="admin")
+def register_admin(request):
+    form = RegisterAdmin(request.POST or None)
 
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.info(request, "success-admin")
+        return redirect('adminpanel')
+
+    return render(request, 'pages/registeradmin.html', {
+        'title': "Registrar administrador",
+        'form': form
+    })
 #===========================================================================
 #Reporte en excel
 def reports(request, model):
@@ -474,6 +460,31 @@ def reportData(ws_sheet, model):
                                 ", ".join(dispositivos) if dispositivos else "Ninguno",
                                 ", ".join(vehiculos) if vehiculos else "Ninguno"
                                 ])
+            
+    elif model == "dispositivos":
+        model = Dispositivos.objects.all()
+        ws_sheet.title = "Dispositivos"
+        ws_sheet.append(["Id", "Usuario", "SN", "Tipo", "Marca"])
+        header_cells = ws_sheet["A1:E1"]
+        for dispositivo in model:
+            ws_sheet.append([dispositivo.iddispositivo,
+                                f"{str(dispositivo.usuario)}: {dispositivo.usuario.documento}",
+                                dispositivo.sn,
+                                str(dispositivo.tipo),
+                                str(dispositivo.marca)])
+            
+    elif model == "vehiculos":
+        model = Vehiculos.objects.all()
+        ws_sheet.title = "Vehiculos"
+        ws_sheet.append(["Id", "Usuario", "Placa", "Tipo", "Marca", "Modelo"])
+        header_cells = ws_sheet["A1:F1"]
+        for vehiculo in model:
+            ws_sheet.append([vehiculo.idvehiculo,
+                                f"{str(vehiculo.usuario)}: {vehiculo.usuario.documento}",
+                                vehiculo.placa,
+                                str(vehiculo.tipo),
+                                str(vehiculo.marca),
+                                vehiculo.modelo])
     
     designExcel(header_cells, ws_sheet)
     

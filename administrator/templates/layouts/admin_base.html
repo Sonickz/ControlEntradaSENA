@@ -10,7 +10,7 @@
     <section class="card-main">
       <header class="card-header">  
         <!-- Btn Descargar Reporte -->    
-        <a role="button" href="{% url 'reports' model="usuarios" %}" class="btn btn-green report"> 
+        <a role="button" href="{% block report %}{% endblock %}" class="btn btn-green report"> 
           <img src="{% static 'assets/icons/excel.png' %}" width="25" alt="">
           <span>Reporte General</span>
         </a>

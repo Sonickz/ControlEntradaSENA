@@ -56,6 +56,9 @@ if (Exists(Alert)) {
     case "success-device":
       successAlert("Dispositivo registrado!", "El dispositivo se ha registrado correctamente");
       break;
+    case "success-admin":
+      successAlert("Administrador registrado!", "El administrador se ha registrado correctamente");
+      break;
   }
 }
 
