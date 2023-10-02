@@ -1,0 +1,37 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}                        
+    {{form.usuario}}                
+    <input type="hidden" name="tipo" value="{{vehicle}}">
+    <div class="form-group row">
+        <div class="col">
+            {{form.tipo}}                            
+        </div>
+        <div class="col">
+            {% comment %} Si no es bicicleta {% endcomment %}
+            {% if vehicle != "3"%}
+            <div class="input-box">
+                {{form.placa}}
+                <label>{{form.placa.label}}</label>
+            </div>
+            {% else %}
+            <div class="col">
+                {{form.marca}}                      
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% comment %} Si es bicicleta {% endcomment %}
+    {% if vehicle != "3" %}
+    <div class="form-group row">
+        <div class="col">
+            {{form.marca}}                      
+        </div>
+        <div class="col">
+            {{form.modelo}}
+        </div>
+    </div>
+    {% endif %}
+    <div class="form-submit">
+        <button class="form-btn btn btn-primary" type="submit">Enviar</button>
+    </div>
+</form>

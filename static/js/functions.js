@@ -478,7 +478,7 @@ export function showDataModal(Modal, feedList, data, func) {
         })
 }
 
-function createElementFeed(feedList, name, element) {
+function createElementFeed(feedList, name, element, img) {
     // Crear el elemento <li>
     const listItem = document.createElement('li');
     listItem.classList.add('feed-item'); // Agregar la clase 'feed-item'
@@ -489,7 +489,7 @@ function createElementFeed(feedList, name, element) {
     // Crear la imagen <img> con la clase 'icon-img' y establecer el atributo 'src'
     const imgElement = document.createElement('img');
     imgElement.classList.add('icon-img');
-    imgElement.src = "/static/assets/icons/dispositivo white.png";
+    imgElement.src = `/static/assets/icons/${img}`;
 
     // Crear los elementos <span> y establecer su contenido
     const textSpan = document.createElement('span');
@@ -515,13 +515,13 @@ export function dataUsers(data, feedList, type) {
         const vehicles = data.response.data.vehiculos
         vehicles ? vehicles.forEach(vehicle => {
             const vehicleElement = `${vehicle.tipo} ${vehicle.marca} ${vehicle.modelo}: #${vehicle.placa}`
-            createElementFeed(feedList, "Vehiculo", vehicleElement)
+            createElementFeed(feedList, "Vehiculo", vehicleElement, "trafico white.png")
         }) : null;
     } else if (type == "Dispositivo") {
         const devices = data.response.data.dispositivos
         devices ? devices.forEach(device => {
             const deviceElement = `${device.tipo} ${device.marca}: #${device.sn}`
-            createElementFeed(feedList, "Dispositivo", deviceElement)
+            createElementFeed(feedList, "Dispositivo", deviceElement, "dispositivo white.png")
         }) : null;
     }
 }
@@ -530,6 +530,6 @@ export function dataAccess(data, feedList, type) {
     const ingresos = data.response.data
     ingresos ? ingresos.forEach(ingreso => {
         const deviceElement = `${ingreso.device.type} ${ingreso.device.mark}: #${ingreso.device.sn}`
-        createElementFeed(feedList, type, deviceElement)
+        createElementFeed(feedList, type, deviceElement, "dispositivo white.png")
     }) : null;
 }

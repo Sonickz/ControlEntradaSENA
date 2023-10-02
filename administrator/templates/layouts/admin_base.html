@@ -15,8 +15,9 @@
           <span>Reporte General</span>
         </a>
         <h1 class="card-title">{% block card_title %}{% endblock %}</h1>
-        <!-- Btn Registrar Usuario -->
-        <button type="button" class="btn btn-green add btn-register" id="btn-register">{% block card_register_btn %}{% endblock %}</button>                 
+        <!-- Btn Registrar -->
+        {% block card_register_btn %}
+        {% endblock %}               
       </header>
       <!-- Seccion Search -->
       {% include 'layouts/components/Search.html' %}
@@ -31,14 +32,17 @@
         </div>
       </div> 
     </section>
+
+    <!-- Modal -->
     {% block Modal %}
     
     {% endblock %}
+
     <!-- Card REGISTER -->
     <section class="card-register card-select">
-       {% block card_register %}
+    {% block card_register %}
 
-       {% endblock %}
+    {% endblock %}
     </section>
   </section>
 </article>

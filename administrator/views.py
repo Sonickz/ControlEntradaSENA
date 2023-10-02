@@ -55,10 +55,11 @@ def adminpanel(request):
 #Ingresos
 @login_required(login_url="admin")
 def access(request):
-    access = Ingresos.objects.all().exclude(idingreso__in=Salidas.objects.values('ingreso'))
-    access = createPagination(request, "access", access, 100)
-    exits = Salidas.objects.all()
-    exits = createPagination(request, "exits", exits, 100)
+    access = Ingresos.objects.all().exclude(idingreso__in=Salidas.objects.values('ingreso')) #Ingresos activos
+    access = createPagination(request, "access", access, 100) #Paginacion
+
+    exits = Salidas.objects.all() #Salidas
+    exits = createPagination(request, "exits", exits, 100) #Paginacion
     
     searchAccess = None
     searchExit = None
@@ -69,6 +70,7 @@ def access(request):
             Q(usuario__apellidos__icontains=search) | Q(usuario__documento__icontains=search) |
             Q(vehiculo__placa__icontains=search) | Q(horaingreso__icontains=search)
         )
+        searchAccess= createPagination(request, "access-search", searchAccess, 100)
         
         searchExit = Salidas.objects.filter(
             Q(idsalida__icontains=search) |  Q(fecha__icontains=search) | 
@@ -77,6 +79,8 @@ def access(request):
             Q(vehiculo__placa__icontains=search) | Q(ingreso__horaingreso__icontains=search) |
             Q(horasalida__icontains=search)
         )
+        searchExit = createPagination(request, "exit-search", searchExit, 100)
+        
                 
     return render(request, "pages/ingresos/access.html", {
         'title': 'Ingresos',
@@ -99,16 +103,27 @@ def users(request):
                 "name": rol_nombre,
                 "model": createPagination(request, f"{rol_nombre}", model, 100)
         }
+
+    search = request.GET.get("search")
+    if search:
+        search = Usuarios.objects.filter(
+            Q(nombres__icontains=search) | Q(apellidos__icontains=search) | Q(documento__icontains=search) |
+            Q(telefono__icontains=search) | Q(correo__icontains=search) | Q(centro__nombre__icontains=search) |
+            Q(ficha__numero__icontains=search) | Q(rol__nombre__icontains=search)
+        )
+        search = createPagination(request, "user-search", search, 100)
                
     return render(request, 'pages/usuarios/users.html', {
         'title': 'Usuarios',
         'roles': roles,
         'users': users,
+        'search': search
         })
 
 #Registrar usuario
 def register_user(request, rol):
     initial = {'rol': rol}
+    rol_selected = Roles.objects.get(idrol=rol)
     form = RegisterUser(request.POST or None, request.FILES or None, initial=initial)
 
     form.fields['centro'].required = rol != 3
@@ -124,12 +139,14 @@ def register_user(request, rol):
         'title': 'Registrar usuario',
         'form': form,
         'rol': rol,
+        'rol_selected': rol_selected
     })
 
 #Editar usuario
 def edit_user(request, id):
     instance = Usuarios.objects.get(idusuario=id)
-
+    rol = str(instance.rol.idrol)
+    rol_selected = Roles.objects.get(idrol=rol)
     form = RegisterUser(request.POST or None, request.FILES or None, instance=instance)
 
     form.fields['imagen'].required = False
@@ -145,6 +162,8 @@ def edit_user(request, id):
     return render(request, 'pages/usuarios/edit.html', {
         'title': 'Editar usuario',
         'form': form,
+        'rol': rol,
+        'rol_selected': rol_selected
     })
 
 #=============================================================
@@ -153,21 +172,18 @@ def edit_user(request, id):
 @login_required(login_url="admin")
 def devices(request):
     
-    devices = Dispositivos.objects.all()
-
-    form = RegisterDevice(request.POST or None, request.FILES or None)
-
-    form.fields['sn'].widget.attrs['autofocus'] = True
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, "Se ha registrado correctamente")
-        return redirect('dispositivo')
+    dispositivos = Dispositivos.objects.all()
+    print(dispositivos)
+    search = request.GET.get("search")
+    if search:
+        search = Dispositivos.objects.filter(
+            Q(sn__icontains=search) | Q(nombre__icontains=search) | Q(estado__icontains=search)
+        )
+        search = createPagination(request, "device-search", search, 100)
     
     return render(request, 'pages/dispositivos/devices.html', {
         'title': 'Dispositivos',
-        'dispositivos': devices,
-        'form': form
+        'dispositivos': dispositivos
     })
 
 #Editar dispositivo

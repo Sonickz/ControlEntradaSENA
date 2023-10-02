@@ -237,10 +237,6 @@ body.admin main {
     transition: all .5s ease;
 }
 
-#admin .card .card-main .card-header {
-    justify-content: space-between;
-}
-
 #admin .card .card-body {
     margin: 10px 0;
 }
@@ -283,6 +279,11 @@ body.admin main {
     cursor: pointer;
     z-index: 1;
     color: var(--bgcolor-clare);
+}
+
+#admin .btn.report{
+    position: absolute;
+    left: 10px;
 }
 
 /* ALERTAS */
@@ -441,7 +442,7 @@ tr:last-child td:last-child {
 
         .header-icon{
             margin-right: 15px;
-            width: 30px;
+            width: 60px;
         }
 
         .header-title{

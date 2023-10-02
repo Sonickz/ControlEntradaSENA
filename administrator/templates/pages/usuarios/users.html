@@ -4,17 +4,22 @@
 {% block title %} {{title}} {% endblock %}
 
 {% block card_title %} {{title}} {% endblock %}
-{% block card_register_btn %} Registrar {{title}} {% endblock %}
 
+{% block card_register_btn %} 
+  {% include 'layouts/components/ButtonRegister.html' with name="Registrar usuario" %}
+{% endblock %}
 
 {% block card_table %}
+<!-- Botones para cambio de tablas -->
+{% if not search %}
+  <div class="btn-change-table">
+    {% for rol in roles %}
+      <button type="button" class="btn btn-green2 users {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}">{{rol}}</button>
+    {% endfor %}
+  </div>
+{% endif %}
 
-<div class="btn-change-table">
-  {% for rol in roles %}
-    <button type="button" class="btn btn-green2 users {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}">{{rol}}</button>
-  {% endfor %}
-</div>
-
+<!-- Tablas segun cada rol -->
 {% for rol, data in users.items %}
 <div class="table-container {% if forloop.counter != 2 %}d-none{% endif %}">
   <div class="table-scroll">
@@ -25,11 +30,11 @@
           <th scope="col">Nombres</th>
           <th scope="col">Apellidos</th>
           <th scope="col">Rol</th>
-          {% if rol == "aprendiz" %}
+          {% if search or rol == "aprendiz" %}
             <th scope="col">Ficha</th>
           {% endif %}
           <th scope="col">Documento</th>
-          {% if rol != "visitante" %}
+          {% if search or rol != "visitante" %}
             <th scope="col">Centro</th>
           {% endif %}
           <th scope="col">Telefono</th>
@@ -38,51 +43,38 @@
         </tr>
       </thead>
       <tbody class="tbody">
-        {% for user in data.model %}      
-        <tr>
-          <th scope="row">{{user.idusuario}}</th>
-          <td>{{user.nombres}}</td>
-          <td>{{user.apellidos}}</td>
-          <td class="rol" data-rol="{{user.rol.idrol}}">{{user.rol}}</td>
-          <td class="ficha">{{user.ficha|default:""}}</td>
-          <td>{{user.tipodocumento}} {{user.documento}}</td>
-          <td class="centro">{{user.centro|default:""}}</td>
-          <td>{{user.telefono}}</td>
-          <td class="button-col">
-            {% include 'layouts/components/ButtonModal.html' with class="elements" target="userElementsModal" data1="data-user" value1=user.idusuario %}
-          </td>
-          <td class="actions">
-            <!-- Dropdows de acciones-->
-            {% with url="edituser/"|add:user.idusuario %}
-              {% include 'layouts/components/Dropdown.html' with url=url %}
-            {% endwith %}
-          </td>
-        </tr>
-        {% endfor %}
+        <!-- Traer los datos -->
+        {% include 'layouts/components/TableContent.html' with search=search items=data.model include="pages/usuarios/table/data.html" %}
       </tbody>
     </table>
-  </div>
-  {% include 'layouts/components/Pagination.html' with pagination=data.model name=data.name %} 
+  </div>  
+  {% if not search %}
+    <!-- Paginacion de la tabla -->
+    {% include 'layouts/components/Pagination.html' with pagination=data.model name=data.name %} 
+  {% else %}
+    <!-- Paginacion de search -->
+    {% include 'layouts/components/Pagination.html' with pagination=search name="user-search" %}
+  {% endif %}
 </div>
 {% endfor %}
-
 {% endblock %}
 
+<!-- Modal -->
 {% block Modal %}
-  {% include 'layouts/components/ElementsModal.html' with id="userElementsModal" title="Vehiculos y dispositivos" cardName1="Vehiculos" cardClass1="vehicles" card2="true" cardName2="Dispositivos" cardClass2="devices" %}
+  {% include 'layouts/components/ElementsModal.html' with id="userElementsModal" title="Vehiculos y dispositivos" cardName1="Vehiculos" cardClass1="vehicles" cardImg1="/static/assets/icons/vehicles2.png" card2="true" cardName2="Dispositivos" cardClass2="devices" cardImg2="/static/assets/icons/devices2.png" %}
 {% endblock %}
 
+<!-- Vista registro  -->
 {% block card_register %}
-
-<header class="card-header">
-  <h1 class="card-title">Rol</h1>
-  <!-- Btn atras -->
-  {% include 'layouts/components/BackButton.html' %}
-</header>
-<div class="card-body">
-  {% include 'layouts/components/SelectRol.html' with rol1="/admin/users/registeruser/1" rol2="/admin/users/registeruser/2" rol3="/admin/users/registeruser/3" rol4="/admin/users/registeruser/4" %}
-</div>
-
+  <header class="card-header">
+    <h1 class="card-title">Rol</h1>
+    <!-- Back Button -->
+    {% include 'layouts/components/BackButton.html' %}
+  </header>
+  <div class="card-body">
+    <!-- Lista para seleccionar el rol del usuario -->
+    {% include 'layouts/components/SelectRol.html' with rol1="/admin/users/registeruser/1" rol2="/admin/users/registeruser/2" rol3="/admin/users/registeruser/3" rol4="/admin/users/registeruser/4" %}
+  </div>
 {% endblock %}
 
 

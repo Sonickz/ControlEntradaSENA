@@ -2,7 +2,6 @@ Django
 mysql-connector-python
 openpyxl
 Pillow
-PyMySQL
+PyMySQL==1.1.0
 pytz
 djangorestframework
-django-filter

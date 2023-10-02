@@ -9,5 +9,5 @@
       {% include 'layouts/components/ButtonModal.html' with class="exit" target="exitDevicesModal" data1="data-access" value1=item.ingreso.idingreso data2="data-exit" value2=item.idsalida%}
     </td>
     <td>{{item.ingreso.horaingreso}}</td>  
-    <td>{{item.horasalida}}</td>  
+    <td>{{item.horasalida|default:"Ninguno"}}</td>  
 </tr>

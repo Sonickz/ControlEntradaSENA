@@ -10,10 +10,12 @@
     <!-- Alerta  -->
     {% include 'layouts/components/Alert.html' %}
     <!-- Card escaneo -->
-    {% include 'layouts/components/CardScan.html' %}
+    {% include 'layouts/components/CardScan.html' with method="get" %}
 </article>
+
 {% else %}
 <article id="module3" class="card-select-elements">
+    <!-- Input oculto con el documento del usuario -->
     {% include 'layouts/components/User.html' %}
     <header>
         <h1 class="header-title">
@@ -24,10 +26,8 @@
             {% endif %}
         </h1>        
     </header>
-
     <!-- Alerta  -->
     {% include 'layouts/components/Alert.html' %}
-    
     <section class="card">
         <header class="card-header">   
             <!-- Boton atras -->         

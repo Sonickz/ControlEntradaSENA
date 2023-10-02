@@ -1,5 +1,5 @@
 {% if not ingreso %}
-    <input type="text" id="device_access" name="device_access" value="" class="" data-user="{{users.documento}}" autofocus required>
+    <input type="text" id="device_access" name="device_access" class="hidden" data-user="{{users.documento}}" autofocus required>
 {% elif ingreso%}
-    <input type="text" id="device_exit" name="device_exit" value="" class="" data-user="{{ingreso.usuario.documento}}" autofocus required>
+    <input type="text" id="device_exit" name="device_exit" class="hidden" data-user="{{ingreso.usuario.documento}}" autofocus required>
 {% endif %}

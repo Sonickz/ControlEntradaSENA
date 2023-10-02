@@ -88,7 +88,7 @@ if (Exists(selects)) {
   user ? fetch(`/api/users/${user.value}`)
     .then(response => response.json())
     .then(data => {
-      rol = data.rol.nombre
+      rol = data.response.data.rol
     }) : null;
 
   updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
@@ -123,7 +123,8 @@ if (Exists(selects)) {
 const deviceExit = document.getElementById("device_exit") // Input del dispositivo a escanear
 const deviceAccess = document.getElementById("device_access")
 
-Exists(deviceAccess) ? compDevice(deviceAccess, 1) : Exists(deviceExit) ? compDevice(deviceExit, 2) : null;
+Exists(deviceAccess) ? compDevice(deviceAccess, 1) : null
+Exists(deviceExit) ? compDevice(deviceExit, 2) : null;
   
 
 //=====================================================================================================

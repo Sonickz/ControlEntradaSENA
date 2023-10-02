@@ -1,0 +1,22 @@
+<tr>
+  <th scope="row">{{item.idusuario}}</th>
+  <td>{{item.nombres}}</td>
+  <td>{{item.apellidos}}</td>
+  <td class="rol" data-rol="{{item.rol.idrol}}">{{item.rol}}</td>
+  {% if rol == "aprendiz" %}
+    <td class="ficha">{{item.ficha|default:"Ninguno"}}</td>
+  {% endif %}
+  <td>{{item.tipodocumento}} {{item.documento}}</td>
+  {% if rol != "visitante" %}
+    <td class="centro">{{item.centro|default:"Ninguno"}}</td>
+  {% endif %}
+  <td>{{item.telefono}}</td>
+  <td class="button-col">
+    {% include 'layouts/components/ButtonModal.html' with class="elements" target="userElementsModal" data1="data-user" value1=item.idusuario %}
+  </td>
+  <td class="actions">
+    <!-- Dropdows de acciones-->
+    {% url 'edituser' id=item.idusuario as edituser_url %}
+    {% include 'layouts/components/Dropdown.html' with url=edituser_url %}
+  </td>
+</tr>

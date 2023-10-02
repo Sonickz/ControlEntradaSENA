@@ -8,9 +8,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">            
-                {% include 'layouts/components/CardModal.html' with cardName=cardName1 cardClass=cardClass1 %}
+                {% include 'layouts/components/CardModal.html' with cardName=cardName1 cardClass=cardClass1 cardImg=cardImg1 %}
                 {% if card2 %}
-                    {% include 'layouts/components/CardModal.html' with cardName=cardName2 cardClass=cardClass2 %}
+                    {% include 'layouts/components/CardModal.html' with cardName=cardName2 cardClass=cardClass2 cardImg=cardImg2 %}
                 {% endif %}            
             </div>
             <div class="modal-footer">

@@ -24,7 +24,7 @@ class RegisterUser(ModelForm):
     correo = forms.EmailField(widget=forms.TextInput(attrs={'maxlength': '50'}))
     centro = forms.ModelChoiceField(queryset=Centros.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Centro", label="Centro")
     rol = forms.ModelChoiceField(queryset=Roles.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'disabled': True}), empty_label="Rol", label="Rol")
-    ficha = forms.ModelChoiceField(queryset=Fichas.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'single-select-field'}), empty_label="Ficha", label="")
+    ficha = forms.ModelChoiceField(queryset=Fichas.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'single-select-field'}), empty_label="Ficha", label="Ficha")
     imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control', 'id': 'user-file'}), label="Foto de perfil")
 
     #Validacion de imagen   
@@ -73,8 +73,6 @@ class RegisterDevice(ModelForm):
     sn = forms.CharField(widget=forms.TextInput(attrs={'class': 'upper', 'maxlength': 50}), label="Serial Number")
     tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select tipo-dispositivo'}), label="", empty_label="Tipo de dispositivo")
     marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-dispositivo', 'id': 'single-select-field'}), label="", empty_label="Marca")
-    documento = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf'}))
-    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)
 
     #Validacion de imagen
     def clean_imagen(self):
@@ -117,7 +115,6 @@ class RegisterVehicle(ModelForm):
     placa = forms.CharField(widget=forms.TextInput(attrs={'class':'upper', 'maxlength': 6, 'autofocus': True}))
     marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-vehiculo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     modelo = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}), label="", choices=YEAR_CHOICES)
-    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control'}), required=False)
 
     #Validacion de imagen
     def clean_imagen(self):

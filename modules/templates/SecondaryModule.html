@@ -10,10 +10,12 @@
     <!-- Alerta  -->
     {% include 'layouts/components/Alert.html' %}
     <!-- Card escaneo -->
-    {% include 'layouts/components/CardScan.html' %}
+    {% include 'layouts/components/CardScan.html' with method="get" %}
 </article>
+
 {% else %}
 <article id="module2" class="card-select-elements module-selects">
+    <!-- Input oculto con el documento del usuario-->
     {% include 'layouts/components/User.html' %}
     <header>
         <h1 class="header-title">
@@ -24,16 +26,14 @@
             {% endif %}
         </h1>        
     </header>
-
     <!-- Alerta  -->
     {% include 'layouts/components/Alert.html' %}
-    
     <section class="card">
         <header class="card-header">   
             <!-- Boton atras -->         
             {% include 'layouts/components/BackButton.html'%}
             <h1 class="card-title">{{users}}</h1>
-            <!-- Botones de registro -->
+            <!-- Boton de registro de dispositivos -->
             {% include 'layouts/components/ButtonsRegisterDevice.html'%}
         </header>
         <div class="card-body"> 

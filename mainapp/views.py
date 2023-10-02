@@ -4,13 +4,13 @@ from administrator.forms import *
 from django.contrib import messages
 from django.http import JsonResponse
 
-#Capturar url actual
+#Funcion para redirigir despues de un registro / Capturar url actual
 def actualUrl(request):
     url = request.get_full_path()
     request.session['url'] = url
     return url
 
-#Url ya guardada
+#Recuperar Url ya guardada
 def savedUrl(request):
     url = request.session.get('url')
     return url
@@ -44,6 +44,7 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
     if ingreso:
         salida = Salidas.objects.create(fecha=date, ingreso=ingreso, vehiculo=vehiculo, horasalida=hour)        
         if dispositivos:
+            #Para cada dispositivo seleccionado, crear un registro en la tabla SalidasDispositivos
             for dispositivo in dispositivos:
                 SalidasDispositivos.objects.create(salida=salida, dispositivo=dispositivo)
         status = "Salida"
@@ -53,17 +54,20 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
     else:
         ingreso = Ingresos.objects.create(fecha=date, usuario=user, vehiculo=vehiculo, horaingreso=hour)
         if dispositivos:
+            #Para cada dispositivo seleccionado, crear un registro en la tabla IngresosDispositivos
             for dispositivo in dispositivos:            
                 IngresosDispositivos.objects.create(ingreso=ingreso, dispositivo=dispositivo)
         status = "Ingreso"
         messages.success(request, "success-access")
     
-#Funcion para validar que el dispositivo de salida coincida con el de ingreso  
+#Funcion para validar que el dispositivo coincida con uno registrado o uno ingresado 
 def compDevice(device, type, ingreso, user):      
         try:
+            #Tipo 1: Validar que el dispositivo este registrado
             if type == 1:
                 device = Dispositivos.objects.get(usuario=user, sn=device.upper())
                 message = "El dispositivo esta registrado" if device else "El dispositivo no esta registrado"
+            #Tipo 2: Validar que el dispositivo este ingresado
             elif type == 2: 
                 device = Dispositivos.objects.get(sn=device.upper())
                 exit_device = IngresosDispositivos.objects.get(ingreso=ingreso.idingreso, dispositivo=device)
@@ -109,21 +113,21 @@ def registeruser(request, code):
 
 #Registrar vehiculo
 def registervehicle(request, code):
-    users = Usuarios.objects.get(documento=code)
-    #Tipo vehiculo
-    vehicle = request.GET.get('vehicle')
-    type = request.GET.get('type')
+
+    users = Usuarios.objects.get(documento=code) #usuario    
+    vehicle = request.GET.get('vehicle') #Tipo de vehiculo
+    vehicle_selected = VehiculosTipo.objects.get(idtipovehiculo=vehicle) if vehicle else None #Tipo de vehiculo seleccionado
+    type = request.GET.get('type') #Enviar a url el tipo de vehiculo seleccionado    
+    initial_data = {'tipo': vehicle, 'usuario': users.idusuario} #Tipo vehiculo y usuario predeterminados
+    form = RegisterVehicle(request.POST or None, request.FILES or None, initial=initial_data)
     
+    #Si se selecciona un tipo de vehiculo, traer las marcas de ese tipo
     if type:
         options = VehiculosMarca.objects.filter(tipo=type)        
         options_list = [{'id': option.idmarcavehiculo, 'marca': option.nombre} for option in options]        
         return JsonResponse({'options': options_list})
-    
-    #Tipo vehiculo y usuario predeterminados
-    initial_data = {'tipo': vehicle, 'usuario': users.idusuario}
 
-    form = RegisterVehicle(request.POST or None, request.FILES or None, initial=initial_data)
-
+    #Requerir o no campos de formulario segun el tipo de vehiculo
     form.fields['placa'].required = vehicle != "3"
     form.fields['modelo'].required = vehicle != "3"
 
@@ -136,6 +140,7 @@ def registervehicle(request, code):
     return render(request, 'register/registervehicle.html',{
         'title': 'Registrar Vehiculo',
         'vehicle': vehicle,
+        'vehicle_selected': vehicle_selected,
         'form': form,
         'users': users
     })
@@ -145,19 +150,16 @@ def registervehicle(request, code):
 #Registrar dispositivo
 def registerdevice(request, code):
 
-    doc = request.GET.get('doc')
-    users = Usuarios.objects.get(documento=code)
-    
-    selectedType = request.GET.get("selectedType")
+    users = Usuarios.objects.get(documento=code) #usuario    
+    selectedType = request.GET.get("selectedType") #Tipo de dispositivo seleccionado
+    initial_data = {'usuario': users.idusuario}
+    form = RegisterDevice(request.POST or None, request.FILES or None, initial=initial_data)
+
+    #Si se selecciona un tipo de dispositivo, traer las marcas de ese tipo
     if selectedType:
         options = DispositivosMarca.objects.filter(tipo=selectedType)   
         option_list = [{'id': option.idmarcadispositivo, 'marca': option.nombre} for option in options]
         return JsonResponse({'options': option_list})
-    
-    
-    initial_data = {'usuario': users.idusuario}
-    form = RegisterDevice(request.POST or None, request.FILES or None, initial=initial_data)
-    form.fields['documento'].required = bool(doc)
     
     if request.method == 'POST' and form.is_valid():
         form.save()
@@ -167,6 +169,5 @@ def registerdevice(request, code):
 
     return render(request, 'register/registerdevice.html',{
         'title': 'Registrar Dispositivo',
-        'form': form,
-        'doc': doc
+        'form': form
     })

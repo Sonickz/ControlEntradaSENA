@@ -8,7 +8,6 @@ from mainapp.views import actualUrl, AccessOrExit, getUser, compDevice
 def module1(request):
 
     actualUrl(request)
-    #Si se envia un formulario
     if request.method == 'POST':
         code = request.POST.get('code')
         try:
@@ -29,7 +28,6 @@ def module1(request):
 def module2(request):
 
     actualUrl(request)
-
     code = request.GET.get('code')                
     if code: 
         try:     
@@ -50,7 +48,8 @@ def module2(request):
                 dispositivos = Dispositivos.objects.filter(iddispositivo__in=dispositivos) if dispositivos else None                                 
                 #Hacer ingreso o salida                           
                 AccessOrExit(request, ingreso, user, vehiculo, dispositivos)
-                return redirect("module2")                
+                return redirect("module2")  
+                          
             return render(request, 'SecondaryModule.html', {
                 'title': user,
                 'users': user,
@@ -78,8 +77,7 @@ def module3(request):
             ingreso, user, vehiculos, dispositivos, dispositivos_ingreso = getUser(code, type="module3")
             #Comprobar dispositivo de salida
             exit_device = request.GET.get('exitDevice')                 
-            access_device = request.GET.get("accessDevice")
-            exit_device = request.GET.get('exitDevice')        
+            access_device = request.GET.get("accessDevice")  
             if access_device:
                 return compDevice(access_device, 1, ingreso, user)
             elif exit_device:

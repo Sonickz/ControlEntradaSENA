@@ -162,7 +162,7 @@ class UsuariosViewSet(viewsets.ModelViewSet):
                 "telefono": usuario.telefono,
                 "correo": usuario.correo,
                 "centro": usuario.centro.idcentro,
-                "rol": usuario.rol.idrol,
+                "rol": usuario.rol.nombre,
                 "ficha": usuario.ficha.idficha if usuario.ficha else None,
                 "vehiculos": vehiculos,
                 "dispositivos": dispositivos
@@ -177,7 +177,7 @@ class UsuariosViewSet(viewsets.ModelViewSet):
                 "telefono": usuario.telefono,
                 "correo": usuario.correo,
                 "centro": usuario.centro.idcentro,
-                "rol": usuario.rol.idrol,
+                "rol": usuario.rol.nombre,
                 "ficha": usuario.ficha.idficha if usuario.ficha else None,
                 "vehiculos": vehiculos,
                 "dispositivos": dispositivos

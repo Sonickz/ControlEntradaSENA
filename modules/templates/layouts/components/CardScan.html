@@ -11,7 +11,7 @@
         </div>                
     </div>
     <div class="card-footer">
-        <form method="get" id="code-form">
+        <form method="{{method}}" id="code-form">
         {% csrf_token %}
             <input id="code-input" class="form-control onlynumbers" type="text" name="code" maxlength="10" minlength="6" autocomplete="off" autofocus required>
         </form>

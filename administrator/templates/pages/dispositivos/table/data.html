@@ -1,0 +1,12 @@
+<tr>
+    <th scope="row">{{item.iddispositivo}}</th>
+    <td>{{item.usuario}}: {{item.usuario.documento}}</td>
+    <td>#{{item.sn}}</td>
+    <td>{{item.tipo}}</td>
+    <td>{{item.marca}}</td>
+    <td class="actions">
+        {% url 'editdevice' id=item.iddispositivo as editdevice_url %}
+        {% include 'layouts/components/Dropdown.html' with url=editdevice_url %} 
+    </td>
+</tr>
+    
