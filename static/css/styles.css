@@ -1,41 +1,46 @@
 :root {
-    --bgcolor: rgba(78, 142, 55);
-    --bgcolor-clare: rgba(96, 215, 67, 1);
-    --hovercolor: rgba(60, 109, 42, 1);
-    --hovercolorclare: rgba(202, 255, 182, 0.144);
-    --text-color: rgba(140, 223, 120, 1);
-    --header-height: 70px;
-    /*Root Admin*/
-    --width: 250px;
-    --padding: 10px;
-    --width-collapsed: 50px;
-    --gradient: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 100%);
-    --menu-transition: all .5s ease;
+  --bgcolor: rgba(78, 142, 55);
+  --bgcolor-clare: rgba(96, 215, 67, 1);
+  --hovercolor: rgba(60, 109, 42, 1);
+  --hovercolorclare: rgba(202, 255, 182, 0.144);
+  --text-color: rgba(140, 223, 120, 1);
+  --header-height: 70px;
+  /*Root Admin*/
+  --width: 250px;
+  --padding: 10px;
+  --width-collapsed: 50px;
+  --gradient: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 0%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  --menu-transition: all 0.5s ease;
 }
 
 /* Fuentes */
 @font-face {
-    font-family: Zurich;
-    src: url(../assets/fonts/Zurich/Zurich.ttf) format('truetype');
+  font-family: Zurich;
+  src: url(../assets/fonts/Zurich/Zurich.ttf) format("truetype");
 }
 
 @font-face {
-    font-family: ZurichBlack;
-    src: url(../assets//fonts/Zurich/Zurich\ Black\ BT.ttf) format('truetype');
+  font-family: ZurichBlack;
+  src: url(../assets//fonts/Zurich/Zurich\ Black\ BT.ttf) format("truetype");
 }
 
 @font-face {
-    font-family: Nunito;
-    src: url(../assets/fonts/Nunito/static/Nunito-Regular.ttf) format('truetype');
+  font-family: Nunito;
+  src: url(../assets/fonts/Nunito/static/Nunito-Regular.ttf) format("truetype");
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
-    height: 100%;
+  font-family: "Nunito", sans-serif;
+  height: 100%;
 }
 
 html {
-    height: 100%;
+  height: 100%;
 }
 
 /*=====================================================================================*/
@@ -44,8 +49,8 @@ html {
     CONTENEDOR MAIN
 */
 main {
-    min-height: calc(100vh - var(--header-height));
-    padding: 80px 40px
+  min-height: calc(100vh - var(--header-height));
+  padding: 80px 40px;
 }
 
 /*=====================================================================================*/
@@ -54,34 +59,33 @@ main {
     HEADER 
 */
 header.layout {
-    background-color: var(--bgcolor);
-    width: 100%;
-    height: var(--header-height);
+  background-color: var(--bgcolor);
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+  color: white;
+
+  .header-title {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0 20px;
-    justify-content: space-between;
-    color: white;
+    font-family: "ZurichBlack", Helvetica, sans-serif;
+  }
 
-    .header-title {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        font-family: 'ZurichBlack', Helvetica, sans-serif;
-    }
+  .header-title h1 {
+    margin-right: 10px;
+  }
 
-    .header-title h1 {
-        margin-right: 10px;
-    }
-
-    .header-title p {
-        margin: 0;
-        font-style: italic;
-        color: var(--text-color);
-        font-size: 25px
-    }
-
+  .header-title p {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-color);
+    font-size: 25px;
+  }
 }
 
 /*=====================================================================================*/
@@ -91,333 +95,329 @@ header.layout {
 */
 
 /* KEYBOARD */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap");
 
 .container-keyboard {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .keyboard {
-    display: none;
-    max-width: 1070px;
-    max-height: 380px;
-    width: 100%;
-    background-color: #e7e7e7;
-    overflow: hidden;
-    padding: 0px 14px;
-    position: absolute;
-    bottom: 0;
+  display: none;
+  max-width: 1070px;
+  max-height: 380px;
+  width: 100%;
+  background-color: #e7e7e7;
+  overflow: hidden;
+  padding: 0px 14px;
+  position: absolute;
+  bottom: 0;
 }
 
 .keyboard_bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .keyboard.active {
-    display: block;
-    animation: keyboard_animation 2s forwards;
+  display: block;
+  animation: keyboard_animation 2s forwards;
 }
 
 @keyframes keyboard_animation {
-    0% {
-        height: 0;
-    }
+  0% {
+    height: 0;
+  }
 
-    100% {
-        height: 55%;
-    }
+  100% {
+    height: 55%;
+  }
 }
 
 .keyboard .keys {
-    width: 64px;
-    height: 60px;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 4px;
-    transition: .2s;
-    z-index: 5;
-    cursor: pointer;
-    pointer-events: all;
-    user-select: none;
+  width: 64px;
+  height: 60px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+  transition: 0.2s;
+  z-index: 5;
+  cursor: pointer;
+  pointer-events: all;
+  user-select: none;
 }
 
 .keyboard .keys.active {
-    background-color: #333;
-    color: #fff;
+  background-color: #333;
+  color: #fff;
 }
 
 .keyboard .keys.remove {
-    animation: keys_animation 0.5s forwards;
+  animation: keys_animation 0.5s forwards;
 }
 
 .keyboard .backspace_key {
-    width: 120px;
+  width: 120px;
 }
 
 .keyboard .tab_key {
-    width: 90px;
+  width: 90px;
 }
 
 .keyboard .slash_key {
-    width: 90px;
+  width: 90px;
 }
 
 .keyboard .caps_lock_key {
-    width: 128px;
+  width: 128px;
 }
 
 .keyboard .enter_key {
-    width: 120px;
+  width: 120px;
 }
 
 .keyboard .shift_key {
-    width: 124px;
+  width: 124px;
 }
 
 .keyboard .space_key {
-    max-width: 600px;
-    width: 100%;
+  max-width: 600px;
+  width: 100%;
 }
 
 @keyframes keys_animation {
-    0% {
-        background-color: #333;
-        color: #fff;
-    }
+  0% {
+    background-color: #333;
+    color: #fff;
+  }
 
-    100% {
-        background-color: #fff;
-        color: #000;
-    }
+  100% {
+    background-color: #fff;
+    color: #000;
+  }
 }
-
 
 /* CARD */
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 85%;
-    height: auto;
-    margin: 60px auto;
-    padding: 30px 50px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 85%;
+  height: auto;
+  margin: 60px auto;
+  padding: 30px 50px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .card .card-header {
-    background-color: white;
-    border: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  background-color: white;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .card .card-header .card-title {
-    font-size: 2rem;
-    text-align: center;
-    font-weight: normal;
-    color: var(--text-color);
+  font-size: 2rem;
+  text-align: center;
+  font-weight: normal;
+  color: var(--text-color);
 }
 
 .card .card-body {
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card .card-footer {
-    background-color: white;
-    border: none;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: white;
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 
 /* FORMULARIO */
 /* Margen entre filas */
 .form-group {
-    padding: 18px 0;
-    align-items: center;
+  padding: 18px 0;
+  align-items: center;
 }
 
 /* Cuerpo input */
 .input-box {
-    width: 100%;
-    height: 50px;
-    position: relative;
-    border: 2px solid rgb(141, 194, 121);
-    border-radius: 20px;
+  width: 100%;
+  height: 50px;
+  position: relative;
+  border: 2px solid rgb(141, 194, 121);
+  border-radius: 20px;
 }
 
 /* Label */
 .input-box label {
-    top: 50%;
-    left: 20px;
-    background-color: white;
-    font-size: 1rem;
-    font-weight: 300;
-    color: #807e7e;
-    position: absolute;
-    pointer-events: none;
-    transition: .5s;
-    transform: translateY(-50%);
+  top: 50%;
+  left: 20px;
+  background-color: white;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #807e7e;
+  position: absolute;
+  pointer-events: none;
+  transition: 0.5s;
+  transform: translateY(-50%);
 }
 
 /* Input */
 .input-box input {
-    margin-left: 10px;
-    width: 95%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
+  margin-left: 10px;
+  width: 95%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 /*Al estar activo cambiar posicion de label*/
-.input-box input:focus~label,
-.input-box input:valid~label,
-.input-box input:read-only~label {
-    top: -3px;
+.input-box input:focus ~ label,
+.input-box input:valid ~ label,
+.input-box input:read-only ~ label {
+  top: -3px;
 }
 
 /* Check formulario */
 .form-check {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
-.form-check-input:checked[type=checkbox] {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+.form-check-input:checked[type="checkbox"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
 }
 
 .form-check-input:checked {
-    background-color: var(--bgcolor);
-    border: 1px solid white;
+  background-color: var(--bgcolor);
+  border: 1px solid white;
 }
 
 /* Seccion boton form */
 .form-submit {
-    text-align: center;
-    margin: 50px 0 0 0;
+  text-align: center;
+  margin: 50px 0 0 0;
 }
 
 /* Boton form */
 .form-submit .form-btn {
-    font-size: 1.1rem;
-    width: 150px;
-    height: 40px;
-    background: var(--bgcolor);
-    border: #fff;
-    transition: width 1s;
-    color: white;
+  font-size: 1.1rem;
+  width: 150px;
+  height: 40px;
+  background: var(--bgcolor);
+  border: #fff;
+  transition: width 1s;
+  color: white;
 }
 
 .form-submit .form-btn:hover {
-    width: 100%;
-    background: rgb(92, 187, 58);
+  width: 100%;
+  background: rgb(92, 187, 58);
 }
 
 /* Boton verde */
 .btn-green {
-    background-color: var(--bgcolor-clare);
-    color: white;
-    font-weight: bold;
+  background-color: var(--bgcolor-clare);
+  color: white;
+  font-weight: bold;
 }
 
 .btn-green:hover {
-    background-color: rgb(92, 187, 58) !important;
-    color: white !important;
+  background-color: rgb(92, 187, 58) !important;
+  color: white !important;
 }
 
 /* Boton verde V2 */
 .btn-green2 {
-    background-color: white;
-    color: var(--bgcolor-clare);
-    border: 1px solid var(--bgcolor-clare);
-    font-weight: bold;
+  background-color: white;
+  color: var(--bgcolor-clare);
+  border: 1px solid var(--bgcolor-clare);
+  font-weight: bold;
 }
 
 .btn-green2:hover {
-    background-color: var(--bgcolor-clare);
-    color: white;
+  background-color: var(--bgcolor-clare);
+  color: white;
 }
 
 .btn-green2-active {
-    background-color: var(--bgcolor-clare);
-    color: white;
+  background-color: var(--bgcolor-clare);
+  color: white;
 }
 
 /* OTROS */
 
 /* Boton verde - atras */
-.back-button {    
-    color: var(--text-color);
-    position: absolute;
-    left: 60px;
+.back-button {
+  color: var(--text-color);
+  position: absolute;
+  left: 60px;
 }
 
 .back-button:hover {
-    color: var(--bgcolor);
+  color: var(--bgcolor);
 }
 
 /* Boton cancelar */
 .btn.cancel {
-    background-color: red;
-    color: white;
+  background-color: red;
+  color: white;
 }
 
 .btn.cancel:hover {
-    background-color: rgb(179, 42, 42);
-    color: white;
+  background-color: rgb(179, 42, 42);
+  color: white;
 }
 
 /* Boton aceptar */
 .btn.accept {
-    background-color: var(--bgcolor-clare);
-    color: white;
+  background-color: var(--bgcolor-clare);
+  color: white;
 }
 
 .btn.accept:hover {
-    background-color: var(--text-color);
-    color: white;
+  background-color: var(--text-color);
+  color: white;
 }
 
 /* Alerta */
 .alert {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 /* Header de article */
 article header .header-title {
-    text-align: center;
-    color: var(--text-color);
-    font-weight: bolder;
+  text-align: center;
+  color: var(--text-color);
+  font-weight: bolder;
 }
 
 /* Input oculto*/
 .hidden {
-    color: white;
-    height: 0px;
-    width: none;
-    border: 0px;
-    outline: none;
-
+  color: white;
+  height: 0px;
+  width: none;
+  border: 0px;
+  outline: none;
 }
-
 
 /*============================================= CARDS ===============================================*/
 
@@ -425,51 +425,49 @@ article header .header-title {
     CARD DE ELECCION 
 */
 .card-select .card {
-    width: 80%;
+  width: 80%;
 }
 
 /* Lista */
 .card-select .card-body ul {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Items */
 .card-select .card-body a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--text-color);
 }
 
 /* Imagen */
 .card-select .card-body a img {
-    width: 45%;
-    margin-bottom: 10px;
+  width: 45%;
+  margin-bottom: 10px;
 }
 
 /* Texto */
 .card-select .card-body a span {
-    font-weight: 500;
-    font-size: 1.9rem;
+  font-weight: 500;
+  font-size: 1.9rem;
 }
-
 
 /* 
     CARD DE FORMULARIO 
 */
 .card-form .card {
-    width: 70%;
+  width: 70%;
 }
 
 .card-form .card-body form {
-    width: 90%;
+  width: 90%;
 }
-
 
 /* 
     CARD SCAN
@@ -477,252 +475,283 @@ article header .header-title {
 
 /* Card escaneo */
 .card-scan .card {
-    width: 35%;
+  width: 35%;
 }
 
 /* Card escaneo: Seccion escaneo */
 .card-scan .card .card-code {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #ddd;
-    border-radius: 10px;
-    height: 250px;
-    width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #ddd;
+  border-radius: 10px;
+  height: 250px;
+  width: 80%;
 }
 
 .card-scan .card .card-code img {
-    width: 15%;
-    opacity: .5;
-    position: absolute;
+  width: 15%;
+  opacity: 0.5;
+  position: absolute;
 }
 
 /* Card escaneo: Barra scan */
 .card-scan .card .card-barra {
-    width: 80%;
-    height: 7px;
-    background-color: #8cdf78;
-    border-radius: 100px;
-    animation: barra 5s infinite;
-    z-index: 1;
-    position: relative;
-    box-shadow: 2px 2px 5px;
+  width: 80%;
+  height: 7px;
+  background-color: #8cdf78;
+  border-radius: 100px;
+  animation: barra 5s infinite;
+  z-index: 1;
+  position: relative;
+  box-shadow: 2px 2px 5px;
 }
 
 @keyframes barra {
-    0% {
-        transform: translateY(0);
-    }
+  0% {
+    transform: translateY(0);
+  }
 
-    50% {
-        transform: translateY(250px);
+  50% {
+    transform: translateY(250px);
+  }
 
-    }
-
-    100% {
-        transform: translateY(0);
-
-    }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 /* Card footer */
 
 /* Card escaneo: Form */
 .card-scan .card .card-footer form {
-    width: 100%;
-    margin: 0 15px;
+  width: 100%;
+  margin: 0 15px;
 }
 
 /* Card escaneo: input */
 .card-scan .card .card-footer input {
-    width: 100%;
-    height: 20px;
-    border: 1px solid var(--bgcolor-clare);
-    border-radius: 20px;
-    padding: 15px;
+  width: 100%;
+  height: 20px;
+  border: 1px solid var(--bgcolor-clare);
+  border-radius: 20px;
+  padding: 15px;
 }
 
 .card-scan .card .card-footer input:hover {
-    border: 1px solid var(--bgcolor);
+  border: 1px solid var(--bgcolor);
 }
 
 .card-scan .card .card-footer input:focus {
-    box-shadow: 0 0 0 0.25rem rgb(127 255 116 / 25%);
+  box-shadow: 0 0 0 0.25rem rgb(127 255 116 / 25%);
 }
 
 /* Boton camara*/
 .smallCamera {
-    width: 12%;
-    padding: 0 5px;
+  width: 12%;
+  padding: 0 5px;
 }
-
 
 /* 
     CARD PARA ELEMENTOS 
 */
 .card-select-elements .card .card-header .card-header-element .btn {
-    border: 2px solid #ddd;
-    background-color: white;
-    color: var(--bgcolor-clare);
+  border: 2px solid #ddd;
+  background-color: white;
+  color: var(--bgcolor-clare);
 }
 
 .card-select-elements .card .card-header .card-header-element .btn:hover {
-    border: 2px solid var(--bgcolor-clare);
-    background-color: var(--bgcolor-clare);
-    color: white;
+  border: 2px solid var(--bgcolor-clare);
+  background-color: var(--bgcolor-clare);
+  color: white;
 }
 
 /* card header */
-.card-select-elements .card .card-header{
-    justify-content: space-between;
+.card-select-elements .card .card-header {
+  justify-content: space-between;
 }
 
 /* card body */
-.card-select-elements .card .card-body{
-    margin: 80px 0;
+.card-select-elements .card .card-body {
+  margin: 80px 0;
 }
 
-.card-select-elements .back-button{
-    position: static;
+.card-select-elements .back-button {
+  position: static;
 }
 
-.card-select-elements .accept{
-    width: 25%;
+.card-select-elements .accept {
+  width: 25%;
 }
 
-.card-select-elements .select .col{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.card-select-elements .select .col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.card-select-elements .select label{
-    font-size: 20px;
-    font-weight: bold;
-    color: var(--text-color);
+.card-select-elements .select label {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-color);
 }
-.card-select-elements .select img{
-    width: 45%;
+.card-select-elements .select img {
+  width: 45%;
 }
 
 /* Select vehiculo y dispositivos */
 .card-select-elements .card .select-form {
-    position: relative;
-    max-width: 350px;
-    width: 100%;
+  position: relative;
+  max-width: 350px;
+  width: 100%;
 }
 
 /* SELECT CERRADO */
 .card-select-elements .card .select-form .select-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 55px;
-    padding: 0 20px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    box-shadow: 0 5px 10px rgb(0 0 0 / 25%);
-    background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 55px;
+  padding: 0 20px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  box-shadow: 0 5px 10px rgb(0 0 0 / 25%);
+  background-color: #fff;
 }
 
 /* Select texto */
 .card-select-elements .card .select-form .select-btn .btn-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
 }
 
 /* Select cerrado: Flecha abajo */
 .card-select-elements .card .select-form .select-btn .arrow-dwn {
-    display: flex;
-    height: 21px;
-    width: 21px;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 50%;
-    background: var(--bgcolor-clare);
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
+  display: flex;
+  height: 21px;
+  width: 21px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 50%;
+  background: var(--bgcolor-clare);
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
 }
 
 /* Select lista */
 .card-select-elements .card .select-form .list-items {
-    display: none;
-    position: relative;
-    margin-top: 15px;
-    padding: 16px;
-    border: 1px solid rgba(221, 221, 221, 0.3);
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+  display: none;
+  position: relative;
+  margin-top: 15px;
+  padding: 16px;
+  border: 1px solid rgba(221, 221, 221, 0.3);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 /* SELECT ABIERTO */
 
 /* Select abierto: Flecha arriba*/
 .card-select-elements .card .select-form .select-btn.open .arrow-dwn {
-    transform: rotate(-180deg);
+  transform: rotate(-180deg);
 }
 
 /* Select lista abierta */
-.card-select-elements .card .select-form .select-btn.open~.list-items {
-    display: block;
+.card-select-elements .card .select-form .select-btn.open ~ .list-items {
+  display: block;
 }
 
 /* Items */
 .card-select-elements .card .select-form .list-items .item {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    height: 50px;
-    padding: 0 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  padding: 0 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .card-select-elements .card .select-form .list-items .item:hover {
-    background-color: rgba(126, 241, 98, 0.2);
+  background-color: rgba(126, 241, 98, 0.2);
 }
 
 .card-select-elements .card .select-form .list-items .item-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: #333;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
 }
 
 /* Item checkbox */
 .card-select-elements .card .select-form .item .checkbox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 20px;
-    width: 20px;
-    margin-right: 12px;
-    border: 1.5px solid #c0c0c0;
-    border-radius: 10px;
-    transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  width: 20px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
 }
 
 .card-select-elements .card .select-form .checkbox .check-icon {
-    color: #fff;
-    font-size: 11px;
-    transform: scale(0);
-    transition: all 0.2s ease-in-out;
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
 }
-
 
 /* Cuando tiene check */
 .card-select-elements .card .select-form .item.checked .checkbox {
-    background-color: var(--bgcolor);
-    border-color: var(--bgcolor);
+  background-color: var(--bgcolor);
+  border-color: var(--bgcolor);
 }
 
 .card-select-elements .card .select-form .item.checked .check-icon {
-    transform: scale(1);
+  transform: scale(1);
 }
 
+/* --------- RESPONSIVE PARA TABLETS (HORIZONTAL) ---------- */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Card escaneo */
+  .card-scan .card {
+    width: 90%;
+  }
+}
+
+/* Celulares */
+@media (max-width: 767px) {
+  .card-scan .card {
+    margin: 0;
+    padding: 5px;
+    width: 100%;
+  }
+  .card-scan .card .card-code img {
+    width: 35%;
+  }
+  .card-scan .card .card-barra {
+    width: 100%;
+  }
+  .card-scan .card .card-title {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+  .card-scan .card .card-code {
+    width: 100%;
+  }
+  .card-scan .card .card-footer form {
+    margin: 0px 15px 0 0;
+  }
+
+
+}
