@@ -524,3 +524,18 @@ def designExcel(header_cells, ws_sheet):
 
 #==========================================================================
 
+from django.shortcuts import render
+
+def informacion_view(request):
+    # Lógica para la vista de información de la aplicación
+    return render(request, 'pages/acerca/informacion.html')
+
+def integrantes_view(request):
+    # Lógica para la vista de integrantes del grupo
+    return render(request, 'pages/acerca/integrantes.html')
+
+def lideres_view(request):
+    # Lógica para la vista de líderes del proyecto
+    return render(request, 'pages/acerca/lideres.html')
+
+
