@@ -720,38 +720,56 @@ article header .header-title {
   transform: scale(1);
 }
 
-/* --------- RESPONSIVE PARA TABLETS (HORIZONTAL) ---------- */
+/* ------------------- RESPONSIVE -------------------- */
+/* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
   /* Card escaneo */
-  .card-scan .card {
-    width: 90%;
+  .card-scan {
+    .card {
+      width: 80%;
+    }
+    .card .card-code img {
+      width: 25%;
+    }
   }
 }
 
 /* Celulares */
 @media (max-width: 767px) {
-  .card-scan .card {
-    margin: 0;
-    padding: 5px;
-    width: 100%;
-  }
-  .card-scan .card .card-code img {
-    width: 35%;
-  }
-  .card-scan .card .card-barra {
-    width: 100%;
-  }
-  .card-scan .card .card-title {
-    font-size: 25px;
-    font-weight: 600;
-    margin-bottom: 0;
-  }
-  .card-scan .card .card-code {
-    width: 100%;
-  }
-  .card-scan .card .card-footer form {
-    margin: 0px 15px 0 0;
+  /* header */
+  header.layout {
+    .header-title h1 {
+      font-size: 23px;
+      margin: 0 8px 0 0;
+    }
+    .header-title p {
+      font-size: 18px;
+    }
   }
 
-
+  /* Card escaneo */
+  .card-scan {
+    .card {
+      margin: 0;
+      padding: 5px;
+      width: 100%;
+    }
+    .card .card-code img {
+      width: 35%;
+    }
+    .card .card-barra {
+      width: 100%;
+    }
+    .card .card-title {
+      font-size: 25px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+    .card .card-code {
+      width: 100%;
+    }
+    .card .card-footer form {
+      margin: 0px 15px 0 0;
+    }
+  }
 }

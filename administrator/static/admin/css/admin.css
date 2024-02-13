@@ -650,14 +650,30 @@ tr:last-child td:last-child {
   margin-left: 5px;
 }
 
-/* --------- RESPONSIVE PARA TABLETS Y CELULARES (HORIZONTAL)---------- */
-@media (max-width: 1023px) {
-  /* 
-    LOGIN 
-*/
+/* ------------------- RESPONSIVE -------------------- */
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Login */
   #login .card {
-    width: 100%;
+    width: 75%;
     margin: 0 auto;
     padding: 30px 50px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 767px) {
+  /* Login */
+  #login {
+    .card {
+      width: 100%;
+      padding: 30px 5px;
+    }
+    .card .card-header .back-button {
+      left: 8px;
+    }
+    .card .card-body .card-form .card-header .card-title {
+      font-size: 33px;
+    }
   }
 }
