@@ -35,11 +35,11 @@ export function actualModule() {
     const headerTextModule = document.querySelector(".header-title-module")
 
     if (url.includes(module1)) {
-        headerTextModule.innerHTML = "Modulo 1>";
+        headerTextModule.innerHTML = "Modulo 1> Ingresos";
     } else if (url.includes(module2)) {
-        headerTextModule.innerHTML = "Modulo 2>";
+        headerTextModule.innerHTML = "Modulo 2> Dispositivos";
     } else if (url.includes(module3)) {
-        headerTextModule.innerHTML = "Modulo 3>";
+        headerTextModule.innerHTML = "Modulo 3> Vehiculos y Dispositivos";
     }
 }
 
