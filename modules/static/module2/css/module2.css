@@ -1,11 +1,30 @@
-#module2 .select img{
-    width: 35%;
+#module2 .select img {
+  width: 35%;
 }
 
-#module2 .card{
-    width: 50%;
+#module2 .card {
+  width: 50%;
 }
 
-#module2 .accept{
-    width: 45%;
+#module2 .accept {
+  width: 45%;
 }
+
+/* ------------------- RESPONSIVE -------------------- */
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Card seleccionar dispositivo modulo 2 */
+  #module2 .card {
+    width: 100%;
+  }
+}
+/* Celulares */
+@media (max-width: 767px) {
+    /* Card seleccionar dispositivo modulo 2 */
+    #module2 .card {
+      width: 100%;
+    }
+    #module2 .accept {
+      width: 100%;
+    }
+  }

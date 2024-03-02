@@ -732,10 +732,41 @@ article header .header-title {
       width: 25%;
     }
   }
+
+  /* Card seleccionar dispositivo modulo 2 */
+  .card-select-elements {
+    .card {
+      width: 100%;
+    }
+    .card .card-body {
+      margin: 0;
+    }
+  }
+  /* Registrar dispositivo */
+  .card-form .card {
+    width: 100%;
+  }
+  .card-select .card {
+    width: 100%;
+  }
 }
 
 /* Celulares */
 @media (max-width: 767px) {
+  main {
+    padding: 20px 10px;
+  }
+  /* Card de seleccion de módulo - index */
+  .card-select .card {
+    width: 100%;
+    .card-body ul {
+      flex-direction: column;
+    }
+    .card-body a span {
+      text-align: center;
+    }
+  }
+
   /* header */
   header.layout {
     .header-title h1 {
@@ -771,5 +802,43 @@ article header .header-title {
     .card .card-footer form {
       margin: 0px 15px 0 0;
     }
+  }
+
+  /* Card seleccionar dispositivo modulo 2 */
+  .card-select-elements {
+    .card .card-body {
+      margin: 0;
+  }
+  .accept {
+    width: 100%;
+  }
+  }
+
+  /* Registrar dispositivo módulo 2 y 3 */
+  .card-form {
+    .card {
+      width: 100%;
+    }
+  }
+  .card .card-header .card-title {
+    font-size: 1.5rem;
+  }
+  .back-button {
+    left: 0px;
+  }
+  .card {
+    padding: 10px 5px;
+    margin: 20px auto 0 auto;
+  }
+  .row {
+    display: block;
+  }
+  .form-select {
+    margin-bottom: 30px;
+  }
+
+  /* Card seleccionar vehiculos y dispositivos - módulo 3 */
+  .card {
+    width: 100%;
   }
 }

@@ -1,0 +1,19 @@
+#module3 .card-select-elements .card {
+    width: 50%;
+  }
+  
+  /* ------------------- RESPONSIVE -------------------- */
+  /* Tablets */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /* Card seleccionar dispositivo modulo 2 */
+    #module3 .card-select-elements .card {
+      width: 100%;
+    }
+  }
+  /* Celulares */
+  @media (max-width: 767px) {
+      /* Card seleccionar dispositivo modulo 2 */
+      #module3 .card-select-elements .card {
+        width: 100%;
+      }
+    }
