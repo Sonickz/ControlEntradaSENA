@@ -5,21 +5,46 @@
 
 {% block content %}
 <div class="about">
-    <div class="row justify-content-center mt-1">
+    <div class="row justify-content-center ">
        
         <!-- Card 1 -->
-        <div class="col-md-5">
-            <div class="card card-sm border-0 text-center" style="border: 2px solid #4c8c34;">
-                <h6 class="card-title mb-1 mt-2 font-weight-bold">Moises Garcia</h6>
-                <div style="margin-top: 10px;">
-                    <img src="{% static 'assets/icons/programmer1.jpg' %}" alt="Programmer 1" class="card-img-top">
-                </div>
-                <div class="card-body p-2">
-                    <p class="card-text text-muted" style="font-size: 12px;">Moises@gmail.com</p>
-                </div>
-            </div>
-        </div>
+        <div class="col-md-1">
+  <div class="card border-0 text-center">
+    <h6 class="card-title card-title-custom">Moises Garcia</h6>
+    <div style="margin-top: 10px;">
+      <img src="{% static 'assets/icons/programmer5.jpg' %}" alt="Programmer 5" class="card-img-top">
+    </div>
+    <div class="card-body p-2">
+      <p class="card-text card-text-custom">Moises@gmail.com</p>
+    </div>
+  </div>
+</div>
     </div>
 </div>
+
+<style>
+    .card {
+        background-color: #f2f2f2;
+        width: 200px;
+        height: 270px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+    
+    .card-title-custom {
+      font-size: 1rem; 
+      font-weight: bold; 
+    }
+    
+    .card-text-custom {
+      font-size: 12px; 
+    }
+    
+
+      .card-img-top {
+        width: 100px;
+        height: 130px; 
+      }
+    </style>
 {% endblock %}
 

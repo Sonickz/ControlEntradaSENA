@@ -19,9 +19,60 @@
             <p>
                 Con esta aplicación, los usuarios pueden acceder de manera rápida y segura, garantizando un control adecuado de los accesos y mejorando la seguridad en las instalaciones del SENA.
             </p>
+
+           
+              
+             
+                
+           
+                
+                <div class="card card-sm border-0 text-center">
+                  <a href="{% static 'manual_usuario.pdf' %}" class="btn btn-pdf">
+                    <i class="bi bi-file-earmark-pdf fs-4 me-2 text-success"></i>
+                    Manual de usuario
+                  </a>
+                  <h6 class="card-title mb-1 mt-2 font-weight-bold">
+                    
+                    <a href="https://youtu.be/kn0KFrCtU0g" class="card-link">
+                      <i class="bi bi-youtube fs-4 text-success"></i>
+                      <span class="ms-2">Ver Manual de Usuario</span>
+                    </a>
+                   
+                    <a href="https://youtu.be/uspV8Q_IdoU?si=69_5cn7yo8CR25LG" class="card-link">
+                      <i class="bi bi-youtube fs-4 text-success"></i>
+                      <span class="ms-2">Ver Manual de Administrador</span>
+                    </a>
+                  </h6>
+                </div>
+              
         </div>
     </div>
     
 </div>
+
+<style>
+    .card-link {
+      font-size: 1.2em; 
+      font-weight: bold; 
+      text-decoration: none; 
+      color: #008000; 
+    }
+    
+    .card-link:hover {
+      color: #005000; 
+    }
+    
+    .btn-pdf {
+      background-color: #d4edda; 
+      border-color: #c3e6cb; 
+      color: #006400; 
+    }
+    
+    .btn-pdf:hover {
+      background-color: #b2dfdb;
+      border-color: #a3d9ce;
+      color: #004d00; 
+    }
+    </style>
 {% endblock %}
 

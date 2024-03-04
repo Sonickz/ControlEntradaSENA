@@ -1,7 +1,7 @@
 {% load static %}
 <div class="col">
     <img src="{% static 'assets/icons/vehicles2.png' %}">
-    <label for="names">Vehiculos</label>      
+    <label for="names">Vehículos</label>      
     <!-- Zona select -->  
     <div class="select-form vehicle">
         <!-- Select -->
@@ -9,7 +9,7 @@
             {% if ingreso and ingreso.vehiculo %}
             <span class="btn-text">{{ingreso.vehiculo}}</span>
             {% else %}  
-                <span class="btn-text">Seleccionar Vehiculo</span>
+                <span class="btn-text">Seleccionar vehículo</span>
                 <span class="arrow-dwn">
                     <i class="fa-solid fa-chevron-down"></i>
                 </span>
@@ -29,7 +29,7 @@
                     </li>
                     {% endfor %}
                 {% else %}
-                    <span class="item-text">Ningun vehiculo registrado</span>
+                    <span class="item-text">Ningún vehículo registrado</span>
                 {% endif %}
             </ul>     
         {% endif %}                                                    

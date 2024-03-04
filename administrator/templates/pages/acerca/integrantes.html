@@ -5,57 +5,87 @@
 
 {% block content %}
 <div class="about">
+    <p class="integrantes">INTEGRANTES</p>
     <div class="row justify-content-center mt-1">
         <!-- Card 1 -->
         <div class="col-md-3">
-            <div class="card card-sm border-0 text-center" > 
-                <h6 class="card-title mb-1 mt-2 font-weight-bold">Paola Andrea Trujillo Velasco</h6>
-                <div style="margin-top: 10px;">
+            <div class="card card-sm border-0 text-center"> 
+               <h6class="card-title mb-1 mt-2 font-weight-bold">Paola Andrea Trujillo Velasco</h6class=>
+                 <div style="margin-top: 10px;">
                     <img src="{% static 'assets/icons/programmer1.jpg' %}" alt="Programmer 1" class="card-img-top">
                 </div>
                 <div class="card-body p-2">
-                    <p class="card-text text-muted" style="font-size: 12px;">andretrujillo029@gmail.com</p>
+                    <p class="card-text card-text-custom" style="font-size: 12px;">andretrujillo029@gmail.com</p>
                 </div>
             </div>
         </div>
 
         <!-- Card 2 -->
         <div class="col-md-3">
-            <div class="card card-sm border-0 text-center" > 
-                <h6 class="card-title mb-1 mt-2 font-weight-bold">Paola Andrea Trujillo Velasco</h6>
+            <div class="card card-sm border-0 text-center"> 
+                <h6class="card-title mb-1 mt-2 font-weight-bold">Cristian Alexis Chantre Hurtado</h6class=>
                 <div style="margin-top: 10px;">
-                    <img src="{% static 'assets/icons/programmer1.jpg' %}" alt="Programmer 1" class="card-img-top">
+                    <img src="{% static 'assets/icons/programmer2.jpg' %}" alt="Programmer 1" class="card-img-top">
                 </div>
                 <div class="card-body p-2">
-                    <p class="card-text text-muted" style="font-size: 12px;">andretrujillo029@gmail.com</p>
+                    <p class="card-text card-text-custom" style="font-size: 12px;">chantrecristian2@gmail.com</p>
                 </div>
             </div>
         </div>
 
         <!-- Card 3 -->
         <div class="col-md-3">
-            <div class="card card-sm border-0 text-center" >
-                <h6 class="card-title mb-1 mt-2 font-weight-bold">Paola Andrea Trujillo Velasco</h6>
+            <div class="card card-sm border-0 text-center"> 
+                <h6class="card-title mb-1 mt-2 font-weight-bold">Giovanny Ladino Gonzales</h6class=>
                 <div style="margin-top: 10px;">
-                    <img src="{% static 'assets/icons/programmer1.jpg' %}" alt="Programmer 1" class="card-img-top">
+                    <img src="{% static 'assets/icons/programmer3.jpg' %}" alt="Programmer 1" class="card-img-top">
                 </div>
                 <div class="card-body p-2">
-                    <p class="card-text text-muted" style="font-size: 12px;">andretrujillo029@gmail.com</p>
+                    <p class="card-text card-text-custom" style="font-size: 12px;">gladino74@misena.edu.co</p>
                 </div>
             </div>
         </div>
         <!-- Card 4 -->
         <div class="col-md-3">
-            <div class="card card-sm border-0 text-center"> 
-                <h6 class="card-title mb-1 mt-2 font-weight-bold">Paola Andrea Trujillo Velasco</h6>
-                <div style="margin-top: 10px;">
-                    <img src="{% static 'assets/icons/programmer1.jpg' %}" alt="Programmer 1" class="card-img-top">
-                </div>
-                <div class="card-body p-2">
-                    <p class="card-text text-muted" style="font-size: 12px;">andretrujillo029@gmail.com</p>
-                </div>
+            <div class="card card-sm border-0 text-center">
+              <h6class="card-title card-title-custom">Edwin Esneider Burbano Luna</h6class=>
+              <div style="margin-top: 10px;">
+                <img src="{% static 'assets/icons/programmer4.jpg' %}" alt="Programmer 1" class="card-img-top">
+              </div>
+              <div class="card-body p-2">
+                <p class="card-text card-text-custom" style="font-size: 12px;">edwinburbano473@gmail.com</p>
+              </div>
             </div>
-        </div>
+          </div>
     </div>
 </div>
+
+<style>
+   
+    .integrantes {
+        
+        padding: 8px 10px; 
+        font-size: 1.2em; 
+        font-weight: bold; 
+      }
+    .card {
+        background-color: #f8f9fa;
+      }
+
+      .card-img-top {
+        width: 100px;
+        height: 130px; 
+      }
+
+     
+        .card-text-custom {
+          color: #008000; 
+          
+        }
+       
+        
+
+      
+  </style>
+
 {% endblock %}
