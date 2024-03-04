@@ -456,6 +456,7 @@ article header .header-title {
 .card-select .card-body a span {
   font-weight: 500;
   font-size: 1.9rem;
+  text-align: center;
 }
 
 /* 
@@ -748,6 +749,11 @@ article header .header-title {
   }
   .card-select .card {
     width: 100%;
+    padding: 0;
+    .card-body a span {
+      font-size: 1.6rem;
+      text-align: center;
+    }
   }
 }
 
@@ -761,6 +767,7 @@ article header .header-title {
     width: 100%;
     .card-body ul {
       flex-direction: column;
+      margin-bottom: 10px;
     }
     .card-body a span {
       text-align: center;
@@ -840,5 +847,15 @@ article header .header-title {
   /* Card seleccionar vehiculos y dispositivos - módulo 3 */
   .card {
     width: 100%;
+  }
+
+  .form-group {
+    padding: 0;
+  }
+  .input-box {
+    margin-bottom: 30px;
+  }
+  .select2-container--bootstrap-5 .select2-selection--single {
+    margin-bottom: 30px;
   }
 }
