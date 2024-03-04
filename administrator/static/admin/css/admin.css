@@ -659,6 +659,22 @@ tr:last-child td:last-child {
     margin: 0 auto;
     padding: 30px 50px;
   }
+  #admin .input-box.search {
+    width: 65%;
+  }
+  #admin .card .card-header .report.access {
+    left: 10px;
+  }
+  .feed .feed-item .sub-text {
+    position: absolute;
+    right: 10px;
+  }
+  body.admin main {
+    align-items: flex-start;
+  }
+  .about {
+    align-items: flex-start;
+  }
 }
 
 /* Celulares */
@@ -675,5 +691,15 @@ tr:last-child td:last-child {
     .card .card-body .card-form .card-header .card-title {
       font-size: 33px;
     }
+  }
+  
+  body.admin main {
+    align-items: flex-start;
+  }
+  .elements .modal-body {
+    padding: 5px;
+  }
+  #admin .input-box.search {
+    width: 90%;
   }
 }

@@ -755,6 +755,17 @@ article header .header-title {
       text-align: center;
     }
   }
+
+  /* módulo admin */
+  main {
+    padding: 30px 10px;
+  }
+  .card {
+    padding: 30px 5px;
+  }
+  .card-select .card-body a span {
+    font-size: 1.7rem;
+  }
 }
 
 /* Celulares */
