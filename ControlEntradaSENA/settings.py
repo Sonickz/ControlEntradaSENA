@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "modules",
     "administrator",
 ]
-VERSION = "Control Entrada Sena V2.0"
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

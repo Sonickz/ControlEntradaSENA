@@ -25,31 +25,6 @@ class RegisterUser(ModelForm):
     centro = forms.ModelChoiceField(queryset=Centros.objects.all(), widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Centro", label="Centro")
     rol = forms.ModelChoiceField(queryset=Roles.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'disabled': True}), empty_label="Rol", label="Rol")
     ficha = forms.ModelChoiceField(queryset=Fichas.objects.all(), widget=forms.Select(attrs={'class': 'form-select', 'id': 'single-select-field'}), empty_label="Ficha", label="Ficha")
-    imagen = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control', 'id': 'user-file'}), label="Foto de perfil")
-
-    #Validacion de imagen   
-    def clean_imagen(self):  # sourcery skip: extract-method
-        imagen_form = self.cleaned_data.get('imagen', False)
-        imagen_instance = self.instance.imagen
-        imagen = imagen_form or imagen_instance
-
-        documento_instance = self.instance.documento
-        documento_form = self.cleaned_data.get('documento')
-
-        if imagen:
-            # Verifica que la extensión del archivo sea .jpg, .png o jpeg
-            extension = imagen.name.split('.')[-1].lower()
-            if extension not in ['jpg', 'png', 'jpeg']:
-                raise ValidationError("El archivo debe estar en formato JPG o PNG.")    
-            # Elimina la imagen anterior del usuario
-            self.instance.imagen.delete()            
-            # Usa el valor del campo 'documento' del formulario si está presente, de lo contrario, usa el del instance
-            documento = documento_form or documento_instance            
-            # Genera el nombre del archivo de imagen y actualiza el atributo 'name' de la imagen
-            filename = f"{documento}.{extension}"
-            imagen.name = filename
-
-        return imagen
     
     #Validar nombre
     def clean_nombres(self):
@@ -73,20 +48,6 @@ class RegisterDevice(ModelForm):
     sn = forms.CharField(widget=forms.TextInput(attrs={'class': 'upper', 'maxlength': 50}), label="Serial Number")
     tipo = forms.ModelChoiceField(queryset=DispositivosTipo.objects.all(), widget=forms.Select(attrs={'class': 'form-select tipo-dispositivo'}), label="", empty_label="Tipo de dispositivo")
     marca = forms.ModelChoiceField(queryset=DispositivosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-dispositivo', 'id': 'single-select-field'}), label="", empty_label="Marca")
-
-    #Validacion de imagen
-    def clean_imagen(self):
-        imagen = self.cleaned_data.get('imagen', False)
-        usuario = self.cleaned_data['usuario']
-        sn = self.cleaned_data['sn']
-        if imagen:
-            # Verifica que la extensión del archivo sea .jpg o .png
-            extension = imagen.name.split('.')[-1].lower()
-            if extension not in ['jpg', 'png', 'jpeg']:
-                raise ValidationError("El archivo debe estar en formato JPG o PNG.")
-            filename = f"{usuario.idusuario}.{sn}.{imagen.name.split('.')[-1]}"
-            imagen.name = filename
-        return imagen
     
     def clean_doc(self):
         if doc := self.cleaned_data.get('documento', False):
@@ -116,37 +77,9 @@ class RegisterVehicle(ModelForm):
     marca = forms.ModelChoiceField(queryset=VehiculosMarca.objects.all(), widget=forms.Select(attrs={'class': 'form-select marca-vehiculo', 'id': 'single-select-field'}), label="", empty_label="Marca")
     modelo = forms.ChoiceField(widget=forms.Select(attrs={'class': 'form-select'}), label="", choices=YEAR_CHOICES)
 
-    #Validacion de imagen
-    def clean_imagen(self):
-        imagen = self.cleaned_data.get('imagen', False)
-        usuario = self.cleaned_data['usuario']
-        placa = self.cleaned_data['placa']
-        if imagen:
-            # Verifica que la extensión del archivo sea .jpg o .png
-            extension = imagen.name.split('.')[-1].lower()
-            if extension not in ['jpg', 'png', 'jpeg']:
-                raise ValidationError("El archivo debe estar en formato JPG o PNG.")
-            filename = f"{usuario.idusuario}.{placa}.{imagen.name.split('.')[-1]}"
-            imagen.name = filename
-        return imagen
-    
-
 #==============================================================================================
 
 class RegisterAdmin(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2' ]
-
-#Formulario para registro de sanciones
-class RegisterSanciones(ModelForm):
-    class Meta:
-        model = Sanciones
-        fields = "__all__"
-
-    idsancion= forms.CharField(widget=forms.TextInput(attrs={'maxlength': '50', 'autofocus': True}))
-    vehiculo = forms.ModelChoiceField(queryset =Vehiculos.objects.all(),widget=forms.Select(attrs={'class': 'form-select'}), empty_label="Vehiculos", label="")
-    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control'}))  
-    fecha_fin = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control' }), label="Fecha") 
-    estado = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '7',}))
-    descripcion =forms.CharField(widget=forms.TextInput(attrs={'maxlength': '20',}))

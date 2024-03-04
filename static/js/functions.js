@@ -260,7 +260,7 @@ export function totemKeyboard() {
     let pageHeight = window.innerHeight;
 
     //Si se tiene la resolucion del totem
-    if (pageWidth >= 1080 && pageHeight >= 1800) {
+    if (pageWidth >= 768 && pageHeight >= 500) {
         const keyboard = document.querySelector('.keyboard'); //Keyboard
         let keys = document.querySelectorAll('.keys'); //Teclas
         let letters = Array.from(keys).filter(key => !key.classList.contains("special_key") && !key.classList.contains("disabled")); //Letras
@@ -274,6 +274,7 @@ export function totemKeyboard() {
                 keyboard.classList.add('active'); //Abrir teclado
             });
             if (input.hasAttribute('autofocus')) { //Si tiene el atributo autofocus
+                activeInput = input; // Input actual
                 keyboard.classList.add('active'); //Abrir teclado
             }
         });
@@ -333,6 +334,7 @@ export function totemKeyboard() {
         //Funcion para agregar una letra al input
         function KeyClick(key, input) {
             let onlynumbers = input.classList.contains("onlynumbers") //Verificar si el input tiene la clase solo numeros
+            const maxInput = input.getAttribute('maxlength')
 
             key.classList.add('active'); //Agrego la clase active
             setTimeout(() => { //Despues de 200ms remuevo la clase active
@@ -341,7 +343,7 @@ export function totemKeyboard() {
 
             // sourcery skip: merge-nested-ifs
             if (letters.includes(key)) {
-                if (!onlynumbers || (onlynumbers && !isNaN(key.innerText))) { //Si el campo no tiene la clase solonumeros || Si el campo es de solo numeros y la key es un numero
+                if (!onlynumbers || (onlynumbers && !isNaN(key.innerText)) && input.value.length <= maxInput) { //Si el campo no tiene la clase solonumeros || Si el campo es de solo numeros y la key es un numero
                     input.value += key.innerText;
                 }
             }
@@ -355,6 +357,7 @@ export function totemKeyboard() {
         }
 
         //Funcion para agregar un espacio al input
+        let actionInterval;
         function BackspaceKeyDown(input) {
             backspaceKey.classList.add('active');
             actionInterval = setInterval(() => { //Cada 70ms remuevo el ultimo caracter del input

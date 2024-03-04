@@ -9,12 +9,10 @@
   --width: 250px;
   --padding: 10px;
   --width-collapsed: 50px;
-  --gradient: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(9, 9, 121, 1) 0%,
-    rgba(0, 212, 255, 1) 100%
-  );
+  --gradient: linear-gradient(90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 0%,
+      rgba(0, 212, 255, 1) 100%);
   --menu-transition: all 0.5s ease;
 }
 
@@ -101,18 +99,17 @@ header.layout {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 20;
 }
 
 .keyboard {
   display: none;
   max-width: 1070px;
-  max-height: 380px;
+  max-height: 500px;
   width: 100%;
   background-color: #e7e7e7;
   overflow: hidden;
-  padding: 0px 14px;
-  position: absolute;
-  bottom: 0;
+  padding: 15px 14px;
 }
 
 .keyboard_bg {
@@ -145,10 +142,23 @@ header.layout {
   align-items: center;
   margin: 4px;
   transition: 0.2s;
-  z-index: 5;
+  z-index: 25;
   cursor: pointer;
   pointer-events: all;
   user-select: none;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /*width: 40px;*/
+  }
+
+}
+
+.keyboard .keys-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .keyboard .keys.active {
@@ -165,7 +175,7 @@ header.layout {
 }
 
 .keyboard .tab_key {
-  width: 90px;
+  width: 95px;
 }
 
 .keyboard .slash_key {
@@ -174,6 +184,10 @@ header.layout {
 
 .keyboard .caps_lock_key {
   width: 128px;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /*width: 95px;*/
+  }
 }
 
 .keyboard .enter_key {
@@ -182,11 +196,19 @@ header.layout {
 
 .keyboard .shift_key {
   width: 124px;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /*width: 95px;*/
+  }
 }
 
 .keyboard .space_key {
   max-width: 600px;
   width: 100%;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    /*width: 465px;*/
+  }
 }
 
 @keyframes keys_animation {
@@ -291,9 +313,9 @@ header.layout {
 }
 
 /*Al estar activo cambiar posicion de label*/
-.input-box input:focus ~ label,
-.input-box input:valid ~ label,
-.input-box input:read-only ~ label {
+.input-box input:focus~label,
+.input-box input:valid~label,
+.input-box input:read-only~label {
   top: -3px;
 }
 
@@ -599,6 +621,7 @@ article header .header-title {
   font-weight: bold;
   color: var(--text-color);
 }
+
 .card-select-elements .select img {
   width: 45%;
 }
@@ -665,7 +688,7 @@ article header .header-title {
 }
 
 /* Select lista abierta */
-.card-select-elements .card .select-form .select-btn.open ~ .list-items {
+.card-select-elements .card .select-form .select-btn.open~.list-items {
   display: block;
 }
 
@@ -724,13 +747,15 @@ article header .header-title {
 /* ------------------- RESPONSIVE -------------------- */
 /* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
+
   /* Card escaneo */
   .card-scan {
     .card {
-      width: 80%;
+      width: 65%;
     }
+
     .card .card-code img {
-      width: 25%;
+      width: 15%;
     }
   }
 
@@ -739,17 +764,21 @@ article header .header-title {
     .card {
       width: 100%;
     }
+
     .card .card-body {
       margin: 0;
     }
   }
+
   /* Registrar dispositivo */
   .card-form .card {
     width: 100%;
   }
+
   .card-select .card {
     width: 100%;
     padding: 0;
+
     .card-body a span {
       font-size: 1.6rem;
       text-align: center;
@@ -760,9 +789,11 @@ article header .header-title {
   main {
     padding: 30px 10px;
   }
+
   .card {
     padding: 30px 5px;
   }
+
   .card-select .card-body a span {
     font-size: 1.7rem;
   }
@@ -773,13 +804,16 @@ article header .header-title {
   main {
     padding: 20px 10px;
   }
+
   /* Card de seleccion de módulo - index */
   .card-select .card {
     width: 100%;
+
     .card-body ul {
       flex-direction: column;
       margin-bottom: 10px;
     }
+
     .card-body a span {
       text-align: center;
     }
@@ -791,6 +825,7 @@ article header .header-title {
       font-size: 23px;
       margin: 0 8px 0 0;
     }
+
     .header-title p {
       font-size: 18px;
     }
@@ -803,20 +838,25 @@ article header .header-title {
       padding: 5px;
       width: 100%;
     }
+
     .card .card-code img {
       width: 35%;
     }
+
     .card .card-barra {
       width: 100%;
     }
+
     .card .card-title {
       font-size: 25px;
       font-weight: 600;
       margin-bottom: 0;
     }
+
     .card .card-code {
       width: 100%;
     }
+
     .card .card-footer form {
       margin: 0px 15px 0 0;
     }
@@ -826,10 +866,11 @@ article header .header-title {
   .card-select-elements {
     .card .card-body {
       margin: 0;
-  }
-  .accept {
-    width: 100%;
-  }
+    }
+
+    .accept {
+      width: 100%;
+    }
   }
 
   /* Registrar dispositivo módulo 2 y 3 */
@@ -838,19 +879,24 @@ article header .header-title {
       width: 100%;
     }
   }
+
   .card .card-header .card-title {
     font-size: 1.5rem;
   }
+
   .back-button {
     left: 0px;
   }
+
   .card {
     padding: 10px 5px;
     margin: 20px auto 0 auto;
   }
+
   .row {
     display: block;
   }
+
   .form-select {
     margin-bottom: 30px;
   }
@@ -863,9 +909,11 @@ article header .header-title {
   .form-group {
     padding: 0;
   }
+
   .input-box {
     margin-bottom: 30px;
   }
+
   .select2-container--bootstrap-5 .select2-selection--single {
     margin-bottom: 30px;
   }

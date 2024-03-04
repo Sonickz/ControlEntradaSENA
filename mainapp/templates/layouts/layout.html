@@ -39,7 +39,7 @@
             <div class="animation-text">
                 <img class="icon" src="{% static 'assets/icons/log-in white.png'%}">
                 <h1 class="title">Control Entrada Sena</h1>
-                <p class="text">Version 1.4.0</p>
+                <p class="text">Version 1.1.0</p>
             </div>
         </div>
     </div>
@@ -54,9 +54,9 @@
               Opciones
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'module1' %}">Modulo1</a></li>
-              <li><a class="dropdown-item" href="{% url 'module2' %}">Modulo2</a></li>
-              <li><a class="dropdown-item" href="{% url 'module3' %}">Modulo3</a></li>
+              <li><a class="dropdown-item" href="{% url 'module1' %}">Modulo 1</a></li>
+              <li><a class="dropdown-item" href="{% url 'module2' %}">Modulo 2</a></li>
+              <li><a class="dropdown-item" href="{% url 'module3' %}">Modulo 3</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="{% url 'login' %}">Admin</a></li>
             </ul>
@@ -71,7 +71,7 @@
 
         {% endblock %}
     </main>
-
+    
     <footer>
         <!-- Teclado para totem -->
         {% include 'layouts/includes/keyboard.html' %}

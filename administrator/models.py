@@ -63,7 +63,7 @@ class DispositivosTipo(models.Model):
 
 class DocumentoTipo(models.Model):
     idtipodocumento = models.AutoField(db_column='IdTipoDocumento', primary_key=True)  # Field name made lowercase.
-    nombre = models.CharField(db_column='NombreTipoDocumento', unique=True, max_length=10)  # Field name made lowercase.
+    nombre = models.CharField(db_column='NombreTipoDocumento', unique=False, max_length=30)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -180,20 +180,7 @@ class Roles(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
-class Sanciones(models.Model):
-    idsancion = models.AutoField(db_column='IdSancion', primary_key=True)  # Field name made lowercase.
-    vehiculo = models.ForeignKey('Vehiculos', models.DO_NOTHING, db_column='IdVehiculo')  # Field name made lowercase.
-    fecha_inicio = models.DateField(db_column='Fecha_Inicio_Sancion')  # Field name made lowercase.
-    fecha_fin = models.DateField(db_column='Fecha_Fin_Sancion')  # Field name made lowercase.
-    estado = models.IntegerField(db_column='EstadoSancion')  # Field name made lowercase.
-    descripcion = models.TextField(db_column='DescripcionSancion')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'sanciones'
-
+    
 
 class Usuarios(models.Model):
     idusuario = models.AutoField(db_column='IdUsuario', primary_key=True)  # Field name made lowercase.
@@ -205,9 +192,7 @@ class Usuarios(models.Model):
     correo = models.CharField(db_column='CorreoUsuario', unique=True, max_length=100, blank=True, null=True)  # Field name made lowercase.
     centro = models.ForeignKey(Centros, models.DO_NOTHING, db_column='IdCentro', blank=True, null=True, default=None)  # Field name made lowercase.
     rol = models.ForeignKey(Roles, models.DO_NOTHING, db_column='IdRol')  # Field name made lowercase.
-    ficha = models.ForeignKey(Fichas, models.DO_NOTHING, db_column='IdFicha', blank=True, null=True, default=None)  # Field name made lowercase.
-    imagen = models.ImageField(db_column='ImagenUsuario', upload_to="images/users/", max_length=50)  # Field name made lowercase.
-
+    ficha = models.ForeignKey(Fichas, models.DO_NOTHING, db_column='IdFicha', blank=True, null=True, default=None)  # Field name made lowercase.    
     class Meta:
         managed = False
         db_table = 'usuarios'
@@ -215,12 +200,6 @@ class Usuarios(models.Model):
     def __str__(self):
         return (f"{self.nombres} {self.apellidos}")
         
-    def delete(self, using=None, keep_parents=False):
-        # Eliminar la imagen si existe
-        if self.imagen:
-            self.imagen.storage.delete(self.imagen.name)
-        super(Usuarios, self).delete(using=using, keep_parents=keep_parents)
-
 
 class Vehiculos(models.Model):
     idvehiculo = models.AutoField(db_column='IdVehiculo', primary_key=True)  # Field name made lowercase.

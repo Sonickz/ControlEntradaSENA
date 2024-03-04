@@ -149,7 +149,6 @@ def edit_user(request, id):
     rol_selected = Roles.objects.get(idrol=rol)
     form = RegisterUser(request.POST or None, request.FILES or None, instance=instance)
 
-    form.fields['imagen'].required = False
     form.fields['centro'].required = instance.rol != 3
     form.fields['ficha'].required = instance.rol == 2
     form.fields['rol'].required = False

@@ -26,6 +26,11 @@ const codeInput = document.getElementById("code-input");
 const btnSend = document.getElementById('btn-send');
 const codeForm = document.getElementById("code-form")
 if (Exists(btnSend) && (codeInput)) {
+  codeInput.addEventListener("blur", () => {
+    setTimeout(() => {
+      codeInput.focus()
+    }, 1000)
+  })
   codeInput.addEventListener("input", () => {
     let inputValue = codeInput.value
     if (inputValue.length >= 6) {
@@ -35,6 +40,9 @@ if (Exists(btnSend) && (codeInput)) {
     }
   })
 }
+
+
+
 
 //Alerta 
 const Alert = document.querySelector('.Alert');
@@ -87,7 +95,7 @@ if (Exists(selects)) {
   const btnText = document.querySelector(".device .btn-text");
   const user = document.getElementById("user");
   let rol = null
-  
+
   user ? fetch(`/api/users/${user.value}`)
     .then(response => response.json())
     .then(data => {
@@ -128,7 +136,7 @@ const deviceAccess = document.getElementById("device_access")
 
 Exists(deviceAccess) ? compDevice(deviceAccess, 1) : null
 Exists(deviceExit) ? compDevice(deviceExit, 2) : null;
-  
+
 
 //=====================================================================================================
 //REGISTROS

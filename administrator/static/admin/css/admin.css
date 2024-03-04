@@ -317,6 +317,7 @@ body.admin main {
   transform: translateX(160%);
   position: absolute;
   transition: all 1.5s ease;
+  height: 100%;
 }
 
 /* Al presionar registro */
@@ -328,7 +329,7 @@ body.admin main {
   }
 
   .card-main {
-    transform: translateX(-160%);
+    transform: translateX(-300%);
   }
 
   .card-register {
@@ -674,6 +675,9 @@ tr:last-child td:last-child {
   }
   .about {
     align-items: flex-start;
+  }
+  .card-select .card-body ul{
+    flex-direction: column;
   }
 }
 

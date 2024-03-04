@@ -4,11 +4,11 @@
 
 /* Container */
 .animation-container {
-    z-index: 1;
+    z-index: 20;
     min-height: 100%;
     min-width: 100%;
     background-color: var(--bgcolor);
-    position: absolute;
+    position: fixed;
     transition: all 1s ease;
 }
 
