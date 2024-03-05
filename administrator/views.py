@@ -244,37 +244,6 @@ def edit_device(request, id):
 
 #=============================================================================
 
-#Sanciones
-@login_required(login_url="admin")
-def sanciones(request):
-    sanciones = Sanciones.objects.all()
-    
-    return render(request, 'pages/sanciones/sanciones.html', {
-        'title': 'Sanciones',
-        'penaltys': sanciones
-    })
-
-#Editar sanciones
-def edit_sanciones(request, id):
-    instance=Sanciones.objects.get(idsancion=id)
-
-    form = RegisterSanciones(request.POST or None, request.FILES or None, instance= instance)
-
-    if request .method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, "se ha editado correctamente")
-        return redirect('sanciones')
-            
-    return render(request, 'pages/sanciones/edit.html', {
-        'title': 'Editar Sanciones',
-        'form': form
-     })
-
-
-
-
-
-
 #acerda de
 @login_required(login_url="admin")
 def about(request):

@@ -260,7 +260,7 @@ export function totemKeyboard() {
     let pageHeight = window.innerHeight;
 
     //Si se tiene la resolucion del totem
-    if (pageWidth >= 768 && pageHeight >= 500) {
+    if (pageWidth >= 768 && pageHeight >= 1300) {
         const keyboard = document.querySelector('.keyboard'); //Keyboard
         let keys = document.querySelectorAll('.keys'); //Teclas
         let letters = Array.from(keys).filter(key => !key.classList.contains("special_key") && !key.classList.contains("disabled")); //Letras
