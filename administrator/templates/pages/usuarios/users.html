@@ -18,7 +18,17 @@
 {% if not search %}
   <div class="btn-change-table">
     {% for rol in roles %}
-      <button type="button" class="btn btn-green2 users {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}">{{rol}}</button>
+      <button type="button" class="btn btn-green2 users {% if rol.idrol == 2 %}btn-green2-active{% endif %}" data-table="{{rol.idrol}}" data-rol="{{rol}}">
+        {% if rol.idrol == 1 %}
+          Instructores
+        {% elif rol.idrol == 2 %}
+          Aprendices
+        {% elif rol.idrol == 3 %}
+          Visitantes
+        {% elif rol.idrol == 4 %}
+          Administrativos
+        {% endif %}
+      </button>
     {% endfor %}
   </div>
 {% endif %}

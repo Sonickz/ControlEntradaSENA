@@ -3,7 +3,7 @@
 }
 
 #module2 .card {
-  width: 50%;
+  width: 60%;
 }
 
 #module2 .accept {
@@ -11,20 +11,45 @@
 }
 
 /* ------------------- RESPONSIVE -------------------- */
+/* Laptop */
+@media (min-width: 1024px) and (max-width: 1279px) {
+
+  /* Card seleccionar dispositivo modulo 2 */
+  #module2 .card {
+    width: 70%;
+  }
+}
+
 /* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Card seleccionar dispositivo modulo 2 */
+  #module2 .card {
+    width: 80%;
+  }
+}
+
+/* Celulares */
+@media (min-width: 320px) and (max-width: 767px){
+
   /* Card seleccionar dispositivo modulo 2 */
   #module2 .card {
     width: 100%;
+
+    .card-title{
+      font-size: 22px;
+    }
+  }
+
+  #module2 .accept {
+    width: 100%;
+  }
+
+  #module2 .btn-text{
+    font-size: 14px;
+  }
+
+  #module2 .item-text{
+    font-size: 13px;
   }
 }
-/* Celulares */
-@media (max-width: 767px) {
-    /* Card seleccionar dispositivo modulo 2 */
-    #module2 .card {
-      width: 100%;
-    }
-    #module2 .accept {
-      width: 100%;
-    }
-  }

@@ -491,7 +491,8 @@ export function changeTables(btns, tables) {
         })
         btn.classList.add("btn-green2-active");
         if (btn.classList.contains("users")) {
-            btnReport.href = `reports/${btn.textContent.toLowerCase()}`
+            const dataRol = btn.getAttribute('data-rol').toLowerCase()
+            btnReport.href = `reports/${dataRol}`
             btnReport.querySelector("span").textContent = `Reporte de ${btn.textContent}`
         }
         let dataBtn = btn.getAttribute("data-table");

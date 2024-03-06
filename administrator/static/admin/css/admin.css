@@ -138,8 +138,8 @@ body.admin main {
   width: 18%;
 }
 
-#adminmenu .menu-items .item .item-icon > * {
-  width: 100%;
+#adminmenu .menu-items .item .item-icon>* {
+  width: 140%;
   color: white;
 }
 
@@ -154,7 +154,7 @@ body.admin main {
   margin-left: 15px;
   border-radius: 50px;
   border: 2px solid var(--bgcolor-clare);
-  color: none;
+  color: var(--bgcolor-clare);
   background-color: white;
 }
 
@@ -467,6 +467,7 @@ tr:last-child td:last-child {
 
 /* Container Feed*/
 .feed {
+
   /* Lista */
   .feed-items {
     display: flex;
@@ -652,57 +653,96 @@ tr:last-child td:last-child {
 }
 
 /* ------------------- RESPONSIVE -------------------- */
-/* Tablets */
-@media (min-width: 768px) and (max-width: 1023px) {
+/* Laptops */
+@media(min-width: 1024px) and (max-width: 1279px) {
+
   /* Login */
   #login .card {
-    width: 75%;
+    width: 60%;
     margin: 0 auto;
     padding: 30px 50px;
   }
+
+}
+
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Login */
+  #login .card {
+    width: 65%;
+    margin: 0 auto;
+    padding: 30px 50px;
+  }
+
   #admin .input-box.search {
     width: 65%;
   }
-  #admin .card .card-header .report.access {
-    left: 10px;
+
+  #admin .card .card-header.access, #admin .card .card-main .card-header {
+    display: flex;
+    flex-direction: column-reverse ;
+    flex-direction: column ;
+    justify-content: center ;
+    align-items: center ;
+
   }
+
+
+  #admin .card .card-header .report.access, #admin .card .card-header .btn-register {
+    position: static;
+  }
+
+  #admin .btn.report {
+    position: static;
+  }
+  
   .feed .feed-item .sub-text {
     position: absolute;
     right: 10px;
   }
+
   body.admin main {
     align-items: flex-start;
   }
+
   .about {
     align-items: flex-start;
   }
-  .card-select .card-body ul{
+
+  .card-select .card-body ul {
     flex-direction: column;
   }
 }
 
 /* Celulares */
 @media (max-width: 767px) {
+
   /* Login */
   #login {
     .card {
       width: 100%;
       padding: 30px 5px;
     }
+
     .card .card-header .back-button {
       left: 8px;
     }
+
     .card .card-body .card-form .card-header .card-title {
       font-size: 33px;
     }
   }
-  
+
   body.admin main {
     align-items: flex-start;
   }
+
   .elements .modal-body {
     padding: 5px;
   }
+
   #admin .input-box.search {
     width: 90%;
   }

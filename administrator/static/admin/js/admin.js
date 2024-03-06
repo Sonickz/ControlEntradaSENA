@@ -62,7 +62,7 @@ if (accessDevicesModal) {
       pk: "data-access",
       api: "accessdevices",
       name: "Dispositivo ingreso",
-      func: dataUsers,
+      func: dataAccess,
     },
     }
     transferDataModal(accessBtns, accessDevicesModal, feedListActiveAccess)

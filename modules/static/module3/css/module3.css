@@ -1,19 +1,50 @@
 #module3 .card-select-elements .card {
-    width: 50%;
-  }
-  
-  /* ------------------- RESPONSIVE -------------------- */
-  /* Tablets */
-  @media (min-width: 768px) and (max-width: 1023px) {
-    /* Card seleccionar dispositivo modulo 2 */
-    #module3 .card-select-elements .card {
-      width: 100%;
+  width: 50%;
+}
+
+/* ------------------- RESPONSIVE -------------------- */
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  /* Card seleccionar dispositivo modulo 2 */
+  #module3.card-select-elements .card {
+    width: 90%;
+
+    .card-body {
+      padding: 50px 15px;
     }
   }
-  /* Celulares */
-  @media (max-width: 767px) {
-      /* Card seleccionar dispositivo modulo 2 */
-      #module3 .card-select-elements .card {
-        width: 100%;
+}
+
+/* Celulares */
+@media (min-width: 320px) and (max-width: 767px) {
+
+  /* Card seleccionar dispositivo modulo 2 */
+  #module3.card-select-elements .card {
+    width: 90%;
+
+    .card-header-element svg {
+      width: 20px;
+    }
+
+    .card-title {
+      font-size: 20px;
+    }
+
+    .back-button svg {
+      width: 30px;
+    }
+
+    .select-form {
+      .btn-text {
+        font-size: 12px;
+      }
+
+      .item-text {
+        font-size: 12px;
       }
     }
+    
+  }
+
+}

@@ -25,7 +25,12 @@
         <li class="item" data-name="access">
             <a role="button" href="{% url 'access' %}">
                 <div class="item-icon">
-                    <i class="bi bi-box-arrow-in-right"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login-2" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M9 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" />
+                        <path d="M3 12h13l-3 -3" />
+                        <path d="M13 15l3 -3" />
+                      </svg>
                 </div>
                 <span class="item-title">Lista de ingresos</span>
             </a>
@@ -44,10 +49,15 @@
         </li>
 
         <!-- Lista de vehiculos -->
-        <li class="item" data-name="vehiculos">
+        <li class="item" data-name="vehicles">
             <a role="button" href="{% url 'vehicles' %}">
                 <div class="item-icon">
-                    <img src="{% static 'assets/icons/trafico white.png' %}" alt="">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-car" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M5 17h-2v-6l2 -5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6 -6h15m-6 0v-5" />
+                      </svg>
                 </div>
                 <span class="item-title">Lista de vehículos</span>
             </a>
@@ -57,7 +67,12 @@
         <li class="item" data-name="devices">
             <a role="button" href="{% url 'devices' %}">
                 <div class="item-icon">
-                    <img src="{% static 'assets/icons/dispositivo white.png' %}" alt="">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M13 9a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1v-10z" />
+                        <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9" />
+                        <path d="M16 9h2" />
+                      </svg>
                 </div>
                 <span class="item-title">Lista de dispositivos</span>
             </a>
@@ -67,7 +82,12 @@
         <li class="item" data-name="about">
             <a role="button" href="{% url 'about' %}">
                 <div class="item-icon">
-                    <img src="{% static 'assets/icons/acerca-de white.png' %}" alt="">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info-circle" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                        <path d="M12 9h.01" />
+                        <path d="M11 12h1v4h1" />
+                      </svg>
                 </div>
                 <span class="item-title">Acerca de</span>
             </a>
@@ -77,10 +97,21 @@
         <div class="down">
 
             <!-- Añadir administrador -->
-            <div class="item">
+            <div class="item" data-name="registeradmin">
                 <a role="button" href="{% url 'registeradmin' %}">
                     <div class="item-icon">
-                        <img src="{% static 'assets/icons/admin white.png' %}" alt="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-cog" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" />
+                            <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                            <path d="M19.001 15.5v1.5" />
+                            <path d="M19.001 21v1.5" />
+                            <path d="M22.032 17.25l-1.299 .75" />
+                            <path d="M17.27 20l-1.3 .75" />
+                            <path d="M15.97 17.25l1.3 .75" />
+                            <path d="M20.733 20l1.3 .75" />
+                          </svg>
                     </div>
                     <span class="item-title">Añadir administrador</span>
                 </a>
@@ -90,7 +121,13 @@
             <div class="item">
                 <a role="button" href="{% url 'logout' %}">
                     <div class="item-icon">
-                        <img src="{% static 'assets/icons/log-out white.png' %}" alt="">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-door-exit" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M13 12v.01" />
+                            <path d="M3 21h18" />
+                            <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5" />
+                            <path d="M14 7h7m-3 -3l3 3l-3 3" />
+                          </svg>
                     </div>
                     <span class="item-title">Salir</span>
                 </a>

@@ -308,7 +308,7 @@ def reports(request, model):
 
     # Configurar la respuesta HTTP para descargar el archivo
     response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response["Content-Disposition"] = f"attachment; filename=Reporte de {name} - ControlEntradaSENA V1.3.0.xlsx"
+    response["Content-Disposition"] = f"attachment; filename=Reporte de {name} - ControlEntradaSENA V1.1.0.xlsx"
 
     return response
 
@@ -317,7 +317,7 @@ def reportData(ws_sheet, model):
         model = Ingresos.objects.all().prefetch_related("ingresosdispositivos_set")
         ws_sheet.title = "Ingresos" #Titulo hoja
         #Columnas
-        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivo", "Hora Ingreso"]) 
+        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivos", "Hora Ingreso"]) 
         header_cells = ws_sheet["A1:F1"]
         #Llenar hoja
         for ingreso in model: 
@@ -334,7 +334,7 @@ def reportData(ws_sheet, model):
     elif model == "salidas":
         model = Salidas.objects.all().prefetch_related("salidasdispositivos_set")
         ws_sheet.title = "Salidas" 
-        ws_sheet.append(["Id", "Fecha", "Usuario", "Vehiculo", "Dispositivos", "Hora Ingreso", "Hora Salida" ]) 
+        ws_sheet.append(["Id", "Fecha", "Ingreso", "Usuario", "Vehiculo", "Dispositivos", "Hora Ingreso", "Hora Salida" ]) 
         header_cells = ws_sheet["A1:H1"]
         for salida in model:
             dispositivos = []

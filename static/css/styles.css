@@ -745,6 +745,14 @@ article header .header-title {
 }
 
 /* ------------------- RESPONSIVE -------------------- */
+/* Laptops */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .card-scan .card {
+    width: 55%;
+  }
+
+}
+
 /* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
 
@@ -772,11 +780,11 @@ article header .header-title {
 
   /* Registrar dispositivo */
   .card-form .card {
-    width: 100%;
+    width: 90%;
   }
 
   .card-select .card {
-    width: 100%;
+    width: 90%;
     padding: 0;
 
     .card-body a span {
@@ -800,7 +808,7 @@ article header .header-title {
 }
 
 /* Celulares */
-@media (max-width: 767px) {
+@media (min-width: 320px) and (max-width: 767px) {
   main {
     padding: 20px 10px;
   }
@@ -827,20 +835,20 @@ article header .header-title {
     }
 
     .header-title p {
-      font-size: 18px;
+      font-size: 12px;
     }
+
   }
 
   /* Card escaneo */
   .card-scan {
     .card {
-      margin: 0;
       padding: 5px;
-      width: 100%;
+      width: 90%;
     }
 
     .card .card-code img {
-      width: 35%;
+      width: 30%;
     }
 
     .card .card-barra {
@@ -874,9 +882,13 @@ article header .header-title {
   }
 
   /* Registrar dispositivo módulo 2 y 3 */
-  .card-form {
+  #ingreso.card-form {
     .card {
       width: 100%;
+    }
+
+    .card-header .card-title{
+      font-size: 30px;
     }
   }
 
