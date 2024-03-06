@@ -98,10 +98,62 @@ export function errorAlert(title, text) {
         title: title,
         text: text,
         showConfirmButton: false,
-        timer: 2000
+        timer: 3000,
+        timerProgressBar: true
     })
     playSoundAlert()
 }
+
+const devices = (form) => {
+    const devicesInput = document.getElementById('devices');
+    const deviceItems = document.querySelectorAll(".item-device");
+    const btnText = document.querySelector(".device .btn-text");
+    const user = document.getElementById("user");
+    let rol = null
+
+    user ? fetch(`/api/users/${user.value}`)
+        .then(response => response.json())
+        .then(data => {
+            rol = data.response.data.rol
+        }) : null;
+
+    updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
+
+    applyFunctionsArguments(deviceItems, "click", (item) => {
+        if (item.classList.contains("checked") || rol == "Instructor" || document.querySelectorAll(".item-device.checked").length < 3) {
+            item.classList.toggle("checked");
+            updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
+        }
+    })
+
+    return devicesInput
+}
+
+export const module2 = (form) =>{    
+    const devicesInput = devices(form);
+    compInput(form, devicesInput, "dispositivo")
+}
+
+export const module3 = (form) => {
+    //VEHICULOS
+
+    //Seleccionar vehiculos
+    const vehicleInput = document.getElementById('vehicle');
+    const vehicleItems = document.querySelectorAll(".item-vehicle");
+    const btnTextVehicle = document.querySelector(".vehicle .btn-text");
+
+    applyFunctionsArguments(vehicleItems, "click", (item) => {
+        if (!item.classList.contains("checked")) {
+            // Remover la clase 'checked' de todos los elementos
+            vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
+        }
+        item.classList.toggle("checked");
+        updateCheckeds("Vehiculos", vehicleItems, vehicleInput, btnTextVehicle)
+    });  
+    const devicesInput = devices(form);     
+    compInput(form, vehicleInput, devicesInput, "vehiculo y un dispositivo")
+}
+
 
 //Funcion para tomar los valores de items seleccionados
 export function updateCheckeds(name, items, input, btnText) {
@@ -152,6 +204,17 @@ export function compDevice(input, type) {
                 })
         }
     });
+}
+
+export function compInput(form, input, input2, item) {
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if(input2){
+            if (!input.value || input.value.length == 0 || !input2.value || input2.value.length == 0) return errorAlert(`Debes seleccionar un ${item}`, `Debes seleccionar un ${item} para poder continuar`)
+        }
+        if (!input.value || input.value.length == 0) return errorAlert(`Debes seleccionar un ${item}`, `Debes seleccionar un ${item} para poder continuar`)
+        return form.submit()
+    })
 }
 
 //=====================================================================================================

@@ -1,4 +1,4 @@
-import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert, updateCheckeds, Camera, totemKeyboard, compDevice } from './functions.js'
+import { actualModule, valideNumber, goBack, Exists, successAlert, Upper, openSelect, applyFunctions, applyFunctionsArguments, errorAlert, updateCheckeds, Camera, totemKeyboard, compDevice, compInput, module2, module3 } from './functions.js'
 
 //Modulo actual
 actualModule();
@@ -67,6 +67,15 @@ if (Exists(Alert)) {
     case "success-admin":
       successAlert("Administrador registrado!", "El administrador se ha registrado correctamente");
       break;
+    case "error-module1":
+      errorAlert("Ingreso activo en modulo 1", "Error: Se tiene un ingreso activo en el modulo 1")
+      break;
+    case "error-module2":
+      errorAlert("Ingreso activo en modulo 2", "Error: Se tiene un ingreso activo en el modulo 2")
+      break;
+    case "error-module3":
+      errorAlert("Ingreso activo en modulo 3", "Error: Se tiene un ingreso activo en el modulo 3")
+      break;
   }
 }
 
@@ -85,55 +94,17 @@ if (Exists(camaraModal)) {
 //SELECTS
 const selects = document.querySelectorAll(".select-btn")
 applyFunctionsArguments(selects, "click", openSelect)
+const formModule2 = document.querySelector('.form-module2')
+const formModule3 = document.querySelector('.form-module3')
 
-//SELECT DISPOSITIVOS Y VEHICULOS
-if (Exists(selects)) {
-
-  //DISPOSITIVOS
-  const devicesInput = document.getElementById('devices');
-  const deviceItems = document.querySelectorAll(".item-device");
-  const btnText = document.querySelector(".device .btn-text");
-  const user = document.getElementById("user");
-  let rol = null
-
-  user ? fetch(`/api/users/${user.value}`)
-    .then(response => response.json())
-    .then(data => {
-      rol = data.response.data.rol
-    }) : null;
-
-  updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
-
-  applyFunctionsArguments(deviceItems, "click", (item) => {
-    if (item.classList.contains("checked") || rol == "Instructor" || document.querySelectorAll(".item-device.checked").length < 3) {
-      item.classList.toggle("checked");
-      updateCheckeds("Dispositivos", deviceItems, devicesInput, btnText);
-    }
-  })
-
-  //VEHICULOS
-
-  //Seleccionar vehiculos
-  const vehicleInput = document.getElementById('vehicle');
-  const vehicleItems = document.querySelectorAll(".item-vehicle");
-  const btnTextVehicle = document.querySelector(".vehicle .btn-text");
-
-  applyFunctionsArguments(vehicleItems, "click", (item) => {
-    if (!item.classList.contains("checked")) {
-      // Remover la clase 'checked' de todos los elementos
-      vehicleItems.forEach(otherItem => otherItem.classList.remove("checked"));
-    }
-    item.classList.toggle("checked");
-    updateCheckeds("Vehiculos", vehicleItems, vehicleInput, btnTextVehicle)
-  });
-
+//Modulo segun form
+if (Exists(selects)){
+  formModule2 ? module2(formModule2) : formModule3 ? module3(formModule3) : null
 }
 
 //ALERTA POR COMPROBACION DE DISPOSITIVO
-
 const deviceExit = document.getElementById("device_exit") // Input del dispositivo a escanear
 const deviceAccess = document.getElementById("device_access")
-
 Exists(deviceAccess) ? compDevice(deviceAccess, 1) : null
 Exists(deviceExit) ? compDevice(deviceExit, 2) : null;
 

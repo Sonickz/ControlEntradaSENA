@@ -16,7 +16,7 @@ def savedUrl(request):
     return url
 
 #Funcion para traer datos del usuario
-def getUser(code, type):
+def getUser(code, module):
     #Usuario
     user = get_object_or_404(Usuarios, documento=code) 
     vehiculos = Vehiculos.objects.filter(usuario=user.idusuario)
@@ -28,11 +28,11 @@ def getUser(code, type):
     dispositivos_ingreso = IngresosDispositivos.objects.filter(ingreso=ingreso.idingreso) if ingreso else None
 
     #Dependiendo del modulo retornar
-    if type == "module1":
+    if module == 1:
         return ingreso, user
-    elif type == "module2":
+    elif module == 2:
         return ingreso, user, dispositivos, dispositivos_ingreso
-    elif type == "module3":
+    elif module == 3:
         return ingreso, user, vehiculos, dispositivos, dispositivos_ingreso
 
 #Funcion para ingresos o salidas
@@ -60,6 +60,22 @@ def AccessOrExit(request, ingreso, user, vehiculo, dispositivos):
         status = "Ingreso"
         messages.success(request, "success-access")
     
+#
+def compPrevAccess(request, ingreso, module):
+    if not ingreso: return
+    message = None
+    compDevice = IngresosDispositivos.objects.filter(ingreso=ingreso.idingreso) or None
+    compVehicle = ingreso.vehiculo or None
+    if not compDevice and not compVehicle and module != 1:
+        message = "error-module1"
+    elif compDevice and not compVehicle and module != 2:
+        message = "error-module2"
+    elif compDevice and compVehicle and module != 3:
+        message = "error-module3"
+    if message:    
+        messages.error(request, message) if message else None
+        raise ValueError(message)
+
 #Funcion para validar que el dispositivo coincida con uno registrado o uno ingresado 
 def compDevice(device, type, ingreso, user):      
         try:
@@ -90,7 +106,7 @@ def registeruser(request, code):
     rol = request.GET.get('rol') #Obtener rol a registrar por GET    
     rol_selected = Roles.objects.get(idrol=rol) if rol else None #Rol seleccionado
     initial_data = {'rol': rol, 'documento': code} #Dato predeterminado del rol y documento
-    form = RegisterUser(request.POST or None, request.FILES or None, initial=initial_data)
+    form = RegisterUser(request.POST or None, initial=initial_data)
 
     #Requerir o no campos de formulario segun el rol
     form.fields['centro'].required = rol != "3"

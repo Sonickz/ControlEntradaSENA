@@ -49,7 +49,7 @@
                 <div class="col-lg col-md col-sm col-xs-12 ">
                     <!-- Input para comprobar dispositivo -->
                     {% include 'layouts/components/CompSelectDevice.html'%}
-                    <form id="form-access" method="post">
+                    <form id="form-access" class="form-module2" method="post">
                         {% csrf_token %}
                         <input id="devices" type="hidden" name="devices" value="">                             
                         <button type="submit" class="btn accept">{% if ingreso %}Salir{% else %}Ingresar{% endif %}</button>

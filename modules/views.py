@@ -2,23 +2,28 @@ from django.shortcuts import render, redirect, get_object_or_404
 from administrator.models import *
 from administrator.forms import *
 from django.http import Http404, JsonResponse
-from mainapp.views import actualUrl, AccessOrExit, getUser, compDevice
+from mainapp.views import actualUrl, AccessOrExit, getUser, compDevice, compPrevAccess
 
 #Modulo1
 def module1(request):
 
     actualUrl(request)
+    module = 1
     if request.method == 'POST':
         code = request.POST.get('code')
         try:
             #Obtener usuario
-            ingreso, user = getUser(code, type="module1")
+            ingreso, user = getUser(code, module) 
+            #Comprobar ingreso
+            compPrevAccess(request, ingreso, module)
             #Hacer ingreso o salida
             AccessOrExit(request, ingreso, user, vehiculo=None, dispositivos=None)
             return redirect("module1")        
         #Si el usuario no existe redirigir a registro
         except Http404:
             return redirect('registeruser', code=code)
+        except ValueError:
+            return redirect("module1")
 
     return render(request, 'PrincipalModule.html', {
         'title': 'Modulo principal'
@@ -28,11 +33,14 @@ def module1(request):
 def module2(request):
 
     actualUrl(request)
+    module = 2
     code = request.GET.get('code')                
     if code: 
         try:     
             #Obtener datos del usuario       
-            ingreso, user, dispositivos, dispositivos_ingreso = getUser(code, type="module2")                                     
+            ingreso, user, dispositivos, dispositivos_ingreso = getUser(code, module)   
+            #
+            compPrevAccess(request, ingreso, module)
             #Comprobar dispositivo de salida
             access_device = request.GET.get("accessDevice")
             exit_device = request.GET.get('exitDevice')        
@@ -60,6 +68,8 @@ def module2(request):
             #Si no existe, redireccionar 
         except Http404:            
             return redirect("registeruser", code=code)
+        except ValueError:
+            return redirect("module2")
         
     return render(request, 'SecondaryModule.html', {
         'title': 'Modulo Secundario'
@@ -69,12 +79,15 @@ def module2(request):
 def module3(request):
 
     actualUrl(request)
+    module = 3
     #Si se detecta el GET
     if 'code' in request.GET:
         code = request.GET.get('code')                
         try:     
             #Obtener datos del usuario       
-            ingreso, user, vehiculos, dispositivos, dispositivos_ingreso = getUser(code, type="module3")
+            ingreso, user, vehiculos, dispositivos, dispositivos_ingreso = getUser(code, module)
+            #
+            compPrevAccess(request, ingreso, module)
             #Comprobar dispositivo de salida
             exit_device = request.GET.get('exitDevice')                 
             access_device = request.GET.get("accessDevice")  
@@ -106,6 +119,8 @@ def module3(request):
         #Si no existe, redireccionar 
         except Http404:            
             return redirect("registeruser", code=code)
+        except ValueError:
+            return redirect("module3")
 
     return render(request, 'SecondaryModule.html', {
         'title': 'Modulo Terciario'
