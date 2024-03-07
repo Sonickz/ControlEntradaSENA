@@ -92,8 +92,10 @@ def module3(request):
             exit_device = request.GET.get('exitDevice')                 
             access_device = request.GET.get("accessDevice")  
             if access_device:
+                request.session['url'] = request.META.get('HTTP_REFERER', '/')
                 return compDevice(access_device, 1, ingreso, user)
             elif exit_device:
+                request.session['url'] = request.META.get('HTTP_REFERER', '/')
                 return compDevice(exit_device, 2, ingreso, user=None)
             
             #Al enviar el formulario

@@ -129,7 +129,7 @@ def registeruser(request, code):
 
 #Registrar vehiculo
 def registervehicle(request, code):
-
+    print(savedUrl(request))
     users = Usuarios.objects.get(documento=code) #usuario    
     vehicle = request.GET.get('vehicle') #Tipo de vehiculo
     vehicle_selected = VehiculosTipo.objects.get(idtipovehiculo=vehicle) if vehicle else None #Tipo de vehiculo seleccionado
